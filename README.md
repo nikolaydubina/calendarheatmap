@@ -1,6 +1,6 @@
 ![goreportcard](https://goreportcard.com/badge/github.com/nikolaydubina/calendarheatmap)
 
-Self-contained plain Go implementatino of calendar heatmap inspired by Github contribution activity.
+Self-contained, plain Go implementation of calendar heatmap inspired by Github contribution activity.
 
 Colorscales
 ![PuBu9](example/chart_PuBu9.png)

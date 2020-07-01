@@ -1,6 +1,6 @@
-Calendar heatmap in plain Go inspired by Github contribution activity visualization.
-
 ![goreportcard](https://goreportcard.com/badge/github.com/nikolaydubina/calendarheatmap)
+
+Calendar heatmap in plain Go inspired by Github contribution activity visualization.
 
 Colorscales
 ![PuBu9](example/chart_PuBu9.png)

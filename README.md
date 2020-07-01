@@ -1,4 +1,4 @@
-![goreportcard](https://goreportcard.com/badge/github.com/nikolaydubina/calendarheatmap)
+[![Go Report Card](https://goreportcard.com/badge/github.com/nikolaydubina/calendarheatmap)](https://goreportcard.com/report/github.com/nikolaydubina/calendarheatmap)
 
 Self-contained, plain Go implementation of calendar heatmap inspired by Github contribution activity.
 

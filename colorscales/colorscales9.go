@@ -5,14 +5,17 @@ import (
 	"math"
 )
 
+// ColorScale9 is color scale with 9 colors
 type ColorScale9 [9]color.RGBA
 
+// GetColor returns color based on float value from 0 to 1
 func (c ColorScale9) GetColor(val float64) color.RGBA {
 	maxIdx := 8
 	idx := int(math.Round(float64(maxIdx) * val))
 	return c[idx]
 }
 
+// PuBu9 is Purple-Blue colorscale 9 colors
 var PuBu9 = ColorScale9{
 	color.RGBA{255, 247, 251, 255},
 	color.RGBA{236, 231, 242, 255},
@@ -25,6 +28,7 @@ var PuBu9 = ColorScale9{
 	color.RGBA{2, 56, 88, 255},
 }
 
+// GnBu9 is Green-Blue colorscale 9 colors
 var GnBu9 = ColorScale9{
 	color.RGBA{247, 252, 240, 255},
 	color.RGBA{224, 243, 219, 255},
@@ -37,6 +41,7 @@ var GnBu9 = ColorScale9{
 	color.RGBA{8, 64, 129, 255},
 }
 
+// YlGn9 is Yellow-Green colorscale 9 colors
 var YlGn9 = ColorScale9{
 	color.RGBA{255, 255, 229, 255},
 	color.RGBA{247, 252, 185, 255},

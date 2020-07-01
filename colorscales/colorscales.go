@@ -4,10 +4,12 @@ import (
 	"image/color"
 )
 
+// ColorScale is interface for extracting color from float
 type ColorScale interface {
 	GetColor(val float64) color.RGBA
 }
 
+// LoadColorScale loads colorscale struct based on associated string name
 func LoadColorScale(name string) ColorScale {
 	switch name {
 	case "PuBu9":

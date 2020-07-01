@@ -14,6 +14,7 @@ import (
 	"github.com/nikolaydubina/plotstats/colorscales"
 )
 
+// Row represents single row data in input file
 type Row struct {
 	Date  time.Time
 	Count int

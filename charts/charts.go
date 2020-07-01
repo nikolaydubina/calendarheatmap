@@ -75,7 +75,7 @@ func MakeYearDayHeatmapHoriz(year int, countByDay map[int]int, colorScale colors
 			}
 		}
 
-		vIdx += 1
+		vIdx++
 		if vIdx == 7 {
 			vIdx = 0
 			x += boxSize + margin
@@ -107,12 +107,12 @@ func drawLineAxis(img draw.Image, a image.Point, b image.Point, col color.Color)
 		return
 	// vertical
 	case a.X == b.X:
-		for q := min(a.Y, b.Y); q <= max(a.Y, b.Y); q += 1 {
+		for q := min(a.Y, b.Y); q <= max(a.Y, b.Y); q++ {
 			img.Set(a.X, q, col)
 		}
 	// horizontal
 	case a.Y == b.Y:
-		for q := min(a.X, b.X); q <= max(a.X, b.X); q += 1 {
+		for q := min(a.X, b.X); q <= max(a.X, b.X); q++ {
 			img.Set(q, a.Y, col)
 		}
 	default:

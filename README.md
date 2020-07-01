@@ -8,4 +8,5 @@ Colorscales
 Without month separator
 ![PuBu9_noseparator](example/chart_PuBu9_noseparator.png)
 
-For example usage check `example/main.go` and `input.txt`.
+You can run it in your Go code or as standalone script. 
+Check `example/main.go` and `input.txt` for more details.

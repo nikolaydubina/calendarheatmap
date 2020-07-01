@@ -38,8 +38,9 @@ func MakeYearDayHeatmapHoriz(year int, countByDay map[int]int, colorScale colors
 		}
 	}
 
-	width := numWeekCols * (boxSize + margin)
-	height := 7 * (boxSize + margin)
+	// one margin less on the right and bottom side to avoid whitespace
+	width := numWeekCols*(boxSize+margin) - margin
+	height := 7*(boxSize+margin) - margin
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
 
 	draw.Draw(img, img.Bounds(), &image.Uniform{color.White}, image.ZP, draw.Src)

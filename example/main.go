@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/nikolaydubina/plotstats/charts"
-	"github.com/nikolaydubina/plotstats/colorscales"
+	"github.com/nikolaydubina/calendarheatmap/charts"
+	"github.com/nikolaydubina/calendarheatmap/colorscales"
 )
 
 // Row represents single row data in input file
@@ -67,7 +67,7 @@ func main() {
 		countByDay[row.Date.YearDay()] += row.Count
 	}
 
-	img := charts.MakeYearDayHeatmapHoriz(
+	img := charts.GetHeatmap(
 		year,
 		countByDay,
 		colorscales.LoadColorScale(*colorScale),

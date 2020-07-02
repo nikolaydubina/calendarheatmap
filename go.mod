@@ -1,4 +1,4 @@
-module github.com/nikolaydubina/plotstats
+module github.com/nikolaydubina/calendarheatmap
 
 go 1.14
 

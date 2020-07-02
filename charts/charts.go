@@ -6,7 +6,7 @@ import (
 	"image/draw"
 	"time"
 
-	"github.com/nikolaydubina/plotstats/colorscales"
+	"github.com/nikolaydubina/calendarheatmap/colorscales"
 )
 
 var weekdaysPos = map[time.Weekday]int{
@@ -28,9 +28,9 @@ const (
 
 var borderColor = color.RGBA{200, 200, 200, 255}
 
-// MakeYearDayHeatmapHoriz draw every day of a year as square
+// GetHeatmap draws every day of a year as square
 // filled with color proportional to counter from the max.
-func MakeYearDayHeatmapHoriz(year int, countByDay map[int]int, colorScale colorscales.ColorScale, drawMonthSeparator bool) image.Image {
+func GetHeatmap(year int, countByDay map[int]int, colorScale colorscales.ColorScale, drawMonthSeparator bool) image.Image {
 	maxCount := 0
 	for _, q := range countByDay {
 		if q > maxCount {
@@ -63,7 +63,7 @@ func MakeYearDayHeatmapHoriz(year int, countByDay map[int]int, colorScale colors
 
 				closeLeft := image.Point{X: x - marginSep - 1, Y: y - marginSep - 1}
 				closeRight := image.Point{X: x + boxSize + marginSep, Y: y - marginSep - 1}
-				farLeft := image.Point{X: x - marginSep - 1, Y: height - margin - 1}
+				farLeft := image.Point{X: x - marginSep - 1, Y: height}
 				farRight := image.Point{X: x + boxSize + marginSep, Y: 0}
 
 				drawLineAxis(img, farLeft, closeLeft, borderColor) // left line

@@ -52,8 +52,9 @@ func loadRows(filename string) ([]Row, error) {
 func main() {
 	filenameLogs := flag.String("input", "input.txt", "file should contain lines in format: 2020-05-16 20:43 PPPP")
 	filenameChart := flag.String("output", "chart.png", "output filename")
-	monthSep := flag.Bool("monthsep", true, "redner month separator")
+	monthSep := flag.Bool("monthsep", true, "render month separator")
 	colorScale := flag.String("colorscale", "PuBu9", "refer to colorscales for examples")
+	labels := flag.Bool("labels", true, "labels for weekday and months")
 	flag.Parse()
 
 	rows, err := loadRows(*filenameLogs)
@@ -67,12 +68,13 @@ func main() {
 		countByDay[row.Date.YearDay()] += row.Count
 	}
 
-	img := charts.GetHeatmap(
-		year,
-		countByDay,
-		colorscales.LoadColorScale(*colorScale),
-		*monthSep,
-	)
+	img := charts.NewHeatmap(charts.HeatmapConfig{
+		Year:               year,
+		CountByDay:         countByDay,
+		ColorScale:         colorscales.LoadColorScale(*colorScale),
+		DrawMonthSeparator: *monthSep,
+		DrawLabels:         *labels,
+	})
 	f, err := os.Create(*filenameChart)
 	if err != nil {
 		log.Fatal(fmt.Errorf("can not create file: %w", err))

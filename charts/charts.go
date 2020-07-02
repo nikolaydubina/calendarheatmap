@@ -7,6 +7,9 @@ import (
 	"time"
 
 	"github.com/nikolaydubina/calendarheatmap/colorscales"
+	"golang.org/x/image/font"
+	"golang.org/x/image/font/basicfont"
+	"golang.org/x/image/math/fixed"
 )
 
 var weekdaysPos = map[time.Weekday]int{
@@ -19,58 +22,109 @@ var weekdaysPos = map[time.Weekday]int{
 	time.Sunday:    6,
 }
 
+var monthLabel = map[time.Month]string{
+	time.January:   "Jan",
+	time.February:  "Feb",
+	time.March:     "Mar",
+	time.April:     "Apr",
+	time.May:       "May",
+	time.June:      "Jun",
+	time.July:      "Jul",
+	time.August:    "Aug",
+	time.September: "Sep",
+	time.October:   "Oct",
+	time.November:  "Nov",
+	time.December:  "Dec",
+}
+
 const (
-	numWeeksYear = 52
-	numWeekCols  = numWeeksYear + 1 // 53 * 7 = 371 > 366
-	margin       = 7                // should be odd number for best result if using month separator
-	boxSize      = 25
+	numWeeksYear  = 52
+	numWeekCols   = numWeeksYear + 1 // 53 * 7 = 371 > 366
+	margin        = 3                // should be odd number for best result if using month separator
+	boxSize       = 15
+	textWidthLeft = 35
+	textHightTop  = 20
 )
 
+var textColor = color.RGBA{100, 100, 100, 255}
 var borderColor = color.RGBA{200, 200, 200, 255}
 
-// GetHeatmap draws every day of a year as square
+// HeatmapConfig contains config of calendar heatmap image
+type HeatmapConfig struct {
+	Year               int
+	CountByDay         map[int]int
+	ColorScale         colorscales.ColorScale
+	DrawMonthSeparator bool
+	DrawLabels         bool
+}
+
+// NewHeatmap draws every day of a year as square
 // filled with color proportional to counter from the max.
-func GetHeatmap(year int, countByDay map[int]int, colorScale colorscales.ColorScale, drawMonthSeparator bool) image.Image {
+func NewHeatmap(conf HeatmapConfig) image.Image {
 	maxCount := 0
-	for _, q := range countByDay {
+	for _, q := range conf.CountByDay {
 		if q > maxCount {
 			maxCount = q
 		}
 	}
 
 	// one margin less on the right and bottom side to avoid whitespace
-	width := numWeekCols*(boxSize+margin) - margin
-	height := 7*(boxSize+margin) - margin
+	width := numWeekCols*(boxSize+margin) - margin + textWidthLeft
+	height := 7*(boxSize+margin) - margin + textHightTop
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
 
 	draw.Draw(img, img.Bounds(), &image.Uniform{color.White}, image.ZP, draw.Src)
 
 	x, y := 0, 0
-	yearStartDate := time.Date(year, 1, 1, 1, 1, 1, 1, time.UTC)
+
+	// text margins
+	x += textWidthLeft
+	y += textHightTop
+
+	yearStartDate := time.Date(conf.Year, 1, 1, 1, 1, 1, 1, time.UTC)
 	vIdx := weekdaysPos[yearStartDate.Weekday()]
 
-	for day := yearStartDate; day.Year() == year; day = day.Add(time.Hour * 24) {
-		y = (boxSize + margin) * vIdx
+	for day := yearStartDate; day.Year() == conf.Year; day = day.Add(time.Hour * 24) {
+		y = (boxSize+margin)*vIdx + textHightTop
 
 		r := image.Rect(x, y, x+boxSize, y+boxSize)
-		val := float64(countByDay[day.YearDay()]) / float64(maxCount)
-		color := colorScale.GetColor(val)
+		val := float64(conf.CountByDay[day.YearDay()]) / float64(maxCount)
+		color := conf.ColorScale.GetColor(val)
 		draw.Draw(img, r, &image.Uniform{color}, image.ZP, draw.Src)
 
-		if drawMonthSeparator {
+		if conf.DrawMonthSeparator {
 			if day.Day() == 1 && day.Month() != time.January {
 				marginSep := margin / 2
 
 				closeLeft := image.Point{X: x - marginSep - 1, Y: y - marginSep - 1}
 				closeRight := image.Point{X: x + boxSize + marginSep, Y: y - marginSep - 1}
 				farLeft := image.Point{X: x - marginSep - 1, Y: height}
-				farRight := image.Point{X: x + boxSize + marginSep, Y: 0}
+				farRight := image.Point{X: x + boxSize + marginSep, Y: textHightTop}
 
 				drawLineAxis(img, farLeft, closeLeft, borderColor) // left line
 				if vIdx != 0 {
 					drawLineAxis(img, closeRight, farRight, borderColor)  // right line
 					drawLineAxis(img, closeLeft, closeRight, borderColor) // top line
 				}
+			}
+		}
+
+		if conf.DrawLabels {
+			switch day.Weekday() {
+			case time.Monday:
+				addLabel(img, textWidthLeft-25, textHightTop+15, "Mon")
+			case time.Wednesday:
+				addLabel(img, textWidthLeft-25, textHightTop+15+(boxSize+margin)*2, "Wed")
+			case time.Friday:
+				addLabel(img, textWidthLeft-25, textHightTop+15+(boxSize+margin)*4, "Fri")
+			}
+
+			if day.Day() == 1 {
+				monthLabelX := x
+				if weekdaysPos[day.Weekday()] != 0 {
+					monthLabelX += boxSize + margin
+				}
+				addLabel(img, monthLabelX, textHightTop-5, monthLabel[day.Month()])
 			}
 		}
 
@@ -111,4 +165,18 @@ func drawLineAxis(img draw.Image, a image.Point, b image.Point, col color.Color)
 	default:
 		panic("input line is not parallel to axis. not implemented")
 	}
+}
+
+func addLabel(img *image.RGBA, x, y int, label string) {
+	point := fixed.Point26_6{
+		X: fixed.Int26_6(x * 64),
+		Y: fixed.Int26_6(y * 64),
+	}
+	d := &font.Drawer{
+		Dst:  img,
+		Src:  image.NewUniform(textColor),
+		Face: basicfont.Face7x13,
+		Dot:  point,
+	}
+	d.DrawString(label)
 }

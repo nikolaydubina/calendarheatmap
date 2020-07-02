@@ -10,5 +10,11 @@ Colorscales
 Without month separator
 ![PuBu9_noseparator](example/chart_PuBu9_noseparator.png)
 
+Without labels
+![PuBu9_noseparator](example/chart_PuBu9_nolabels.png)
+
+Without labels, without separator
+![PuBu9_noseparator](example/chart_PuBu9_noseparator_nolabels.png)
+
 You can run it in your Go code or as standalone script. 
 Check `example/main.go` and `input.txt` for more details.

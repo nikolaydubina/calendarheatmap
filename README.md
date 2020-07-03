@@ -44,6 +44,3 @@ Example script:
 ```
 go run main.go -h
 ```
-
-You can run it in your Go code or as standalone script. 
-Check output examples in `charts/testdata/` and optional input data in `testdata/input.txt` for more details.

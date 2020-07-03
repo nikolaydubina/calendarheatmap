@@ -40,14 +40,14 @@ func drawLineAxis(img draw.Image, a image.Point, b image.Point, col color.Color)
 }
 
 // drawText inserts text into provided image at bottom left coordinate
-func drawText(img *image.RGBA, offset image.Point, text string) {
+func drawText(img *image.RGBA, offset image.Point, text string, color color.RGBA) {
 	point := fixed.Point26_6{
 		X: fixed.Int26_6(offset.X * 64),
 		Y: fixed.Int26_6(offset.Y * 64),
 	}
 	d := &font.Drawer{
 		Dst:  img,
-		Src:  image.NewUniform(textColor),
+		Src:  image.NewUniform(color),
 		Face: basicfont.Face7x13,
 		Dot:  point,
 	}

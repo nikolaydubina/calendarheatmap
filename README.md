@@ -2,8 +2,6 @@
 [![GoDev](https://img.shields.io/static/v1?label=godev&message=reference&color=00add8)](https://pkg.go.dev/github.com/nikolaydubina/calendarheatmap)
 [![GoDoc](https://godoc.org/github.com/nikolaydubina/calendarheatmap/charts?status.svg)](https://godoc.org/github.com/nikolaydubina/calendarheatmap)
 
-https://godoc.org/github.com/nikolaydubina/calendarheatmap/charts
-
 Self-contained, plain Go implementation of calendar heatmap inspired by Github contribution activity.
 
 Colorscales

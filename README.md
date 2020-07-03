@@ -16,5 +16,26 @@ Without labels
 Without labels, without separator
 ![PuBu9_noseparator](example/chart_PuBu9_noseparator_nolabels.png)
 
+Example:
+
+```go
+countByDayOfYear := map[int]int{
+    1: 10,
+    22: 15,
+    150: 22,
+    366: 55,
+}
+
+img := charts.NewHeatmap(charts.HeatmapConfig{
+    Year:               2020,
+    CountByDay:         countByDay,
+    ColorScale:         colorscales.PuBu9,
+    DrawMonthSeparator: true,
+    DrawLabels:         true,
+    ...
+})
+```
+
 You can run it in your Go code or as standalone script. 
-Check `example/main.go` and `input.txt` for more details.
+Check full example at `example/main.go` and `input.txt` for more details.
+Generate examples above with `./generate_examples.sh`.

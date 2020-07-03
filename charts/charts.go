@@ -205,6 +205,7 @@ type MonthLabelsVisitor struct {
 // Visit on every iteration
 func (d *MonthLabelsVisitor) Visit(iter *DayIterator) {
 	day := iter.Time()
+	// Note, day is from 1~31
 	if iter.Row == 0 && day.Day() <= 7 {
 		p := iter.Point()
 		drawText(

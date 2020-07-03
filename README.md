@@ -20,7 +20,7 @@ Without labels
 Without labels, without separator
 ![nosep_nolab](charts/testdata/noseparator_nolabels.png)
 
-Example:
+Example module:
 
 ```go
 countByDayOfYear := map[int]int{
@@ -40,6 +40,10 @@ img := charts.NewHeatmap(charts.HeatmapConfig{
 })
 ```
 
+Example script:
+```
+go run main.go -h
+```
+
 You can run it in your Go code or as standalone script. 
-Check full example at `examples/main.go` and `input.txt` for more details.
-Generate examples above with `./generate_examples.sh`.
+Check output examples in `charts/testdata/` and optional input data in `testdata/input.txt` for more details.

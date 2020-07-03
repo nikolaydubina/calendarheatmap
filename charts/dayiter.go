@@ -27,7 +27,8 @@ func NewDayIterator(year int, offset image.Point, countByDay map[int]int, boxSiz
 			row = i
 		}
 	}
-	maxCount := 0
+	// in case CountByDay is empty, we need to make Value 0/1 -> 0
+	maxCount := 1
 	for _, q := range countByDay {
 		if q > maxCount {
 			maxCount = q

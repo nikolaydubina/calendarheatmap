@@ -3,19 +3,21 @@
 
 Self-contained, plain Go implementation of calendar heatmap inspired by Github contribution activity.
 
+Basic
+![basic](charts/testdata/basic.png)
+
 Colorscales
-![PuBu9](examples/chart_PuBu9.png)
-![GnBu9](examples/chart_GnBu9.png)
-![YlGn9](examples/chart_YlGn9.png)
+![col1](charts/testdata/colorscale_1.png)
+![col2](charts/testdata/colorscale_2.png)
 
 Without month separator
-![PuBu9_noseparator](examples/chart_PuBu9_noseparator.png)
+![nosep](charts/testdata/noseparator.png)
 
 Without labels
-![PuBu9_noseparator](examples/chart_PuBu9_nolabels.png)
+![nolab](charts/testdata/nolabels.png)
 
 Without labels, without separator
-![PuBu9_noseparator](examples/chart_PuBu9_noseparator_nolabels.png)
+![nosep_nolab](charts/testdata/noseparator_nolabels.png)
 
 Example:
 

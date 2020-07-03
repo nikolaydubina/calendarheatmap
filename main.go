@@ -1,3 +1,5 @@
+// This is example on how to read data, calculate statistics
+// and draw it with this module.
 package main
 
 import (

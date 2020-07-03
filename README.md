@@ -37,5 +37,5 @@ img := charts.NewHeatmap(charts.HeatmapConfig{
 ```
 
 You can run it in your Go code or as standalone script. 
-Check full example at `example/main.go` and `input.txt` for more details.
+Check full example at `examples/main.go` and `input.txt` for more details.
 Generate examples above with `./generate_examples.sh`.

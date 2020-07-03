@@ -123,7 +123,7 @@ func TestBasicData(t *testing.T) {
 			Year:               2020,
 			CountByDay:         countByDay,
 			ColorScale:         colorscales.PuBu9,
-			DrawMonthSeparator: true,
+			DrawMonthSeparator: false,
 			DrawLabels:         false,
 			Margin:             3,
 			BoxSize:            15,

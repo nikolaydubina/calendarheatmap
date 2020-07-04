@@ -54,7 +54,7 @@ func loadRows(filename string) ([]Row, error) {
 
 func main() {
 	filenameLogs := flag.String("input", "input.txt", "file should contain lines in format: 2020-05-16 20:43 PPPP")
-	filenameChart := flag.String("output", "chart.png", "output filename")
+	filenameChart := flag.String("output", "chart.png", "output filename, will export as PNG")
 	monthSep := flag.Bool("monthsep", true, "render month separator")
 	colorScale := flag.String("colorscale", "PuBu9", "refer to colorscales for examples")
 	labels := flag.Bool("labels", true, "labels for weekday and months")

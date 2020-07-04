@@ -21,7 +21,7 @@ Without labels
 Without labels, without separator
 ![nosep_nolab](charts/testdata/noseparator_nolabels.png)
 
-Example module, save output in formats supported by `image` module (PNG, JPEG, GIF).
+Example module, next save output in formats supported by `image` module (PNG, JPEG, GIF).
 
 ```go
 countByDayOfYear := map[int]int{
@@ -43,9 +43,21 @@ img := charts.NewHeatmap(charts.HeatmapConfig{
 
 ```
 
-Example script, output as PNG.
+Example script, will output as PNG.
 ```
-go run main.go -h
+$ go build; ./calendarheatmap -h
+
+Usage of ./calendarheatmap:
+  -colorscale string
+    	refer to colorscales for examples (default "PuBu9")
+  -input string
+    	file should contain lines in format: 2020-05-16 20:43 PPPP (default "input.txt")
+  -labels
+    	labels for weekday and months (default true)
+  -monthsep
+    	render month separator (default true)
+  -output string
+    	output filename, will export as PNG (default "chart.png")
 ```
 
 TODO:

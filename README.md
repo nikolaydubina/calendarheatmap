@@ -21,7 +21,7 @@ Without labels
 Without labels, without separator
 ![nosep_nolab](charts/testdata/noseparator_nolabels.png)
 
-Example module, you can save output in formatas supported by `image` module (PNG, JPEG, GIF).
+Example module, save output in formats supported by `image` module (PNG, JPEG, GIF).
 
 ```go
 countByDayOfYear := map[int]int{
@@ -29,6 +29,7 @@ countByDayOfYear := map[int]int{
     22: 15,
     150: 22,
     366: 55,
+    ...
 }
 
 img := charts.NewHeatmap(charts.HeatmapConfig{
@@ -39,9 +40,10 @@ img := charts.NewHeatmap(charts.HeatmapConfig{
     DrawLabels:         true,
     ...
 })
+
 ```
 
-Example script, current saves as PNG.
+Example script, output as PNG.
 ```
 go run main.go -h
 ```

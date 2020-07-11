@@ -64,7 +64,7 @@ Usage of ./calendarheatmap:
   -monthsep
         render month separator (default true)
   -output string
-        output filename, will export as PNG (default "chart.png")
+        output filename (default "chart.png")
   -output-format string
         output format (png, jpeg, gif) (default "png")
 ```

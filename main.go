@@ -7,6 +7,8 @@ import (
 	"flag"
 	"fmt"
 	"image/color"
+	"image/gif"
+	"image/jpeg"
 	"image/png"
 	"log"
 	"os"
@@ -58,6 +60,7 @@ func main() {
 	monthSep := flag.Bool("monthsep", true, "render month separator")
 	colorScale := flag.String("colorscale", "PuBu9", "refer to colorscales for examples")
 	labels := flag.Bool("labels", true, "labels for weekday and months")
+	outputFormat := flag.String("output-format", "png", "output format (png, jpeg, gif)")
 	flag.Parse()
 
 	rows, err := loadRows(*filenameLogs)
@@ -90,7 +93,18 @@ func main() {
 	}
 	defer f.Close()
 
-	if err := png.Encode(f, img); err != nil {
-		log.Fatal(fmt.Errorf("can not encode png: %w", err))
+	switch *outputFormat {
+	case "png":
+		if err := png.Encode(f, img); err != nil {
+			log.Fatal(fmt.Errorf("can not encode png: %w", err))
+		}
+	case "jpeg":
+		if err := jpeg.Encode(f, img, nil); err != nil {
+			log.Fatal(fmt.Errorf("can not encode jpeg: %w", err))
+		}
+	case "gif":
+		if err := gif.Encode(f, img, nil); err != nil {
+			log.Fatal(fmt.Errorf("can not encode gifg: %w", err))
+		}
 	}
 }

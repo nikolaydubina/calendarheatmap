@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestBasic(t *testing.T) {
+func Test_RowDaySecondsCountParser_Basic(t *testing.T) {
 
 	t.Run("new lines", func(t *testing.T) {
 		inputData := []byte(`
@@ -53,7 +53,7 @@ func TestBasic(t *testing.T) {
 	})
 }
 
-func TestErrors(t *testing.T) {
+func Test_RowDaySecondsCountParser_Errors(t *testing.T) {
 
 	t.Run("empty", func(t *testing.T) {
 		inputData := []byte(``)

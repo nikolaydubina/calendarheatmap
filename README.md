@@ -5,7 +5,19 @@
 
 Self-contained, plain Go implementation of calendar heatmap inspired by Github contribution activity.
 
+```
+$ go build
+$ echo '{
+    "2020-05-16": 8,
+    "2020-05-17": 13,
+    "2020-05-18": 5,
+    "2020-05-19": 8,
+    "2020-05-20": 5
+}' | ./calendarheatmap > chart.png
+```
+
 Basic
+
 ![basic](charts/testdata/basic.png)
 
 Colorscales
@@ -42,33 +54,21 @@ img := charts.NewHeatmap(charts.HeatmapConfig{
 })
 ```
 
-Example script,
+Example script
 ```
-$ go build
-
-$ ./calendarheatmap -input testdata/basic.json -output basicjson.png
-
-$ ./calendarheatmap -input testdata/custom.txt -output custom.png -input-format row-day-seconds-count
-
+$ cat testdata/basic.json | ./calendarheatmap -output jpeg > chart.jpeg
+$ cat testdata/custom.txt | ./calendarheatmap -input row-day-seconds-count > custom.png
 $ ./calendarheatmap -h
 
 Usage of ./calendarheatmap:
   -colorscale string
         refer to colorscales for examples (default "PuBu9")
   -input string
-        input filename (default "input.txt")
-  -intput-format /parsers
-        format of input file refer to /parsers for examples (default "json-basic")
+        format of input file, refer to parsers module (default "json-basic")
   -labels
         labels for weekday and months (default true)
   -monthsep
         render month separator (default true)
   -output string
-        output filename (default "chart.png")
-  -output-format string
         output format (png, jpeg, gif) (default "png")
 ```
-
-TODO:
-- [ ] SVG support
-- [ ] select start and end date

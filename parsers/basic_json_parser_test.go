@@ -1,9 +1,27 @@
 package parsers
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
+
+func ExampleBasicJSONParser() {
+	parser := BasicJSONParser{}
+	year, countByDay, err := parser.Parse([]byte(`
+		"2020-01-02": 7,
+		"2020-02-05": 2,
+		"2020-02-04": 3
+	}`))
+	fmt.Print(year)
+	fmt.Print(countByDay)
+	fmt.Print(err)
+	// expectedCountByDay := map[int]int{
+	// 	2:  7,
+	// 	36: 2,
+	// 	35: 3,
+	// }
+}
 
 func Test_BasicJSONParser_Basic(t *testing.T) {
 

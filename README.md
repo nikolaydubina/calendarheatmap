@@ -56,7 +56,7 @@ Usage of ./calendarheatmap:
   -colorscale string
         refer to colorscales for examples (default "PuBu9")
   -input string
-        file should contain lines in format: 2020-05-16 20:43 PPPP (default "input.txt")
+        input filenam (default "input.txt")
   -intput-format /parsers
         format of input file refer to /parsers for examples (default "json-basic")
   -labels

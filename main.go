@@ -19,18 +19,16 @@ import (
 )
 
 func main() {
-	filenameInput := flag.String("input", "input.txt", "input filename")
-	filenameChart := flag.String("output", "chart.png", "output filename")
-	monthSep := flag.Bool("monthsep", true, "render month separator")
 	colorScale := flag.String("colorscale", "PuBu9", "refer to colorscales for examples")
+	inputFormat := flag.String("input", "json-basic", "format of input file, refer to parsers module")
 	labels := flag.Bool("labels", true, "labels for weekday and months")
-	outputFormat := flag.String("output-format", "png", "output format (png, jpeg, gif)")
-	inputFormat := flag.String("input-format", "json-basic", "format of input file refer to `/parsers` for examples")
+	monthSep := flag.Bool("monthsep", true, "render month separator")
+	outputFormat := flag.String("output", "png", "output format (png, jpeg, gif)")
 	flag.Parse()
 
-	data, err := ioutil.ReadFile(*filenameInput)
+	data, err := ioutil.ReadAll(os.Stdin)
 	if err != nil {
-		log.Fatal(fmt.Errorf("cant not read file: %w", err))
+		log.Fatal(fmt.Errorf("cant not read from stdin: %w", err))
 	}
 
 	var parser parsers.Parser
@@ -40,10 +38,13 @@ func main() {
 	case "json-basic":
 		parser = &parsers.BasicJSONParser{}
 	default:
-		log.Fatal("unnknown parser format")
+		log.Fatal("unknown parser format")
 		return
 	}
 	year, countByDay, err := parser.Parse(data)
+	if err != nil {
+		log.Fatal("error parsing data: %w", err)
+	}
 
 	img := charts.NewHeatmap(charts.HeatmapConfig{
 		Year:               year,
@@ -58,23 +59,19 @@ func main() {
 		TextColor:          color.RGBA{100, 100, 100, 255},
 		BorderColor:        color.RGBA{200, 200, 200, 255},
 	})
-	f, err := os.Create(*filenameChart)
-	if err != nil {
-		log.Fatal(fmt.Errorf("can not create file: %w", err))
-	}
-	defer f.Close()
 
+	outWriter := os.Stdout
 	switch *outputFormat {
 	case "png":
-		if err := png.Encode(f, img); err != nil {
+		if err := png.Encode(outWriter, img); err != nil {
 			log.Fatal(fmt.Errorf("can not encode png: %w", err))
 		}
 	case "jpeg":
-		if err := jpeg.Encode(f, img, nil); err != nil {
+		if err := jpeg.Encode(outWriter, img, nil); err != nil {
 			log.Fatal(fmt.Errorf("can not encode jpeg: %w", err))
 		}
 	case "gif":
-		if err := gif.Encode(f, img, nil); err != nil {
+		if err := gif.Encode(outWriter, img, nil); err != nil {
 			log.Fatal(fmt.Errorf("can not encode gifg: %w", err))
 		}
 	default:

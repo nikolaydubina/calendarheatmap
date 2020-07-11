@@ -40,10 +40,9 @@ img := charts.NewHeatmap(charts.HeatmapConfig{
     DrawLabels:         true,
     ...
 })
-
 ```
 
-Example script, will output as PNG.
+Example script,
 ```
 $ go build; ./calendarheatmap -h
 
@@ -52,6 +51,8 @@ Usage of ./calendarheatmap:
         refer to colorscales for examples (default "PuBu9")
   -input string
         file should contain lines in format: 2020-05-16 20:43 PPPP (default "input.txt")
+  -intput-format /parsers
+        format of input file (json-basic) refer to /parsers for examples (default "row-day-seconds-count")
   -labels
         labels for weekday and months (default true)
   -monthsep
@@ -59,10 +60,9 @@ Usage of ./calendarheatmap:
   -output string
         output filename, will export as PNG (default "chart.png")
   -output-format string
-        output format (png, jpeg, gif) (default "png"))
+        output format (png, jpeg, gif) (default "png")
 ```
 
 TODO:
 - [ ] SVG support
 - [ ] select start and end date
-- [ ] CSV, JSON in script input

@@ -56,7 +56,7 @@ Usage of ./calendarheatmap:
   -colorscale string
         refer to colorscales for examples (default "PuBu9")
   -input string
-        input filenam (default "input.txt")
+        input filename (default "input.txt")
   -intput-format /parsers
         format of input file refer to /parsers for examples (default "json-basic")
   -labels

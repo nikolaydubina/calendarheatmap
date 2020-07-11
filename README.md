@@ -66,4 +66,3 @@ Usage of ./calendarheatmap:
 TODO:
 - [ ] SVG support
 - [ ] select start and end date
-- [ ] CSV, JSON in script input

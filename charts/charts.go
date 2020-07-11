@@ -59,7 +59,7 @@ type HeatmapConfig struct {
 	BoxSize            int
 	Margin             int
 	TextWidthLeft      int
-	TextHightTop       int
+	TextHeightTop      int
 	TextColor          color.RGBA
 	BorderColor        color.RGBA
 }
@@ -67,8 +67,8 @@ type HeatmapConfig struct {
 // NewHeatmap creates image with heatmap and additional elements
 func NewHeatmap(conf HeatmapConfig) image.Image {
 	width := conf.TextWidthLeft + numWeekCols*(conf.BoxSize+conf.Margin)
-	height := conf.TextHightTop + 7*(conf.BoxSize+conf.Margin)
-	offset := image.Point{X: conf.TextWidthLeft, Y: conf.TextHightTop}
+	height := conf.TextHeightTop + 7*(conf.BoxSize+conf.Margin)
+	offset := image.Point{X: conf.TextWidthLeft, Y: conf.TextHeightTop}
 
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
 	draw.Draw(img, img.Bounds(), &image.Uniform{color.White}, image.ZP, draw.Src)
@@ -82,7 +82,7 @@ func NewHeatmap(conf HeatmapConfig) image.Image {
 			visitors,
 			&MonthSeparatorVisitor{
 				Img:     img,
-				MinY:    conf.TextHightTop,
+				MinY:    conf.TextHeightTop,
 				MaxY:    height - conf.Margin,
 				Margin:  conf.Margin,
 				BoxSize: conf.BoxSize,

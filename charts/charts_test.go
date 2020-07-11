@@ -43,7 +43,7 @@ func TestBasicData(t *testing.T) {
 			Margin:             3,
 			BoxSize:            15,
 			TextWidthLeft:      35,
-			TextHightTop:       20,
+			TextHeightTop:      20,
 			TextColor:          color.RGBA{100, 100, 100, 255},
 			BorderColor:        color.RGBA{200, 200, 200, 255},
 		})
@@ -60,7 +60,7 @@ func TestBasicData(t *testing.T) {
 			Margin:             3,
 			BoxSize:            15,
 			TextWidthLeft:      35,
-			TextHightTop:       20,
+			TextHeightTop:      20,
 			TextColor:          color.RGBA{100, 100, 100, 255},
 			BorderColor:        color.RGBA{200, 200, 200, 255},
 		})
@@ -77,7 +77,7 @@ func TestBasicData(t *testing.T) {
 			Margin:             3,
 			BoxSize:            15,
 			TextWidthLeft:      35,
-			TextHightTop:       20,
+			TextHeightTop:      20,
 			TextColor:          color.RGBA{100, 100, 100, 255},
 			BorderColor:        color.RGBA{200, 200, 200, 255},
 		})
@@ -94,7 +94,7 @@ func TestBasicData(t *testing.T) {
 			Margin:             3,
 			BoxSize:            15,
 			TextWidthLeft:      35,
-			TextHightTop:       20,
+			TextHeightTop:      20,
 			TextColor:          color.RGBA{100, 100, 100, 255},
 			BorderColor:        color.RGBA{200, 200, 200, 255},
 		})
@@ -111,7 +111,7 @@ func TestBasicData(t *testing.T) {
 			Margin:             3,
 			BoxSize:            15,
 			TextWidthLeft:      35,
-			TextHightTop:       20,
+			TextHeightTop:      20,
 			TextColor:          color.RGBA{100, 100, 100, 255},
 			BorderColor:        color.RGBA{200, 200, 200, 255},
 		})
@@ -128,7 +128,7 @@ func TestBasicData(t *testing.T) {
 			Margin:             3,
 			BoxSize:            15,
 			TextWidthLeft:      35,
-			TextHightTop:       20,
+			TextHeightTop:      20,
 			TextColor:          color.RGBA{100, 100, 100, 255},
 			BorderColor:        color.RGBA{200, 200, 200, 255},
 		})
@@ -145,7 +145,7 @@ func TestBasicData(t *testing.T) {
 			Margin:             3,
 			BoxSize:            15,
 			TextWidthLeft:      35,
-			TextHightTop:       20,
+			TextHeightTop:      20,
 			TextColor:          color.RGBA{100, 100, 100, 255},
 			BorderColor:        color.RGBA{200, 200, 200, 255},
 		})
@@ -162,7 +162,7 @@ func TestBasicData(t *testing.T) {
 			Margin:             3,
 			BoxSize:            15,
 			TextWidthLeft:      35,
-			TextHightTop:       20,
+			TextHeightTop:      20,
 			TextColor:          color.RGBA{100, 100, 100, 255},
 			BorderColor:        color.RGBA{200, 200, 200, 255},
 		})

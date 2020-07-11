@@ -44,7 +44,13 @@ img := charts.NewHeatmap(charts.HeatmapConfig{
 
 Example script,
 ```
-$ go build; ./calendarheatmap -h
+$ go build
+
+$ ./calendarheatmap -input testdata/basic.json -output basicjson.png
+
+$ ./calendarheatmap -input testdata/custom.txt -output custom.png -input-format row-day-seconds-count
+
+$ ./calendarheatmap -h
 
 Usage of ./calendarheatmap:
   -colorscale string
@@ -52,7 +58,7 @@ Usage of ./calendarheatmap:
   -input string
         file should contain lines in format: 2020-05-16 20:43 PPPP (default "input.txt")
   -intput-format /parsers
-        format of input file (json-basic) refer to /parsers for examples (default "row-day-seconds-count")
+        format of input file refer to /parsers for examples (default "json-basic")
   -labels
         labels for weekday and months (default true)
   -monthsep

@@ -25,7 +25,7 @@ func main() {
 	colorScale := flag.String("colorscale", "PuBu9", "refer to colorscales for examples")
 	labels := flag.Bool("labels", true, "labels for weekday and months")
 	outputFormat := flag.String("output-format", "png", "output format (png, jpeg, gif)")
-	inputFormat := flag.String("intput-format", "row-day-seconds-count", "format of input file, refer to `/parsers` for examples")
+	inputFormat := flag.String("intput-format", "row-day-seconds-count", "format of input file (json-basic) refer to `/parsers` for examples")
 	flag.Parse()
 
 	data, err := ioutil.ReadFile(*filenameInput)
@@ -37,6 +37,8 @@ func main() {
 	switch *inputFormat {
 	case "row-day-seconds-count":
 		parser = &parsers.RowDaySecondsCountParser{}
+	case "json-basic":
+		parser = &parsers.BasicJSONParser{}
 	default:
 		log.Fatal("unnknown parser format")
 		return

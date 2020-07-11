@@ -20,7 +20,7 @@ import (
 
 func main() {
 	filenameInput := flag.String("input", "input.txt", "input filename")
-	filenameChart := flag.String("output", "chart.png", "output filename, will export as PNG")
+	filenameChart := flag.String("output", "chart.png", "output filename")
 	monthSep := flag.Bool("monthsep", true, "render month separator")
 	colorScale := flag.String("colorscale", "PuBu9", "refer to colorscales for examples")
 	labels := flag.Bool("labels", true, "labels for weekday and months")

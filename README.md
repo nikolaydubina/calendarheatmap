@@ -24,6 +24,9 @@ Colorscales
 ![col1](charts/testdata/colorscale_1.png)
 ![col2](charts/testdata/colorscale_2.png)
 
+UTF-8
+![col1](charts/testdata/korean.png)
+
 Without month separator
 ![nosep](charts/testdata/noseparator.png)
 

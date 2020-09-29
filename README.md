@@ -70,6 +70,8 @@ Usage of ./calendarheatmap:
         format of input file, refer to parsers module (default "json-basic")
   -labels
         labels for weekday and months (default true)
+  -locale string
+        locale of labels (default en_US) (default "en_US")
   -monthsep
         render month separator (default true)
   -output string

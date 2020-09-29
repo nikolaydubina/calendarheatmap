@@ -24,6 +24,7 @@ func main() {
 	labels := flag.Bool("labels", true, "labels for weekday and months")
 	monthSep := flag.Bool("monthsep", true, "render month separator")
 	outputFormat := flag.String("output", "png", "output format (png, jpeg, gif)")
+	locale := flag.String("locale", "en_US", "locale of labels (default en_US)")
 	flag.Parse()
 
 	data, err := ioutil.ReadAll(os.Stdin)
@@ -46,18 +47,20 @@ func main() {
 		log.Fatal("error parsing data: %w", err)
 	}
 
+	os.Setenv("CALENDAR_HEATMAP_ASSETS_PATH", "charts/assets")
 	img := charts.NewHeatmap(charts.HeatmapConfig{
 		Year:               year,
 		CountByDay:         countByDay,
 		ColorScale:         colorscales.LoadColorScale(*colorScale),
 		DrawMonthSeparator: *monthSep,
 		DrawLabels:         *labels,
-		Margin:             3,
-		BoxSize:            15,
-		TextWidthLeft:      35,
-		TextHeightTop:      20,
+		Margin:             30,
+		BoxSize:            150,
+		TextWidthLeft:      350,
+		TextHeightTop:      200,
 		TextColor:          color.RGBA{100, 100, 100, 255},
 		BorderColor:        color.RGBA{200, 200, 200, 255},
+		Locale:             *locale,
 	})
 
 	outWriter := os.Stdout

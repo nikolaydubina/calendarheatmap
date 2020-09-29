@@ -9,31 +9,6 @@ import (
 	"github.com/nikolaydubina/calendarheatmap/colorscales"
 )
 
-var monthLabel = map[time.Month]string{
-	time.January:   "Jan",
-	time.February:  "Feb",
-	time.March:     "Mar",
-	time.April:     "Apr",
-	time.May:       "May",
-	time.June:      "Jun",
-	time.July:      "Jul",
-	time.August:    "Aug",
-	time.September: "Sep",
-	time.October:   "Oct",
-	time.November:  "Nov",
-	time.December:  "Dec",
-}
-
-var weekdayLabel = map[time.Weekday]string{
-	time.Monday:    "Mon",
-	time.Tuesday:   "Tue",
-	time.Wednesday: "Wed",
-	time.Thursday:  "Thu",
-	time.Friday:    "Fri",
-	time.Saturday:  "Sat",
-	time.Sunday:    "Sun",
-}
-
 var weekdayOrder = [7]time.Weekday{
 	time.Monday,
 	time.Tuesday,
@@ -62,6 +37,7 @@ type HeatmapConfig struct {
 	TextHeightTop      int
 	TextColor          color.RGBA
 	BorderColor        color.RGBA
+	Locale             string
 }
 
 // NewHeatmap creates image with heatmap and additional elements
@@ -86,14 +62,20 @@ func NewHeatmap(conf HeatmapConfig) image.Image {
 				MaxY:    height - conf.Margin,
 				Margin:  conf.Margin,
 				BoxSize: conf.BoxSize,
-				Width:   1,
+				Width:   5,
 				Color:   conf.BorderColor,
 			},
 		)
 	}
 
+	locale := "en_US"
+	if conf.Locale != "" {
+		locale = conf.Locale
+	}
+	labelsProvider := NewLabelsProvider(locale)
+
 	if conf.DrawLabels {
-		visitors = append(visitors, &MonthLabelsVisitor{Img: img, YOffset: 5, Color: conf.TextColor})
+		visitors = append(visitors, &MonthLabelsVisitor{Img: img, YOffset: 50, Color: conf.TextColor, LabelsProvider: labelsProvider})
 	}
 
 	for iter := NewDayIterator(conf.Year, offset, conf.CountByDay, conf.BoxSize, conf.Margin); !iter.Done(); iter.Next() {
@@ -114,6 +96,7 @@ func NewHeatmap(conf HeatmapConfig) image.Image {
 			conf.BoxSize,
 			conf.Margin,
 			conf.TextColor,
+			labelsProvider,
 		)
 	}
 
@@ -159,37 +142,41 @@ func (d *MonthSeparatorVisitor) Visit(iter *DayIterator) {
 
 		marginSep := d.Margin / 2
 
-		xL := p.X - marginSep - d.Width
+		xL := p.X - marginSep - d.Width/2
 		xR := p.X + d.BoxSize + marginSep
 
 		// left vertical line
-		drawLineAxis(
+		draw.Draw(
 			d.Img,
-			image.Point{X: xL, Y: p.Y},
-			image.Point{X: xL, Y: d.MaxY - d.Width},
-			d.Color,
+			image.Rect(xL, p.Y, xL+d.Width, d.MaxY),
+			&image.Uniform{d.Color},
+			image.ZP,
+			draw.Src,
 		)
 		if day.Weekday() != weekdayOrder[0] {
 			// right vertical line
-			drawLineAxis(
+			draw.Draw(
 				d.Img,
-				image.Point{X: xR, Y: d.MinY},
-				image.Point{X: xR, Y: p.Y - marginSep - d.Width},
-				d.Color,
+				image.Rect(xR, d.MinY, xR+d.Width, p.Y-marginSep),
+				&image.Uniform{d.Color},
+				image.ZP,
+				draw.Src,
 			)
-			// right vertical line
-			drawLineAxis(
+			// horizontal line
+			draw.Draw(
 				d.Img,
-				image.Point{X: xL, Y: p.Y - marginSep - d.Width},
-				image.Point{X: xR, Y: p.Y - marginSep - d.Width},
-				d.Color,
+				image.Rect(xL, p.Y-marginSep, xR+d.Width, p.Y-marginSep-d.Width),
+				&image.Uniform{d.Color},
+				image.ZP,
+				draw.Src,
 			)
 			// connect left vertical line and horizontal one
-			drawLineAxis(
+			draw.Draw(
 				d.Img,
-				image.Point{X: xL, Y: p.Y - marginSep - d.Width},
-				image.Point{X: xL, Y: p.Y},
-				d.Color,
+				image.Rect(xL, p.Y-marginSep-d.Width, xL+d.Width, p.Y),
+				&image.Uniform{d.Color},
+				image.ZP,
+				draw.Src,
 			)
 		}
 	}
@@ -197,9 +184,10 @@ func (d *MonthSeparatorVisitor) Visit(iter *DayIterator) {
 
 // MonthLabelsVisitor draws month label on top of first row 0 of month
 type MonthLabelsVisitor struct {
-	Img     *image.RGBA
-	YOffset int
-	Color   color.RGBA
+	Img            *image.RGBA
+	YOffset        int
+	Color          color.RGBA
+	LabelsProvider LabelsProvider
 }
 
 // Visit on every iteration
@@ -211,7 +199,7 @@ func (d *MonthLabelsVisitor) Visit(iter *DayIterator) {
 		drawText(
 			d.Img,
 			image.Point{X: p.X, Y: p.Y - d.YOffset},
-			monthLabel[day.Month()],
+			d.LabelsProvider.GetMonth(day.Month()),
 			d.Color,
 		)
 	}
@@ -220,13 +208,13 @@ func (d *MonthLabelsVisitor) Visit(iter *DayIterator) {
 // drawWeekdayLabel draws column of same width labels for weekdays
 // All weekday labels assumed to have same width, which really depends on font.
 // offset argument is top right corner of where to insert column of weekday labels.
-func drawWeekdayLabels(img *image.RGBA, offset image.Point, weekdays map[time.Weekday]bool, boxSize int, margin int, color color.RGBA) {
-	width := 25
-	height := 10
+func drawWeekdayLabels(img *image.RGBA, offset image.Point, weekdays map[time.Weekday]bool, boxSize int, margin int, color color.RGBA, lp LabelsProvider) {
+	width := 300
+	height := 100
 	y := offset.Y + height
 	for _, w := range weekdayOrder {
 		if weekdays[w] {
-			drawText(img, image.Point{X: offset.X - width, Y: y}, weekdayLabel[w], color)
+			drawText(img, image.Point{X: offset.X - width, Y: y}, lp.GetWeekday(w), color)
 		}
 		y += boxSize + margin
 	}

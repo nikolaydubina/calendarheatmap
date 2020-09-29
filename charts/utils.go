@@ -1,46 +1,41 @@
 package charts
 
 import (
+	"fmt"
 	"image"
 	"image/color"
-	"image/draw"
+	"io/ioutil"
+	"log"
+	"os"
 
 	"golang.org/x/image/font"
-	"golang.org/x/image/font/basicfont"
+	"golang.org/x/image/font/opentype"
 	"golang.org/x/image/math/fixed"
 )
 
-// drawLineAxis draws line parallel to X or Y axis
-func drawLineAxis(img draw.Image, a image.Point, b image.Point, col color.Color) {
-	switch {
-	// do not attempt to draw dot
-	case a == b:
-		return
-	// vertical
-	case a.X == b.X:
-		y1, y2 := a.Y, b.Y
-		if y1 > y2 {
-			y1, y2 = y2, y1
-		}
-		for q := y1; q <= y2; q++ {
-			img.Set(a.X, q, col)
-		}
-	// horizontal
-	case a.Y == b.Y:
-		x1, x2 := a.X, b.X
-		if x1 > x2 {
-			x1, x2 = x2, x1
-		}
-		for q := x1; q <= x2; q++ {
-			img.Set(q, a.Y, col)
-		}
-	default:
-		panic("input line is not parallel to axis. not implemented")
-	}
-}
-
 // drawText inserts text into provided image at bottom left coordinate
 func drawText(img *image.RGBA, offset image.Point, text string, color color.RGBA) {
+	assetsPath := os.Getenv("CALENDAR_HEATMAP_ASSETS_PATH")
+	if assetsPath == "" {
+		log.Fatalf("assets path is not set")
+	}
+	fontBytes, err := ioutil.ReadFile(fmt.Sprintf("%s/fonts/Sunflower-Medium.ttf", assetsPath))
+	if err != nil {
+		log.Fatalf("can not open font file with error: %#v", err)
+	}
+	f, err := opentype.Parse(fontBytes)
+	if err != nil {
+		log.Fatalf("can not parse font file: %v", err)
+	}
+	face, err := opentype.NewFace(f, &opentype.FaceOptions{
+		Size:    26,
+		DPI:     280,
+		Hinting: font.HintingNone,
+	})
+	if err != nil {
+		log.Fatalf("can not create font face: %v", err)
+	}
+
 	point := fixed.Point26_6{
 		X: fixed.Int26_6(offset.X * 64),
 		Y: fixed.Int26_6(offset.Y * 64),
@@ -48,7 +43,7 @@ func drawText(img *image.RGBA, offset image.Point, text string, color color.RGBA
 	d := &font.Drawer{
 		Dst:  img,
 		Src:  image.NewUniform(color),
-		Face: basicfont.Face7x13,
+		Face: face,
 		Dot:  point,
 	}
 	d.DrawString(text)

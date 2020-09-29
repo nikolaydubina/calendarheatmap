@@ -24,6 +24,9 @@ Colorscales
 ![col1](charts/testdata/colorscale_1.png)
 ![col2](charts/testdata/colorscale_2.png)
 
+UTF-8
+![col1](charts/testdata/korean.png)
+
 Without month separator
 ![nosep](charts/testdata/noseparator.png)
 
@@ -67,6 +70,8 @@ Usage of ./calendarheatmap:
         format of input file, refer to parsers module (default "json-basic")
   -labels
         labels for weekday and months (default true)
+  -locale string
+        locale of labels (default en_US) (default "en_US")
   -monthsep
         render month separator (default true)
   -output string

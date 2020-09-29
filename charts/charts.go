@@ -209,7 +209,7 @@ func (d *MonthLabelsVisitor) Visit(iter *DayIterator) {
 // All weekday labels assumed to have same width, which really depends on font.
 // offset argument is top right corner of where to insert column of weekday labels.
 func drawWeekdayLabels(img *image.RGBA, offset image.Point, weekdays map[time.Weekday]bool, boxSize int, margin int, color color.RGBA, lp LabelsProvider) {
-	width := 300
+	width := 250
 	height := 100
 	y := offset.Y + height
 	for _, w := range weekdayOrder {

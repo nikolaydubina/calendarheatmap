@@ -1,5 +1,3 @@
-// This is example on how to read data, calculate statistics
-// and draw it with this module.
 package main
 
 import (
@@ -24,7 +22,7 @@ func main() {
 	labels := flag.Bool("labels", true, "labels for weekday and months")
 	monthSep := flag.Bool("monthsep", true, "render month separator")
 	outputFormat := flag.String("output", "png", "output format (png, jpeg, gif)")
-	locale := flag.String("locale", "en_US", "locale of labels (default en_US)")
+	locale := flag.String("locale", "en_US", "locale of labels (en_US, ko_KR)")
 	flag.Parse()
 
 	data, err := ioutil.ReadAll(os.Stdin)

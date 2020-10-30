@@ -65,15 +65,15 @@ $ ./calendarheatmap -h
 
 Usage of ./calendarheatmap:
   -colorscale string
-        refer to colorscales for examples (default "PuBu9")
+    	refer to colorscales for examples (default "PuBu9")
   -input string
-        format of input file, refer to parsers module (default "json-basic")
+    	format of input file, refer to parsers module (default "json-basic")
   -labels
-        labels for weekday and months (default true)
+    	labels for weekday and months (default true)
   -locale string
-        locale of labels (default en_US) (default "en_US")
+    	locale of labels (en_US, ko_KR) (default "en_US")
   -monthsep
-        render month separator (default true)
+    	render month separator (default true)
   -output string
-        output format (png, jpeg, gif) (default "png")
+    	output format (png, jpeg, gif) (default "png")
 ```

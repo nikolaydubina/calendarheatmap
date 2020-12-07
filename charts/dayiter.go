@@ -80,3 +80,8 @@ func (d *DayIterator) Time() time.Time {
 func (d *DayIterator) Value() float64 {
 	return float64(d.countByDay[d.time.YearDay()]) / float64(d.maxCount)
 }
+
+// Count returns count value
+func (d *DayIterator) Count() int {
+	return d.countByDay[d.time.YearDay()]
+}

@@ -21,7 +21,7 @@ func main() {
 	inputFormat := flag.String("input", "json-basic", "format of input file, refer to parsers module")
 	labels := flag.Bool("labels", true, "labels for weekday and months")
 	monthSep := flag.Bool("monthsep", true, "render month separator")
-	outputFormat := flag.String("output", "png", "output format (png, jpeg, gif)")
+	outputFormat := flag.String("output", "png", "output format (png, jpeg, gif, svg)")
 	locale := flag.String("locale", "en_US", "locale of labels (en_US, ko_KR)")
 	flag.Parse()
 
@@ -45,8 +45,7 @@ func main() {
 		log.Fatal("error parsing data: %w", err)
 	}
 
-	os.Setenv("CALENDAR_HEATMAP_ASSETS_PATH", "charts/assets")
-	img := charts.NewHeatmap(charts.HeatmapConfig{
+	conf := charts.HeatmapConfig{
 		Year:               year,
 		CountByDay:         countByDay,
 		ColorScale:         colorscales.LoadColorScale(*colorScale),
@@ -59,9 +58,18 @@ func main() {
 		TextColor:          color.RGBA{100, 100, 100, 255},
 		BorderColor:        color.RGBA{200, 200, 200, 255},
 		Locale:             *locale,
-	})
+	}
 
 	outWriter := os.Stdout
+
+	if *outputFormat == "svg" {
+		charts.NewHeatmapSVG(conf, outWriter)
+		return
+	}
+
+	os.Setenv("CALENDAR_HEATMAP_ASSETS_PATH", "charts/assets")
+	img := charts.NewHeatmap(conf)
+
 	switch *outputFormat {
 	case "png":
 		if err := png.Encode(outWriter, img); err != nil {

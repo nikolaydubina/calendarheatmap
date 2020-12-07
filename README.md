@@ -28,6 +28,7 @@ UTF-8
 ![col1](charts/testdata/korean.png)
 
 SVG
+
 ![svg](charts/testdata/korean.svg)
 
 Without month separator

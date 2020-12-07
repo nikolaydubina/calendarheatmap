@@ -7,19 +7,29 @@ import (
 
 // DayIterator has data for updating image based on a day
 type DayIterator struct {
-	Year       int
-	Row        int
-	Col        int
-	offset     image.Point
-	time       time.Time
-	countByDay map[int]int
-	maxCount   int
-	boxSize    int
-	margin     int
+	Year     int
+	Row      int
+	Col      int
+	offset   image.Point
+	time     time.Time
+	counts   map[string]int
+	maxCount int
+	boxSize  int
+	margin   int
 }
 
-// NewDayIterator initilizes iterator for a year
-func NewDayIterator(year int, offset image.Point, countByDay map[int]int, boxSize int, margin int) *DayIterator {
+// NewDayIterator initializes iterator for a year
+func NewDayIterator(counts map[string]int, offset image.Point, boxSize int, margin int) *DayIterator {
+	year := 1972
+	for dateStr, _ := range counts {
+		date, err := time.Parse("2006-01-02", dateStr)
+		if err != nil {
+			panic(err)
+		}
+		year = date.Year()
+		break
+	}
+
 	row := 0
 	yearStartDate := time.Date(year, 1, 1, 1, 1, 1, 1, time.UTC)
 	for i, w := range weekdayOrder {
@@ -27,23 +37,25 @@ func NewDayIterator(year int, offset image.Point, countByDay map[int]int, boxSiz
 			row = i
 		}
 	}
+
 	// in case CountByDay is empty, we need to make Value 0/1 -> 0
 	maxCount := 1
-	for _, q := range countByDay {
+	for _, q := range counts {
 		if q > maxCount {
 			maxCount = q
 		}
 	}
+
 	return &DayIterator{
-		Year:       year,
-		time:       yearStartDate,
-		Col:        0,
-		Row:        row,
-		offset:     offset,
-		countByDay: countByDay,
-		maxCount:   maxCount,
-		boxSize:    boxSize,
-		margin:     margin,
+		Year:     year,
+		Col:      0,
+		Row:      row,
+		counts:   counts,
+		time:     yearStartDate,
+		offset:   offset,
+		maxCount: maxCount,
+		boxSize:  boxSize,
+		margin:   margin,
 	}
 }
 
@@ -78,10 +90,10 @@ func (d *DayIterator) Time() time.Time {
 
 // Value returns relative value in range 0 ~ 1
 func (d *DayIterator) Value() float64 {
-	return float64(d.countByDay[d.time.YearDay()]) / float64(d.maxCount)
+	return float64(d.counts[d.time.Format("2006-01-02")]) / float64(d.maxCount)
 }
 
 // Count returns count value
 func (d *DayIterator) Count() int {
-	return d.countByDay[d.time.YearDay()]
+	return d.counts[d.time.Format("2006-01-02")]
 }

@@ -196,7 +196,7 @@
 		<rect class="day" width="10" height="10" x="-5" y="26" fill="rgb(255,247,251)" data-count="0" data-date="2020-05-13"></rect>
 		<rect class="day" width="10" height="10" x="-5" y="39" fill="rgb(255,247,251)" data-count="0" data-date="2020-05-14"></rect>
 		<rect class="day" width="10" height="10" x="-5" y="52" fill="rgb(255,247,251)" data-count="0" data-date="2020-05-15"></rect>
-		<rect class="day" width="10" height="10" x="-5" y="65" fill="rgb(54,144,192)" data-count="8" data-date="2020-05-16"></rect>
+		<rect class="day" width="10" height="10" x="-5" y="65" fill="rgb(255,247,251)" data-count="0" data-date="2020-05-16"></rect>
 		<rect class="day" width="10" height="10" x="-5" y="78" fill="rgb(2,56,88)" data-count="13" data-date="2020-05-17"></rect>
 		
 	</g>	

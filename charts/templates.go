@@ -8,10 +8,10 @@ const fullyear = `<svg width="722" height="112" xmlns="http://www.w3.org/2000/sv
 	</g>	
 	{{end}}
 	
-	{{range $i, $label := $.LabelsMonths}}<text x="{{add 14 (mul 52 $i)}}" y="-7" font-size="10px" fill="{{$.LabelColor}}">{{$label}}</text>
+	{{range $i, $label := $.LabelsMonths}}<text x="{{add 14 (mul 52 $i)}}" y="-7" font-size="10px" fill="{{$.LabelsColor}}">{{$label}}</text>
 	{{end}}
 	 
-	{{range $i, $o := $.LabelsWeekdays}}<text text-anchor="start" font-size="9px" dx="-10" dy="{{add 8 (mul 13 $i)}}" fill="{{$.LabelColor}}" {{if not $o.Show}}style="display: none;"{{end}}>{{$o.Label}}</text>
+	{{range $i, $o := $.LabelsWeekdays}}<text text-anchor="start" font-size="9px" dx="-10" dy="{{add 8 (mul 13 $i)}}" fill="{{$.LabelsColor}}" {{if not $o.Show}}style="display: none;"{{end}}>{{$o.Label}}</text>
 	{{end}}
 </g></svg>
 `

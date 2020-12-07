@@ -5,7 +5,7 @@ import (
 )
 
 var localeConfig = map[string]LabelsProvider{
-	"en_US": LabelsProvider{
+	"en_US": {
 		months: map[time.Month]string{
 			time.January:   "Jan",
 			time.February:  "Feb",
@@ -30,7 +30,7 @@ var localeConfig = map[string]LabelsProvider{
 			time.Sunday:    "Sun",
 		},
 	},
-	"ko_KR": LabelsProvider{
+	"ko_KR": {
 		months: map[time.Month]string{
 			time.January:   "1월",
 			time.February:  "2월",

@@ -8,9 +8,8 @@ import (
 func TestBasicDayIter(t *testing.T) {
 	t.Run("num days correct", func(t *testing.T) {
 		iter := NewDayIterator(
-			2019,
+			map[string]int{"2019-01-01": 1},
 			image.Point{X: 0, Y: 0},
-			map[int]int{},
 			5,
 			3,
 		)
@@ -35,9 +34,8 @@ func TestBasicDayIter(t *testing.T) {
 
 	t.Run("num days correct, leap year", func(t *testing.T) {
 		iter := NewDayIterator(
-			2000,
+			map[string]int{"2000-01-01": 1},
 			image.Point{X: 0, Y: 0},
-			map[int]int{},
 			5,
 			3,
 		)
@@ -62,9 +60,8 @@ func TestBasicDayIter(t *testing.T) {
 
 	t.Run("value check, float", func(t *testing.T) {
 		iter := NewDayIterator(
-			2000,
+			map[string]int{"2000-01-02": 2, "2000-01-05": 1},
 			image.Point{X: 0, Y: 0},
-			map[int]int{2: 2, 5: 1},
 			5,
 			3,
 		)
@@ -84,9 +81,8 @@ func TestBasicDayIter(t *testing.T) {
 
 	t.Run("value check, empty counters", func(t *testing.T) {
 		iter := NewDayIterator(
-			2000,
+			map[string]int{},
 			image.Point{X: 0, Y: 0},
-			map[int]int{},
 			5,
 			3,
 		)
@@ -99,9 +95,8 @@ func TestBasicDayIter(t *testing.T) {
 
 	t.Run("value check, nil counters", func(t *testing.T) {
 		iter := NewDayIterator(
-			2000,
-			image.Point{X: 0, Y: 0},
 			nil,
+			image.Point{X: 0, Y: 0},
 			5,
 			3,
 		)

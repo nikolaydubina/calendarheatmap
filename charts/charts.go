@@ -1,9 +1,14 @@
 package charts
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"image/draw"
+	"image/gif"
+	"image/jpeg"
+	"image/png"
+	"io"
 	"time"
 
 	"github.com/nikolaydubina/calendarheatmap/colorscales"
@@ -26,8 +31,7 @@ const (
 
 // HeatmapConfig contains config of calendar heatmap image
 type HeatmapConfig struct {
-	Year               int
-	CountByDay         map[int]int
+	Counts             map[string]int
 	ColorScale         colorscales.ColorScale
 	DrawMonthSeparator bool
 	DrawLabels         bool
@@ -38,10 +42,15 @@ type HeatmapConfig struct {
 	TextColor          color.RGBA
 	BorderColor        color.RGBA
 	Locale             string
+	Format             string
 }
 
-// NewHeatmap creates image with heatmap and additional elements
-func NewHeatmap(conf HeatmapConfig) image.Image {
+// WriteHeatmap writes image with heatmap and additional elements
+func WriteHeatmap(conf HeatmapConfig, w io.Writer) error {
+	if conf.Format == "svg" {
+		return writeSVG(conf, w)
+	}
+
 	width := conf.TextWidthLeft + numWeekCols*(conf.BoxSize+conf.Margin)
 	height := conf.TextHeightTop + 7*(conf.BoxSize+conf.Margin)
 	offset := image.Point{X: conf.TextWidthLeft, Y: conf.TextHeightTop}
@@ -78,7 +87,7 @@ func NewHeatmap(conf HeatmapConfig) image.Image {
 		visitors = append(visitors, &MonthLabelsVisitor{Img: img, YOffset: 50, Color: conf.TextColor, LabelsProvider: labelsProvider})
 	}
 
-	for iter := NewDayIterator(conf.Year, offset, conf.CountByDay, conf.BoxSize, conf.Margin); !iter.Done(); iter.Next() {
+	for iter := NewDayIterator(conf.Counts, offset, conf.BoxSize, conf.Margin); !iter.Done(); iter.Next() {
 		for _, v := range visitors {
 			v.Visit(iter)
 		}
@@ -100,7 +109,24 @@ func NewHeatmap(conf HeatmapConfig) image.Image {
 		)
 	}
 
-	return img
+	switch conf.Format {
+	case "png":
+		if err := png.Encode(w, img); err != nil {
+			return err
+		}
+	case "jpeg":
+		if err := jpeg.Encode(w, img, nil); err != nil {
+			return err
+		}
+	case "gif":
+		if err := gif.Encode(w, img, nil); err != nil {
+			return err
+		}
+	default:
+		return fmt.Errorf("unexpected format")
+	}
+
+	return nil
 }
 
 // DayVisitor is interface to update image based on current box

@@ -3,6 +3,7 @@ package charts
 import (
 	"fmt"
 	"image"
+	"image/color"
 	"io"
 	"text/template"
 )
@@ -23,10 +24,14 @@ type Params struct {
 	Days           [53][7]Day
 	LabelsMonths   [12]string
 	LabelsWeekdays [7]WeekdayLabel
-	LabelColor     string
+	LabelsColor    string
 }
 
-func NewHeatmapSVG(conf HeatmapConfig, w io.Writer) {
+func writeColor(c color.RGBA) string {
+	return fmt.Sprintf("rgb(%d,%d,%d)", c.R, c.G, c.B)
+}
+
+func writeSVG(conf HeatmapConfig, w io.Writer) error {
 	fullYearTemplate := template.Must(template.New("fullyear").Funcs(template.FuncMap{
 		"mul": func(a int, b int) int { return a * b },
 		"add": func(a int, b int) int { return a + b },
@@ -35,12 +40,11 @@ func NewHeatmapSVG(conf HeatmapConfig, w io.Writer) {
 
 	days := [53][7]Day{}
 
-	for iter := NewDayIterator(conf.Year, image.Point{}, conf.CountByDay, 0, 0); !iter.Done(); iter.Next() {
-		color := conf.ColorScale.GetColor(iter.Value())
+	for iter := NewDayIterator(conf.Counts, image.Point{}, 0, 0); !iter.Done(); iter.Next() {
 		days[iter.Col][iter.Row] = Day{
 			Count: iter.Count(),
 			Date:  iter.Time().Format("2006-01-02"),
-			Color: fmt.Sprintf("rgb(%d,%d,%d)", color.R, color.G, color.B),
+			Color: writeColor(conf.ColorScale.GetColor(iter.Value())),
 			Show:  true,
 		}
 	}
@@ -65,8 +69,10 @@ func NewHeatmapSVG(conf HeatmapConfig, w io.Writer) {
 		Days:           days,
 		LabelsMonths:   labelsMonths,
 		LabelsWeekdays: labelsWeekdays,
-		LabelColor:     fmt.Sprintf("rgb(%d,%d,%d)", conf.TextColor.R, conf.TextColor.G, conf.TextColor.B),
+		LabelsColor:    writeColor(conf.TextColor),
 	}
 
 	fullYearTemplate.Execute(w, params)
+
+	return nil
 }

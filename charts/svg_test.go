@@ -14,7 +14,7 @@ func saveSVG(t *testing.T, conf HeatmapConfig, filename string) {
 	if err != nil {
 		t.Errorf(fmt.Errorf("can not save: %w", err).Error())
 	}
-	NewHeatmapSVG(conf, f)
+	writeSVG(conf, f)
 	if err := f.Close(); err != nil {
 		t.Errorf(fmt.Errorf("can not close: %w", err).Error())
 	}
@@ -22,18 +22,51 @@ func saveSVG(t *testing.T, conf HeatmapConfig, filename string) {
 
 func TestBasicDataSVG(t *testing.T) {
 	os.Setenv("CALENDAR_HEATMAP_ASSETS_PATH", "assets")
-	countByDay := map[int]int{
-		137: 8, 138: 13, 139: 5, 140: 8, 141: 5, 142: 5, 143: 3, 144: 5, 145: 6,
-		146: 3, 147: 5, 148: 8, 149: 2, 150: 2, 151: 8, 152: 5, 153: 1, 154: 3,
-		155: 1, 156: 3, 157: 1, 158: 3, 159: 5, 161: 1, 162: 2, 164: 9, 165: 7,
-		166: 4, 167: 1, 169: 1, 172: 2, 173: 1, 175: 2, 176: 2, 177: 3, 178: 3,
-		179: 2, 180: 1, 181: 1, 182: 2,
+	counts := map[string]int{
+		"2020-05-17": 13,
+		"2020-05-18": 5,
+		"2020-05-19": 8,
+		"2020-05-20": 5,
+		"2020-05-21": 5,
+		"2020-05-22": 3,
+		"2020-05-23": 5,
+		"2020-05-24": 6,
+		"2020-05-25": 3,
+		"2020-05-26": 5,
+		"2020-05-27": 8,
+		"2020-05-28": 2,
+		"2020-05-29": 2,
+		"2020-05-30": 8,
+		"2020-05-31": 5,
+		"2020-06-01": 1,
+		"2020-06-02": 3,
+		"2020-06-03": 1,
+		"2020-06-04": 3,
+		"2020-06-05": 1,
+		"2020-06-06": 3,
+		"2020-06-07": 5,
+		"2020-06-09": 1,
+		"2020-06-10": 2,
+		"2020-06-12": 9,
+		"2020-06-13": 7,
+		"2020-06-14": 4,
+		"2020-06-15": 1,
+		"2020-06-17": 1,
+		"2020-06-20": 2,
+		"2020-06-21": 1,
+		"2020-06-23": 2,
+		"2020-06-24": 2,
+		"2020-06-25": 3,
+		"2020-06-26": 3,
+		"2020-06-27": 2,
+		"2020-06-28": 1,
+		"2020-06-29": 1,
+		"2020-06-30": 2,
 	}
 
 	t.Run("basic", func(t *testing.T) {
 		conf := HeatmapConfig{
-			Year:               2020,
-			CountByDay:         countByDay,
+			Counts:             counts,
 			ColorScale:         colorscales.PuBu9,
 			DrawMonthSeparator: true,
 			DrawLabels:         true,
@@ -49,8 +82,7 @@ func TestBasicDataSVG(t *testing.T) {
 
 	t.Run("korean", func(t *testing.T) {
 		conf := HeatmapConfig{
-			Year:               2020,
-			CountByDay:         countByDay,
+			Counts:             counts,
 			ColorScale:         colorscales.PuBu9,
 			DrawMonthSeparator: true,
 			DrawLabels:         true,
@@ -67,8 +99,7 @@ func TestBasicDataSVG(t *testing.T) {
 
 	t.Run("empty data", func(t *testing.T) {
 		conf := HeatmapConfig{
-			Year:               2020,
-			CountByDay:         map[int]int{},
+			Counts:             map[string]int{},
 			ColorScale:         colorscales.PuBu9,
 			DrawMonthSeparator: true,
 			DrawLabels:         false,
@@ -84,8 +115,7 @@ func TestBasicDataSVG(t *testing.T) {
 
 	t.Run("nil data", func(t *testing.T) {
 		conf := HeatmapConfig{
-			Year:               2020,
-			CountByDay:         nil,
+			Counts:             nil,
 			ColorScale:         colorscales.PuBu9,
 			DrawMonthSeparator: true,
 			DrawLabels:         false,

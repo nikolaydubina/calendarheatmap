@@ -15,11 +15,19 @@ import (
 func main() {
 	os.Setenv("CALENDAR_HEATMAP_ASSETS_PATH", "charts/assets")
 
-	colorScale := *flag.String("colorscale", "PuBu9", "refer to colorscales for examples")
-	labels := *flag.Bool("labels", true, "labels for weekday and months")
-	monthSep := *flag.Bool("monthsep", true, "render month separator")
-	outputFormat := *flag.String("output", "png", "output format (png, jpeg, gif, svg)")
-	locale := *flag.String("locale", "en_US", "locale of labels (en_US, ko_KR)")
+	var (
+		colorScale   string
+		labels       bool
+		locale       string
+		monthSep     bool
+		outputFormat string
+	)
+
+	flag.BoolVar(&labels, "labels", true, "labels for weekday and months")
+	flag.BoolVar(&monthSep, "monthsep", true, "render month separator")
+	flag.StringVar(&colorScale, "colorscale", "PuBu9", "refer to colorscales for examples")
+	flag.StringVar(&locale, "locale", "en_US", "locale of labels (en_US, ko_KR)")
+	flag.StringVar(&outputFormat, "output", "png", "output format (png, jpeg, gif, svg)")
 	flag.Parse()
 
 	data, err := ioutil.ReadAll(os.Stdin)

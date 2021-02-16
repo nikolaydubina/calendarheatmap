@@ -39,3 +39,8 @@ Without labels
 
 Without labels, without separator
 ![nosep_nolab](charts/testdata/noseparator_nolabels.png)
+
+
+## GitHub stars over time
+
+[![GitHub stars over time](https://starchart.cc/nikolaydubina/calendarheatmap.svg)](https://starchart.cc/nikolaydubina/calendarheatmap)

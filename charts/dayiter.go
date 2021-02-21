@@ -2,6 +2,7 @@ package charts
 
 import (
 	"image"
+	"math"
 	"time"
 )
 
@@ -19,7 +20,7 @@ type DayIterator struct {
 }
 
 // NewDayIterator initializes iterator for a year
-func NewDayIterator(counts map[string]int, offset image.Point, boxSize int, margin int) *DayIterator {
+func NewDayIterator(counts map[string]int, offset image.Point, boxSize int, margin int, maxCount int) *DayIterator {
 	year := 1972
 	for dateStr, _ := range counts {
 		date, err := time.Parse("2006-01-02", dateStr)
@@ -39,12 +40,15 @@ func NewDayIterator(counts map[string]int, offset image.Point, boxSize int, marg
 	}
 
 	// in case CountByDay is empty, we need to make Value 0/1 -> 0
-	maxCount := 1
-	for _, q := range counts {
-		if q > maxCount {
-			maxCount = q
+	if maxCount == 0 {
+		maxCount = 1
+		for _, q := range counts {
+			if q > maxCount {
+				maxCount = q
+			}
 		}
 	}
+
 
 	return &DayIterator{
 		Year:     year,
@@ -90,7 +94,7 @@ func (d *DayIterator) Time() time.Time {
 
 // Value returns relative value in range 0 ~ 1
 func (d *DayIterator) Value() float64 {
-	return float64(d.counts[d.time.Format("2006-01-02")]) / float64(d.maxCount)
+	return math.Min(1, float64(d.counts[d.time.Format("2006-01-02")]) / float64(d.maxCount))
 }
 
 // Count returns count value

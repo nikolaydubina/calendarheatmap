@@ -13,14 +13,13 @@ import (
 )
 
 func main() {
-	os.Setenv("CALENDAR_HEATMAP_ASSETS_PATH", "charts/assets")
-
 	var (
 		colorScale   string
 		labels       bool
 		locale       string
 		monthSep     bool
 		outputFormat string
+		maxCount int
 	)
 
 	flag.BoolVar(&labels, "labels", true, "labels for weekday and months")
@@ -28,6 +27,7 @@ func main() {
 	flag.StringVar(&colorScale, "colorscale", "PuBu9", "refer to colorscales for examples")
 	flag.StringVar(&locale, "locale", "en_US", "locale of labels (en_US, ko_KR)")
 	flag.StringVar(&outputFormat, "output", "png", "output format (png, jpeg, gif, svg)")
+	flag.IntVar(&maxCount, "maxcount", 0, "maximum count possible for each day (use 0 to calculate it based on input data)")
 	flag.Parse()
 
 	data, err := ioutil.ReadAll(os.Stdin)
@@ -42,6 +42,7 @@ func main() {
 
 	conf := charts.HeatmapConfig{
 		Counts:             counts,
+		MaxCount:           maxCount,
 		ColorScale:         colorscales.LoadColorScale(colorScale),
 		DrawMonthSeparator: monthSep,
 		DrawLabels:         labels,

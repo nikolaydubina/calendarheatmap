@@ -32,6 +32,7 @@ const (
 // HeatmapConfig contains config of calendar heatmap image
 type HeatmapConfig struct {
 	Counts             map[string]int
+	MaxCount           int
 	ColorScale         colorscales.ColorScale
 	DrawMonthSeparator bool
 	DrawLabels         bool
@@ -87,7 +88,7 @@ func WriteHeatmap(conf HeatmapConfig, w io.Writer) error {
 		visitors = append(visitors, &MonthLabelsVisitor{Img: img, YOffset: 50, Color: conf.TextColor, LabelsProvider: labelsProvider})
 	}
 
-	for iter := NewDayIterator(conf.Counts, offset, conf.BoxSize, conf.Margin); !iter.Done(); iter.Next() {
+	for iter := NewDayIterator(conf.Counts, offset, conf.BoxSize, conf.Margin, conf.MaxCount); !iter.Done(); iter.Next() {
 		for _, v := range visitors {
 			v.Visit(iter)
 		}

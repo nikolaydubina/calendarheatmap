@@ -13,9 +13,16 @@ import (
 	"golang.org/x/image/math/fixed"
 )
 
+func getEnv(key, fallback string) string {
+    if value, ok := os.LookupEnv(key); ok {
+        return value
+    }
+    return fallback
+}
+
 // drawText inserts text into provided image at bottom left coordinate
 func drawText(img *image.RGBA, offset image.Point, text string, color color.RGBA) {
-	assetsPath := os.Getenv("CALENDAR_HEATMAP_ASSETS_PATH")
+	assetsPath := getEnv("CALENDAR_HEATMAP_ASSETS_PATH", "charts/assets")
 	if assetsPath == "" {
 		log.Fatalf("assets path is not set")
 	}

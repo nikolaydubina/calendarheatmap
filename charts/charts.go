@@ -135,7 +135,7 @@ type DayVisitor interface {
 	Visit(iter *DayIterator)
 }
 
-// DayBoxVisitor draws signle heatbox
+// DayBoxVisitor draws single heatbox
 type DayBoxVisitor struct {
 	Img        *image.RGBA
 	ColorScale colorscales.ColorScale

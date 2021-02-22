@@ -59,10 +59,10 @@ c='{
 
 function plot() {
     local cmd=("$@")
-    o="${orgFile:h}/images/$(md5m "$cmd[*]").png"
+    o="${orgFile:h}/${imgdir:-images}/$(md5m "$cmd[*]").png"
     mkdir -p "${o:h}"
-    print -r -- $c | reval "$cmd[@]" > $o || echo Exited $?
-    print -nr -- $o
+    print -r -- $c | reval "$cmd[@]" > $o || { echo Exited $? ; return 1 }
+    print -nr -- "./$(realpath $o --relative-to ${orgFile:h})"
 }
 
 function plot-basic() {
@@ -77,23 +77,4286 @@ function plot-basic() {
 Data loaded
 #+end_example
 
-#+begin_src bsh.dash :exports both :results verbatim file :wrap example
-plot-basic dense
-#+end_src
-
-#+RESULTS:
-[[file:/Users/evar/Base/_Code/Misc/calendarheatmap/images/557880fa700028e2e17d0a651c70f859.png]]
 
 #+begin_src bsh.dash :exports both :results verbatim file
-plot-basic algae
+imgdir=images_saved plot-basic BuGn_9 Blues_9
 #+end_src
 
 #+RESULTS:
-[[file:/Users/evar/Base/_Code/Misc/calendarheatmap/images/16e7a57c2c475fda6511c4228401b0fb.png]]
+[[file:./images_saved/e03e8e64036fe15e8bc01d591b8e738f.png]]
+
+#+begin_src bsh.dash :exports both :results verbatim file
+imgdir=images_saved plot-basic Reds_9 Blues_9
+#+end_src
+
+#+RESULTS:
+[[file:./images_saved/264e486164a52905f22ba3a88eaa7819.png]]
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Oranges_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/ef838a1d9a1e415cfa530479e627f40a.png]]
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Pastel1_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/3e7e6ddba2edebfd7cace88039d9e0f3.png]]
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic alpine
+#+end_src
+
+#+RESULTS:
+[[file:./images/e820f6c81ab09e38a32597f3ea39ac6f.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic aquamarine
+#+end_src
+
+#+RESULTS:
+[[file:./images/db5dbc8a883fee33154427e81c4ec3b5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic army
+#+end_src
+
+#+RESULTS:
+[[file:./images/35a6c505ca2e1a004998d48bd5068360.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic atlantic
+#+end_src
+
+#+RESULTS:
+[[file:./images/7dfb54dbee1a303ebbe60424df904731.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic auerbach
+#+end_src
+
+#+RESULTS:
+[[file:./images/f030fa23aadfa7e963da6c3a2027ed11.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic aurora
+#+end_src
+
+#+RESULTS:
+[[file:./images/ade60848f9e7f34fbea2d2dad5bed796.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic autumn
+#+end_src
+
+#+RESULTS:
+[[file:./images/bb9572864ccebe66146ae68dc43e5350.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic avocado
+#+end_src
+
+#+RESULTS:
+[[file:./images/1647d7d79db41f82918bbaf09fcedfcf.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic beach
+#+end_src
+
+#+RESULTS:
+[[file:./images/fbc32632c51eb7f4cb6ea3885d97ec1c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic blackbody
+#+end_src
+
+#+RESULTS:
+[[file:./images/6d2cfe70fd3421f32b3defa39edac0ad.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic bluegreenyellow
+#+end_src
+
+#+RESULTS:
+[[file:./images/aa506ec6be6cd568382a0416a7ff7224.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic bosch_garden
+#+end_src
+
+#+RESULTS:
+[[file:./images/e8f8198b7fd0045661bc637063894fe7.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic bosch_hell
+#+end_src
+
+#+RESULTS:
+[[file:./images/eee385dad000afca9b3c065e08e7301d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic botticelli
+#+end_src
+
+#+RESULTS:
+[[file:./images/5890f5403b3364e53a89cc0e2f45a6bc.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic brass
+#+end_src
+
+#+RESULTS:
+[[file:./images/554c913f30ddeaed678209b4ecbfbe96.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic browncyan
+#+end_src
+
+#+RESULTS:
+[[file:./images/685542f84a9c8ede9608159f997be045.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic canaletto
+#+end_src
+
+#+RESULTS:
+[[file:./images/fa8dbff29cb8ab51b41843f93a5df8ac.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic candy
+#+end_src
+
+#+RESULTS:
+[[file:./images/3fd7d1c3ada06c7ee79c20b12c74af3e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic cezanne
+#+end_src
+
+#+RESULTS:
+[[file:./images/2f1cbc749d749468ee229e2d8d75409d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic cherry
+#+end_src
+
+#+RESULTS:
+[[file:./images/51a933a6835d481a448e41d1cb8fad02.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic cmyk
+#+end_src
+
+#+RESULTS:
+[[file:./images/a792bc6c2aae1c73ed1b348eeb462296.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic coffee
+#+end_src
+
+#+RESULTS:
+[[file:./images/ab9199a1c00059a834be198e9283eb85.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic cubehelix
+#+end_src
+
+#+RESULTS:
+[[file:./images/08e1b497aaef2a84aacc59c35f0e352f.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic darkrainbow
+#+end_src
+
+#+RESULTS:
+[[file:./images/9a16652e9f454e0cef469ebb74f34663.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic darkterrain
+#+end_src
+
+#+RESULTS:
+[[file:./images/06cd6fa5a2d74f9c522e9d431950d950.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic deepsea
+#+end_src
+
+#+RESULTS:
+[[file:./images/011de3eac5a879ec42c7fa138eafa4c3.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic fall
+#+end_src
+
+#+RESULTS:
+[[file:./images/aa6148ddbb3fa75939e1a6a0cc28b9b8.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic fruitpunch
+#+end_src
+
+#+RESULTS:
+[[file:./images/e66cac044e21539dbfbd5fa765c439ed.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic fuchsia
+#+end_src
+
+#+RESULTS:
+[[file:./images/8273ca41c49f3844034df0d560ba4f25.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic grays1
+#+end_src
+
+#+RESULTS:
+[[file:./images/1ea523d55c2da6f6a789152e49a7813e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic grayyellow
+#+end_src
+
+#+RESULTS:
+[[file:./images/3f45c4eed94df944d93089c8ce06b893.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic greenbrownterrain
+#+end_src
+
+#+RESULTS:
+[[file:./images/10dbe10a9c523b6f8b70d7c0d27726f0.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic greenpink
+#+end_src
+
+#+RESULTS:
+[[file:./images/58ac4a79bcf52f9a57c1f9b65818bd03.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic hokusai
+#+end_src
+
+#+RESULTS:
+[[file:./images/a865975002d724b3b814d9bf036fbddd.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic holbein
+#+end_src
+
+#+RESULTS:
+[[file:./images/7933103ab3846d4221aa1f2cca64da89.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic island
+#+end_src
+
+#+RESULTS:
+[[file:./images/efcca4caa254c04929f12e4a0136596d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic jet
+#+end_src
+
+#+RESULTS:
+[[file:./images/90688b4467e19e4470b2a7c9c412fcb5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic klimt
+#+end_src
+
+#+RESULTS:
+[[file:./images/6bfcce2e9d60697a0039613f8c75e5cf.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic lake
+#+end_src
+
+#+RESULTS:
+[[file:./images/a1aaecedf69b6d11f0b127f1098d36b5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic leonardo
+#+end_src
+
+#+RESULTS:
+[[file:./images/5e119656259e24ba6b10e8f1db5440af.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic lighttemperaturemap
+#+end_src
+
+#+RESULTS:
+[[file:./images/0d25ff8b6c247d21632cad7f5cce949d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic lightterrain
+#+end_src
+
+#+RESULTS:
+[[file:./images/a5110c727f5326dd5165ae4681b54cd3.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic mint
+#+end_src
+
+#+RESULTS:
+[[file:./images/0d502344732049d435d2b3a2231ac988.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic munch
+#+end_src
+
+#+RESULTS:
+[[file:./images/c8e957b6dcbf0bdd8e9201776d1ed4db.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic neon
+#+end_src
+
+#+RESULTS:
+[[file:./images/ae8e927b8f64290ec2d41b29d2b3c338.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic pastel
+#+end_src
+
+#+RESULTS:
+[[file:./images/0bb6e592142fdd3ae6804b5ee1f84ddd.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic pearl
+#+end_src
+
+#+RESULTS:
+[[file:./images/c7e19769f6e318e8e61e022f35a808e9.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic picasso
+#+end_src
+
+#+RESULTS:
+[[file:./images/80784453f2f8f9eb1b450e7b876ee2dd.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic pigeon
+#+end_src
+
+#+RESULTS:
+[[file:./images/b73df397361d43fe6208674691bc06ff.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic plum
+#+end_src
+
+#+RESULTS:
+[[file:./images/ae87c12a2c0c9e0d4cf1082cced570e0.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic rainbow
+#+end_src
+
+#+RESULTS:
+[[file:./images/1d5bb4cfbb0ac1bc70ef2f8d6defb0f9.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic redblue
+#+end_src
+
+#+RESULTS:
+[[file:./images/f15126e327d06098e1ea55328112cebb.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic redgreensplit
+#+end_src
+
+#+RESULTS:
+[[file:./images/e6d2a1610e45f0986233f5276131a37e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic rembrandt
+#+end_src
+
+#+RESULTS:
+[[file:./images/be824b4489d8263bc9ef6beb7001fb4b.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic rose
+#+end_src
+
+#+RESULTS:
+[[file:./images/f341285e63a2da2705d0753778fd50f1.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic rust
+#+end_src
+
+#+RESULTS:
+[[file:./images/c34fe24d214c9e581f88eab1f752503e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic sandyterrain
+#+end_src
+
+#+RESULTS:
+[[file:./images/ed94e46433e4c6806fe56fdbf8105ad5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic sienna
+#+end_src
+
+#+RESULTS:
+[[file:./images/a9ab3560b50e8007960dfbcb99a7537d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic sun
+#+end_src
+
+#+RESULTS:
+[[file:./images/6bb7f52cec6272c9fd03e84caead59e1.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic southwest
+#+end_src
+
+#+RESULTS:
+[[file:./images/dc3d4c84c27b381c29b7f547deb469ee.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic starrynight
+#+end_src
+
+#+RESULTS:
+[[file:./images/948e7108462526256d762786e60d9de7.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic sunset
+#+end_src
+
+#+RESULTS:
+[[file:./images/e64d0cb42aaac443f98e55a49de353e2.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic temperaturemap
+#+end_src
+
+#+RESULTS:
+[[file:./images/08bda52c903d26841d1b97e439076da0.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic thermometer
+#+end_src
+
+#+RESULTS:
+[[file:./images/b81daa34eef70622651b5b1c091fbe2d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic valentine
+#+end_src
+
+#+RESULTS:
+[[file:./images/b32d48cf78e89adad22cc3de5a6c76a3.png]]
+
 
 #+begin_src bsh.dash :exports both :results verbatim file
 plot-basic vangogh
 #+end_src
 
 #+RESULTS:
-[[file:/Users/evar/Base/_Code/Misc/calendarheatmap/images/6a82eb100017a6efd0dbd62ee7692257.png]]
+[[file:./images/6a82eb100017a6efd0dbd62ee7692257.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic vermeer
+#+end_src
+
+#+RESULTS:
+[[file:./images/00b41ea27fc58ed70a5e672ea879c136.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic watermelon
+#+end_src
+
+#+RESULTS:
+[[file:./images/465e38c6acec717a9bd722edbf81c6de.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic CMRmap
+#+end_src
+
+#+RESULTS:
+[[file:./images/8955912d0c005889fc2f57d0f4fa2bbc.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic julia_colorscheme
+#+end_src
+
+#+RESULTS:
+[[file:./images/65b712c70654ffd190a652ae09c0e41f.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic turbo
+#+end_src
+
+#+RESULTS:
+[[file:./images/862b663b3661f4cdbc303177f3e0338c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic algae
+#+end_src
+
+#+RESULTS:
+[[file:./images/16e7a57c2c475fda6511c4228401b0fb.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic amp
+#+end_src
+
+#+RESULTS:
+[[file:./images/fe2f1b6beaa2fdc87562302c8eb80d53.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic balance
+#+end_src
+
+#+RESULTS:
+[[file:./images/5ac21233130a3b176a49d1580b51b7be.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic curl
+#+end_src
+
+#+RESULTS:
+[[file:./images/c11b45eab74967c0756e29a488ad6e50.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic deep
+#+end_src
+
+#+RESULTS:
+[[file:./images/31f7da44cef3b57b3ee1f408092590af.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic delta
+#+end_src
+
+#+RESULTS:
+[[file:./images/68f24ac2834f24b1b656a73bcdf54bfd.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic dense
+#+end_src
+
+#+RESULTS:
+[[file:./images/557880fa700028e2e17d0a651c70f859.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic grays
+#+end_src
+
+#+RESULTS:
+[[file:./images/871beb8d8dcf0e9f807e566e9ec156ff.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic haline
+#+end_src
+
+#+RESULTS:
+[[file:./images/ac7ba06c60b3345d5994de3cce7c86fe.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic ice
+#+end_src
+
+#+RESULTS:
+[[file:./images/1ee1685e362c2e1d365c669cf801277f.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic matter
+#+end_src
+
+#+RESULTS:
+[[file:./images/d55ca96e508238c34c066f71c67379a6.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic oxy
+#+end_src
+
+#+RESULTS:
+[[file:./images/4ae7018e8f7ced24a8a3346272833d0a.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic phase
+#+end_src
+
+#+RESULTS:
+[[file:./images/c487b98a6a5d7a9eaed289b93444f9ff.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic solar
+#+end_src
+
+#+RESULTS:
+[[file:./images/431f03ee8f105cb0554c4e29e867d566.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic speed
+#+end_src
+
+#+RESULTS:
+[[file:./images/7f5f7cbcbd540ac319f9b27be103c3c3.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tempo
+#+end_src
+
+#+RESULTS:
+[[file:./images/91a3fbd31db6c05b0aa263b76ee593ac.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic thermal
+#+end_src
+
+#+RESULTS:
+[[file:./images/0b3a415b7e5744f059a4c8a6cfa6d619.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic turbid
+#+end_src
+
+#+RESULTS:
+[[file:./images/b343f28295bad9f530a128b594e6e0b9.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuRd_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/10a0ae9326f3319e4a041d38e2e81c0e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuRd_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/1f9d8653893653cc0417ed6e2a59d902.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuRd_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/43f8fda5d6ed9a5c6d4f0bbf4e6ce78e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuRd_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/579cd2f9b3b23ae2a99b3444812bc14f.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuRd_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/66bbe542aa542adcb021d9a82c14be13.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuRd_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/97ca2759c7ac91829d6a8e31bc773fc1.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuRd_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/6253990edbd5c9e03564843d9eb527d0.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Purples_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/33a17de3dc40d72c775b24d2fdd14f68.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Purples_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/d49655dbf65809dd9f2a97a4b1fbb5f4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Purples_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/37ce4ccbddbeb1881dc8c72fde8f7363.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Purples_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/ddea9987a72546884e9cf9dcb3af6fb4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Purples_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/b3c1cb66a7fc0dd1552bf4133ce03143.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Purples_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/5e04f327710131067f70b54c863e4090.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Purples_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/ce6b1ce75651e690139f88d62cb44bec.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set1_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/59d75d7f6d3331657ae6bbdbcb279836.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set1_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/f81fbea87e4268c6bcc29ad47e371657.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set1_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/70f38de68c49aee8f435527039ca5a38.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set1_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/0b7e2fbed7c3d1c960e1480b6e0a0677.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set1_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/e59de23fa7a3533086ff2857a1e8ae53.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set1_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/3cf3b99ae9baa3d5057b8f796bdb831e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set1_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/18c80d65536b73c22579d777b1e32f58.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Greens_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/baf28a09283694457422ae78e4ed70c2.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Greens_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/98dd277f9a2be00dec560b7a09bd140d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Greens_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/a8a8b1c605cbe03c3d97df5fed9b7242.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Greens_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/c5fbed112bd5c30f689e406f5506e778.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Greens_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/88a8277ae489c33da7474b3e4c0a1926.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Greens_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/976ce537465ad26623250b0df039ecb4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Greens_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/cda7315387d3184510e404810d02ba32.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlOrRd_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/3a04be93454196d21fbfc1c26e02785a.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlOrRd_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/34f6258c34460e003ee36d90d501411d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlOrRd_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/f543376213c5aa942ce999c350894bac.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlOrRd_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/5d47d67828f20e02c644342ed2c497a5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlOrRd_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/39a949851a65190f70ff3359df92b671.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlOrRd_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/bf4d9a8708bcbf9b79524b4e481988bd.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlOrRd_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/3be2799f6c84c7271fd2839081f440e6.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Pastel1_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/6dfaa30250d487c9101f700ead0afe70.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Pastel1_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/06506ffec8548000e115add818f9ee6b.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Pastel1_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/5f53b1334870711cfd91d34fca491c3c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Pastel1_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/d9d1ae5df9a6a5145ebe4ea8970a2be9.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Pastel1_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/36e35f53a6b310a37e4a606d8bb98574.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Pastel1_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/4f40b054b0e5f25a5cdf6f62de52a4e7.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Pastel1_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/3e7e6ddba2edebfd7cace88039d9e0f3.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlBu_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/0ac6d88a759e89bfbb282083308ee0db.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlBu_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/581b838f40611a8f2757cb7d64591aa3.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlBu_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/771c2b7e4904e845890b18b6b911f209.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlBu_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/946d97d9bbff31afc8cb7d61b8c9c0d5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlBu_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/1b9b149c759966c634a90ce8f3bc0aa2.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlBu_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/8905960d7e319c1719cd31141e07c1e5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlBu_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/4eaf9f3a1880fcc002b45fa4438b48c0.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlBu_10
+#+end_src
+
+#+RESULTS:
+[[file:./images/1fd2b45fdb1de60c38068109123c26ef.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlBu_11
+#+end_src
+
+#+RESULTS:
+[[file:./images/d8648d29d05d0c14f411390de88039da.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlGnBu_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/02bbcf9da9bd1e44defd19913a670b99.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlGnBu_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/be0e5d4a3f48bde7ecb4bbb54d47b736.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlGnBu_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/628187a0cb0d0b6cd9233abdaf2aaccf.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlGnBu_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/321c5b6052e1da62af3c2a756d4d89f4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlGnBu_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/dcc999ad80a9e70e7f08b19ca7ced3cd.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlGnBu_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/a5a7ecc9c930a1c9f92bf7fd9d7134e8.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlGnBu_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/7ef5646f33aa3590234bab6faff0666a.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Blues_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/1dea73f06c9031506072791f42b12d0e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Blues_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/50898f96f1b922d9cabf8fbc915b1dae.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Blues_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/8cc9382c082ec4d66d794154ad3b70bd.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Blues_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/a920e7d3fd7637d3b6de65594a3475d8.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Blues_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/9aa96f77ea7c8e87643d6eff9d77dc9f.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Blues_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/15008ec325c97f960cc8de13f338df0e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Blues_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/91492093d643a0bb0f0f9260a253c03d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set3_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/3bbc49422012e80793bc016266f906ee.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set3_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/ce3ae44e7aaa03067c7a7565c82e8056.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set3_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/71221742360c14e2321ebc86c1326b4b.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set3_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/434acd2e994ab62dfe3a519560af61d6.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set3_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/95c7880d25441bfe0feea207f8b27a1c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set3_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/86038275b44c1ad6f0766b7e93aa593b.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set3_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/b6dd9ceb61f073e026037d68238b0eca.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set3_10
+#+end_src
+
+#+RESULTS:
+[[file:./images/11435aa0baeeafba5a9e9438c18740a1.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set3_11
+#+end_src
+
+#+RESULTS:
+[[file:./images/5c5fd187c230c980e597fbe2e03bb261.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set3_12
+#+end_src
+
+#+RESULTS:
+[[file:./images/9a03c56f476e9ab728bdffba0b87b3fe.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Reds_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/28c1662084935ab252ff1ef42179edc3.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Reds_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/12c05a168e0ef11d3bb80d03dfd4aa75.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Reds_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/886669c1b9f43677d68fcbd04d751248.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Reds_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/4fed0320e32d88ab7d23304bbca0f167.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Reds_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/bed621318abf275265817950526c2f86.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Reds_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/f36b73c9441627f8c3dc5d8f3d0738fa.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Reds_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/7f1164d4c196df1d3c4b54baa79100b5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuBu_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/e08d200ffc0513d83e5202c9d998b460.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuBu_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/5589a458ed7f908b69f8b615f3caf795.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuBu_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/146e81c16c55d74b0babf930d0b9be1c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuBu_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/4f4dc3e9548851a3972d3418d2bd45d4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuBu_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/589783efbba870f2b037628fcbabfa2e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuBu_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/993ae6edd10e398781d9723f6d82c6bf.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuBu_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/2ef638745967fca454819c02dee7a04f.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BuPu_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/723dfd44e9edb5a246d6d4e79a55e781.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BuPu_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/ee176373a8b8c3782dd5d17cbcb0f142.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BuPu_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/36c2866432ed96d819329ad7a0712496.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BuPu_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/a95a4ace6a872413bb7515b3466c43a9.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BuPu_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/bb09545e7cd539dd0b37fa0a16f85d4d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BuPu_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/9acb2b35d62adc87965e0b578f0594e6.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BuPu_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/869041e2ec639d4a8b5993f068f40248.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlGn_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/81f3e8d240097bb247dec9ae444ae433.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlGn_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/db1f4e9d5a3c34532927445f70a508a7.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlGn_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/c0b765bf26d934a2399e28bd61f1bfde.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlGn_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/fa355163579c375ce6cc43523df5ccf8.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlGn_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/404686517ef961700eb8d79e8c0f73c3.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlGn_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/f564bf6b668a08d66701f69fc12ba481.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlGn_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/6d9b8d5125259db9746e130e847407ca.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlGn_10
+#+end_src
+
+#+RESULTS:
+[[file:./images/9594e116baba530fff7385a77ab33321.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdYlGn_11
+#+end_src
+
+#+RESULTS:
+[[file:./images/62e48722adc9e667a8c0a30992282b13.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Pastel2_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/d19b6c2e9e262d89fa6a2a20a9f20361.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Pastel2_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/9021d8150ff78ee1e66d7ecdcecb9a1e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Pastel2_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/59520b08412b658c22d10f8eb96f9c2d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Pastel2_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/a52075a3cad809ca5ebfc4f691e3cf5d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Pastel2_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/c3b85f8cd2980c9a42736887e3197b09.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Pastel2_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/bde6eccdc2fb63c09b2663bb849c4547.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BuGn_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/bb475919e914b5f2d63355a4ba41dc60.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BuGn_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/50b4730ee3df1695308a3225e6697e44.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BuGn_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/1a76eb8df7292ab8d1240c6afd7c7722.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BuGn_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/bbb638f1d42748975ee4829bab1a5333.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BuGn_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/7bd8f464349fbed7ab88f807b7d037e2.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BuGn_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/f023a2b144e4db7f69bd1b1b231d8993.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BuGn_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/93fabec898a84694b50f5bfa1e34935e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlOrBr_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/c3f33a4268c1ddc338b8a868cc677d19.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlOrBr_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/d2eab8651152f0223b62fe2f66494e60.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlOrBr_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/f8adffab9cd716d00eb22ea754fc8e8a.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlOrBr_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/3ca8450084237e8cc25a4f577e4c0dc4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlOrBr_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/ea0cac64f563047822b98cad18ab1436.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlOrBr_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/05c52e52f8fa3ab85cb011f2656c949e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlOrBr_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/d8252a91c0b205d1cb5624a159fc962b.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuBuGn_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/afabf8bef55d220349417ca929de4927.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuBuGn_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/ff604479fdf8651933117a533b499bc5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuBuGn_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/b7bea82548d720509f79a8fe53a99d7b.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuBuGn_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/4bc6c5a09cfb4b768be3288e5fa2dd00.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuBuGn_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/4cf6fa6fed27d74d7c12ec5ce1805c99.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuBuGn_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/32a6c1b04da79da71776230f94dbd346.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuBuGn_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/5f690e8edd54ad28a54130f8bb40221c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Spectral_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/c2519ebc75bf5b95af5258a70988a846.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Spectral_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/b29832628dde65d74cdfa5ba47f6cda6.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Spectral_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/1f6ed24eadc296afdc42d4bbbdd2ec64.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Spectral_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/32947b75434d0d4c9596dcaa37545b28.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Spectral_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/01e6b5db2de078f8fd50a23e0a8eb40b.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Spectral_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/e5dc759a467c47dc79c2ee2c2ab0c5b8.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Spectral_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/2ffe1986a811d039829c757f3dfbc7dc.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Spectral_10
+#+end_src
+
+#+RESULTS:
+[[file:./images/296f92fa44ce7a13d0990a5efa74d99a.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Spectral_11
+#+end_src
+
+#+RESULTS:
+[[file:./images/632c7a0ee30a8653eadde4f5424289a1.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlGn_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/82fdc1f8b9353a227cef027ad2d2137b.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlGn_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/d72fbe6e20cb34f8aaba0eef63a5b520.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlGn_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/24f841d7a700f82674a6757bf7acb2dd.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlGn_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/abeece3943bdfebb0ef25b1f32197d27.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlGn_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/95668df74a84824b91c709cee7515cb3.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlGn_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/ef874e8ac49dbb95a9ba166f43f1d40d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic YlGn_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/d0124cf65c3323ae0d53f3d36236db05.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdGy_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/eb37a126ec26b391776d6953e4da8206.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdGy_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/314b6a35fb0257ed59bdae7cdb25b836.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdGy_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/545d0360e866a88276281494b9ab1786.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdGy_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/4441a2ab8a33757ee7e6ed023d8f27be.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdGy_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/c68e3d71751218fc67b5f6468399f3e5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdGy_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/6aaa42eab7854281b64e5a35ba46dcc4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdGy_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/9069e59d1b4ce8fc5ff995b979887b6e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdGy_10
+#+end_src
+
+#+RESULTS:
+[[file:./images/b44732d4e284151f82ceb884ab33a1c4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdGy_11
+#+end_src
+
+#+RESULTS:
+[[file:./images/83bbed66b594c8f8fb4296f36f2d8163.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Greys_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/2998a7d0953fa2c929e935cf050ff2d7.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Greys_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/f1e1fc9a168a274173e90bc4edd3a244.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Greys_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/b6a39cf2b0f610215aa755e91aabec49.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Greys_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/2ff68639aac54ab37c26eefbbbeba678.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Greys_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/a535eb077e71bffa89f38a5502f72cf6.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Greys_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/ff77b6f555d2c03a43c21a9429b7b53a.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Greys_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/f73c988c7f7dfe7a22e27cbb684979db.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BrBG_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/28d5f07a563cdcf22751582e5bf09270.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BrBG_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/8a329395d0499ed3d1b72d5228de65c5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BrBG_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/454984dc8a9d0210ec8b5a2938a14735.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BrBG_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/662a2b75bf5f521e1cb857e66365daff.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BrBG_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/528ccc828fd9c9d06c45929c5ad41d57.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BrBG_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/35d1f2e02b4203d0db35ed272448c127.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BrBG_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/a0ddb094b09da8a8d9a86566efd2f51b.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BrBG_10
+#+end_src
+
+#+RESULTS:
+[[file:./images/2d30e33729cd0e1c004b5aa935668010.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic BrBG_11
+#+end_src
+
+#+RESULTS:
+[[file:./images/029baa7960b40a7809fb2713f0ec4746.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdPu_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/b5a745389bc78d6901118fe058b5fc5c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdPu_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/b3992e6bb9e585e8f10209e51d91db6c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdPu_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/ee85318ebf8ece9da0aa0c335675456b.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdPu_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/4a3162d2dc81727b1e0c3db46f6d85f6.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdPu_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/d346d3caba89c8e8724670b6dd0ceaeb.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdPu_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/ae01e74a355767ad04965d74c0c30cb0.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdPu_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/2d7fd66ebe2e8801755726840da3f899.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PRGn_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/f78a05f22d1a729612755652d67baa55.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PRGn_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/6c6e5f072653bb2cc94776e7a234c8f7.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PRGn_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/9efd2ea0a464c80d644e31a035b9a1aa.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PRGn_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/97151edc9341322829441cd8c471b3a4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PRGn_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/4770ee36454aebd2b796c3b7024757bc.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PRGn_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/63224e1078b4a54dda3b062b5c6910bb.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PRGn_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/8df6b280c06b5b3be0ff7095ffd4bea5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PRGn_10
+#+end_src
+
+#+RESULTS:
+[[file:./images/ce710322b0c55018f13348a51bfdac2b.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PRGn_11
+#+end_src
+
+#+RESULTS:
+[[file:./images/543a7947e74df049fdc920c7fda28a24.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Dark2_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/314bcd393b0b2bcb7b5fb86136f31c05.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Dark2_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/4af3d81ce71b4103ef2719ce28297877.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Dark2_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/0585a00382267f7846d2b93f9b44ce03.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Dark2_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/057a3e6a8a89528d26aaacfdf6358f84.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Dark2_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/9195a3a6ceb95b6f995042ab41098614.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Dark2_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/6bdc54eced5c8c48cdbe823142829835.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdBu_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/2f50c8ef78819ec60c2a198511b059bd.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdBu_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/9f7971acc87ae98be3c6c7f886331fe5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdBu_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/5fd517f93e4450ccba853a2a5e8d8a9d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdBu_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/897d80bd430dafe3f7a2c837a3118f45.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdBu_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/7e327e0605d43c7e81d356338635d71a.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdBu_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/b8e5318c8c40100c6c814531049b69b6.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdBu_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/e64c96138ec126ed6ddf586553dd26a5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdBu_10
+#+end_src
+
+#+RESULTS:
+[[file:./images/191d4084674768531348aec68d5cd125.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic RdBu_11
+#+end_src
+
+#+RESULTS:
+[[file:./images/5ba88aa12e25e9cd738da245b9212fb4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuOr_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/80340ede1c4edfbe4e2675096d37e15a.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuOr_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/9e111c5527439005183568ecee0eecf5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuOr_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/5d737a714e90f0832aae3a8abd18cf34.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuOr_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/3d67fd3c66a751c0c3e5abad514e3eb6.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuOr_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/bdfb7dadff58a56dd556bac350f237be.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuOr_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/1f8fbc375d6cda7124772eec4dc86764.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuOr_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/d86a58e7630fc810aed958fe722fb4ab.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuOr_10
+#+end_src
+
+#+RESULTS:
+[[file:./images/53160c02f070b7923d72eee5a5b5e896.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PuOr_11
+#+end_src
+
+#+RESULTS:
+[[file:./images/6950fdd3152931ce318b78ace42fac0e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Paired_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/5b2d25b9db01a0660abd1f00817be2d7.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Paired_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/058420a371056edc1e8b40a5b5cf19e0.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Paired_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/7a5262db329ccbcbba6abf052489cd2e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Paired_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/790c033464d26ccd68bbd617fee66f0c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Paired_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/c2f77d2b01d14cdae9e4d33ff69a053d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Paired_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/b64f3b27869f7a717afb3ebf54b4f0dd.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Paired_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/7ee004cb7da83fabf745f77051348e08.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Paired_10
+#+end_src
+
+#+RESULTS:
+[[file:./images/6b360dad36be28a9374cc5350bc31443.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Paired_11
+#+end_src
+
+#+RESULTS:
+[[file:./images/fc75c3ae1f0f290ee049eede2a5b8747.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Paired_12
+#+end_src
+
+#+RESULTS:
+[[file:./images/164aa75284f21a2f9895285f1c69995c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set2_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/0aab84ff7b2b0a811e0078291b5d7b70.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set2_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/75bfbac0dc4360b7cfd4901062cd33ee.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set2_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/9a73b6a398065b0cd786fc01509a791b.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set2_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/527bf9baf07788b40e5e013c6c87cc8c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set2_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/d91b066729acbfd2f43153de741269b6.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Set2_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/52e92350c52212e9c86993465aa4d224.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Oranges_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/9b91a74f8a7c1501fba2382495ec344c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Oranges_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/d6d74c0e4ec873b3435fd2d6c2aa8d74.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Oranges_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/c817122c0b8fd4309b30d574c85e6765.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Oranges_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/b48d7f442553a2725d452db23fd9ce75.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Oranges_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/68752e6fe76eb9b8635f01e6154f6844.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Oranges_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/de9065bc9cf03cbbfb4e52a55630db09.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Oranges_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/ef838a1d9a1e415cfa530479e627f40a.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic OrRd_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/0102010004845e86769a7753a613b389.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic OrRd_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/d975bfbe3866c028558589e82ee0b0a0.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic OrRd_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/ab67733d4e4a9d59e8f1958fe8adfd21.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic OrRd_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/1e9c6abc656ea1e954be5b09a6e7d20c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic OrRd_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/1baac3955cc7a8541a6914b64f57ea95.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic OrRd_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/99d895a5ba13713e96dbd5dc1d3bc968.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic OrRd_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/27f9f83bf7935c6ed9e57cbd3ee014a2.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Accent_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/24b31e04271db02b694595a34dd8e6d8.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Accent_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/d585a6a4632f2b475461d3fa5145aca8.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Accent_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/36692db5c26ab4a43419e5e8025a068e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Accent_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/b2ebfa712efcfdc42b4cc7577e6f5b18.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Accent_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/d49e84bbccff6f45d58393b0776cac46.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Accent_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/2dab87504bff040157e79a668b7cd52d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic GnBu_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/e45ea1467bf2b9c0caca8b1047b10e15.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic GnBu_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/0deb4d232097a978c8b48b2c8618ec15.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic GnBu_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/cca285f4f067556a8201f9ffd70e2ef3.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic GnBu_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/035f2d240e77f6a38947a12f20c392ca.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic GnBu_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/5b4bb9ddddb8f57993d1deb32726eb06.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic GnBu_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/fcc780b0ebc6775e33bd3417bf9b8a24.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic GnBu_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/e81f5151fff59593f808a75cff711d79.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PiYG_3
+#+end_src
+
+#+RESULTS:
+[[file:./images/28aab716ee493761637ff7fb3b16f922.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PiYG_4
+#+end_src
+
+#+RESULTS:
+[[file:./images/401a387f5dbbb166107b6028fc347820.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PiYG_5
+#+end_src
+
+#+RESULTS:
+[[file:./images/79a9d6ffd9a6afbc96b1d09b7170fdcc.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PiYG_6
+#+end_src
+
+#+RESULTS:
+[[file:./images/e63d7f4ba568f11142bb6f857dde5d41.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PiYG_7
+#+end_src
+
+#+RESULTS:
+[[file:./images/54ede936b8122df24025066153c51980.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PiYG_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/96d8fbf48271c425a729c1962c4735fe.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PiYG_9
+#+end_src
+
+#+RESULTS:
+[[file:./images/aee1ae4b908c98967ab78496d896d640.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PiYG_10
+#+end_src
+
+#+RESULTS:
+[[file:./images/3cc00ce292795099f5a5cd4da81e53a5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic PiYG_11
+#+end_src
+
+#+RESULTS:
+[[file:./images/675c634c9336b8e49204113617b7d89a.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic cyclic_grey_15_85_c0_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/48ca0ea43c2d93ee559a79bc3f2c226d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic cyclic_grey_15_85_c0_n256_s25
+#+end_src
+
+#+RESULTS:
+[[file:./images/d106f2da4f1fc030045d38903eab5a46.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic cyclic_mrybm_35_75_c68_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/bd4194e0cf55e41512edee4c8208c18f.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic cyclic_mrybm_35_75_c68_n256_s25
+#+end_src
+
+#+RESULTS:
+[[file:./images/870b87281c3d9fc16fc55d517edeb5c4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic cyclic_mygbm_30_95_c78_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/da6a6ae152e2b362aaac16596b75d1e2.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic cyclic_mygbm_30_95_c78_n256_s25
+#+end_src
+
+#+RESULTS:
+[[file:./images/1fd52fc4ce4032efc0775271d5b4e89f.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic cyclic_wrwbw_40_90_c42_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/e49f4334eedf460e01ebd04a88c92e33.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic cyclic_wrwbw_40_90_c42_n256_s25
+#+end_src
+
+#+RESULTS:
+[[file:./images/4e4ed844c521b3ea9469ef3386a4662c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic diverging_isoluminant_cjm_75_c23_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/d5f66a8378843f38c3550a929a5d1a41.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic diverging_isoluminant_cjm_75_c24_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/60ff9e988169c0d3e49eea5ee3768e3e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic diverging_isoluminant_cjo_70_c25_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/709d7f04f9e93acc6c3215c2f804bf66.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic diverging_linear_bjr_30_55_c53_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/aec5a2b2857913c44cf81593c1c43905.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic diverging_linear_bjy_30_90_c45_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/79720ca0d5907815e8c03dfcbbb63114.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic diverging_rainbow_bgymr_45_85_c67_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/8a5e7651214210ce3c0f14ac1f6b23bf.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic diverging_bkr_55_10_c35_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/1fa16c93e87fd69890b6e412796a7512.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic diverging_bky_60_10_c30_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/f25bac32329f3d76c2d1e4c3e7ea0afd.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic diverging_bwr_40_95_c42_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/6de060a4c34d5feb4ddf8581fc5bd1bf.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic diverging_bwr_55_98_c37_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/26dc827ec82ce259b4db64d74de74372.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic diverging_cwm_80_100_c22_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/ae23af38b44e369806bf679a597d1d79.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic diverging_gkr_60_10_c40_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/895749b106f1f81eb437c4ef536fd69e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic diverging_gwr_55_95_c38_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/1a4c2bc8ada932bee21075cf38a86239.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic diverging_gwv_55_95_c39_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/c30a3cd0b44e6b1068a187082362d003.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic isoluminant_cgo_70_c39_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/188fea9da12ef2026ce75bb67ed033ed.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic isoluminant_cgo_80_c38_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/db50d0ef8614990b1a3bc2a12992cd25.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic isoluminant_cm_70_c39_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/0758ee73c48f93efade8f1b4e010e81a.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_bgy_10_95_c74_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/2d0fc78ee0396ae7ddb2432aa835d504.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_bgyw_15_100_c67_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/9b7a15328afde41323d18159c6c67a0c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_bgyw_15_100_c68_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/d593f9d7febc5eebd3bc8a5c89d4f209.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_blue_5_95_c73_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/c41ee083a882c78b7653b4df0e922b69.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_blue_95_50_c20_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/90a4874ad6341a61f67a0ac1b506e7bd.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_bmw_5_95_c86_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/cd8b79f9e4b0a93ac4e2834ce3b5a588.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_bmw_5_95_c89_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/5669ad17f71e91db21b467640d69dbb8.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_bmy_10_95_c71_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/f4f85fb14a1f9601a674fd6eb09a98a8.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_bmy_10_95_c78_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/4a992398abdc810644ebefdc7f3e9857.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_gow_60_85_c27_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/d6af3449c829599e1091523699923aa1.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_gow_65_90_c35_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/5c52b588d7b83f4d4cd8f4e6299b19dd.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_green_5_95_c69_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/3693cb95e9ef54063837635f15fd5c09.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_grey_0_100_c0_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/51428ccced7a6107d10b5605df4baf73.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_grey_10_95_c0_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/db73abcd2e242eabd49f7105bce5194c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_kry_5_95_c72_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/1518293bcabc4b2358b8ccd70c053408.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_kry_5_98_c75_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/7576ebac7d00e52856f35691b3a83d11.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_kryw_0_100_c71_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/ce7e013a0b7ea51cedada4553abab0a2.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_kryw_5_100_c64_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/bcca13af23d322c043050e6b623a3add.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_kryw_5_100_c67_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/4465dbfb940579997cbb6d880db90363.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_ternary_blue_0_44_c57_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/512213fa1210395dd59e7dfcc49ff45d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_ternary_green_0_46_c42_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/2bb0d4c6af65ab7a680d8e9d7f84b63b.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic linear_ternary_red_0_50_c52_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/cff0c11f515e15b86cc989011cde37f1.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic rainbow_bgyr_35_85_c72_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/0e8dbb8e062a9974de5b373982d20f41.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic rainbow_bgyr_35_85_c73_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/2bbc8f3f8bf81ae8f405b52f0e641bb1.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic rainbow_bgyrm_35_85_c69_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/f5fba1c7bd0cb97f8be6aa9018a10a97.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic rainbow_bgyrm_35_85_c71_n256
+#+end_src
+
+#+RESULTS:
+[[file:./images/58593f4add8b3b7125f38d4bb381270f.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tol_bright
+#+end_src
+
+#+RESULTS:
+[[file:./images/35474eec4ce33f61b13c8a8ef26eaf00.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tol_muted
+#+end_src
+
+#+RESULTS:
+[[file:./images/a13f49e0321ab8d2741b400db28f5641.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tol_light
+#+end_src
+
+#+RESULTS:
+[[file:./images/11937daffd9f1010cc8d0ce55ddb3ce2.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic okabe_ito
+#+end_src
+
+#+RESULTS:
+[[file:./images/b16db9500ffedc13e5b375c1a44810f0.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic mk_8
+#+end_src
+
+#+RESULTS:
+[[file:./images/3d7a2cf8bec271a5f4fb2ae05b2beb35.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic mk_12
+#+end_src
+
+#+RESULTS:
+[[file:./images/1676b3f215bd492577e64cf672d94409.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic mk_15
+#+end_src
+
+#+RESULTS:
+[[file:./images/0a5ccc783462e797fce8e0ec76779bca.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic rainbow1
+#+end_src
+
+#+RESULTS:
+[[file:./images/82478a4775113817bb36c6b9d53145b6.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic gnuplot
+#+end_src
+
+#+RESULTS:
+[[file:./images/d5260ba14e6ec5cd5f8228712a12ba64.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic gnuplot2
+#+end_src
+
+#+RESULTS:
+[[file:./images/770857bed6e49f416afc07aec74931b2.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic ocean
+#+end_src
+
+#+RESULTS:
+[[file:./images/c4a027a7a4a9c890ebc418040fea0f22.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic afmhot
+#+end_src
+
+#+RESULTS:
+[[file:./images/3da0232cb593ee14b34c55743806f787.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic rainbow2
+#+end_src
+
+#+RESULTS:
+[[file:./images/af1acdd1964497a5777cde6afc353221.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic prism
+#+end_src
+
+#+RESULTS:
+[[file:./images/ee4aba1662ee83eb38c4eef9dd2bcabb.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic flag
+#+end_src
+
+#+RESULTS:
+[[file:./images/4fa21bb689be66d2879f3bc51455ac01.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic brg
+#+end_src
+
+#+RESULTS:
+[[file:./images/67cb343f3a686977d68826e795a2cdc2.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic bwr
+#+end_src
+
+#+RESULTS:
+[[file:./images/aac5c417b609464648afa796a374d41f.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic coolwarm
+#+end_src
+
+#+RESULTS:
+[[file:./images/c7deef05f70c049e6f3506767b00279c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic gist_heat
+#+end_src
+
+#+RESULTS:
+[[file:./images/5b6927388558c98631cbc397e6d35595.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic gist_yarg
+#+end_src
+
+#+RESULTS:
+[[file:./images/a5a1de2d10c62617534094e046f10d58.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic gist_gray
+#+end_src
+
+#+RESULTS:
+[[file:./images/de03958f0e4cb949843a3715bf734e5e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic magma
+#+end_src
+
+#+RESULTS:
+[[file:./images/93669037f23ade77de663e85b8f28a2e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic inferno
+#+end_src
+
+#+RESULTS:
+[[file:./images/c1c052e267036ab13af36e3c6f7abce9.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic plasma
+#+end_src
+
+#+RESULTS:
+[[file:./images/d47810de06c8d9bed21ee835b80ac85b.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic viridis
+#+end_src
+
+#+RESULTS:
+[[file:./images/a1468584adedeac8ef008c04267ddad8.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic twilight
+#+end_src
+
+#+RESULTS:
+[[file:./images/398868b81aeab88decc5bff500e58a13.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic bone
+#+end_src
+
+#+RESULTS:
+[[file:./images/7dd9703e676131c123ed0dd56bba389c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic binary
+#+end_src
+
+#+RESULTS:
+[[file:./images/17f5aad8360e10e355eb25ab8bae6b20.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic autumn1
+#+end_src
+
+#+RESULTS:
+[[file:./images/1dc0675e1a9449af52ff1062fa420c94.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic bone_1
+#+end_src
+
+#+RESULTS:
+[[file:./images/5ed96ab4308c94deae722015177151d4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic cool
+#+end_src
+
+#+RESULTS:
+[[file:./images/2eab453d9f9d19b823bca301d4fea6e7.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic copper
+#+end_src
+
+#+RESULTS:
+[[file:./images/14ac4ac0743399ed6ad74cc49733bfe5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic gray1
+#+end_src
+
+#+RESULTS:
+[[file:./images/5343201449b42a801384361152d15efb.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic hot
+#+end_src
+
+#+RESULTS:
+[[file:./images/e1da8f5bbb8cb9af28c14d24b83efa4c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic hsv
+#+end_src
+
+#+RESULTS:
+[[file:./images/2465412ae9313c3b6e3ad8c339c6274b.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic jet1
+#+end_src
+
+#+RESULTS:
+[[file:./images/99721caf7578e1efd6a457f32a094cc9.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic pink
+#+end_src
+
+#+RESULTS:
+[[file:./images/1f9ccce7fdb28edb2c6f3c7ee5e9f01e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic spring
+#+end_src
+
+#+RESULTS:
+[[file:./images/272c64dfc01a38130fab5e19505c62c1.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic summer
+#+end_src
+
+#+RESULTS:
+[[file:./images/b1117df6dd357de3153bcc4a63b6aa09.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic winter
+#+end_src
+
+#+RESULTS:
+[[file:./images/e2b07e852e4a43c5010d631e19b4f1f0.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic nipy_spectral
+#+end_src
+
+#+RESULTS:
+[[file:./images/a2669dea021c24e086fe001f15094838.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic gist_earth
+#+end_src
+
+#+RESULTS:
+[[file:./images/72104912144b74ac7ffaa04ca5c548c2.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic gist_ncar
+#+end_src
+
+#+RESULTS:
+[[file:./images/6acb037713fb87a3e8bb998cd87acfff.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic gist_stern
+#+end_src
+
+#+RESULTS:
+[[file:./images/5fd5ebec53cdcb45f2855a2b193ccb3c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic gist_rainbow
+#+end_src
+
+#+RESULTS:
+[[file:./images/73adab4d5cade5303142d30f047c2409.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic seismic
+#+end_src
+
+#+RESULTS:
+[[file:./images/c46a2b41bae8880b0c16d5e18b24bd12.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic terrain
+#+end_src
+
+#+RESULTS:
+[[file:./images/8ec4a73e58f6b307c583a4e23394e2b4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tab10
+#+end_src
+
+#+RESULTS:
+[[file:./images/5c6da54e964ec80ae2665b92851a05bb.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tab20
+#+end_src
+
+#+RESULTS:
+[[file:./images/cb16acd9e19b3f97e7883f064e41a182.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tab20b
+#+end_src
+
+#+RESULTS:
+[[file:./images/e293ea264871d9e5694c9b0df7010769.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tab20c
+#+end_src
+
+#+RESULTS:
+[[file:./images/0ac1efadbd6d7b58a369519124ab629e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic Wistia
+#+end_src
+
+#+RESULTS:
+[[file:./images/dd3cbdc9c7d2df58f0994ba6e8363c90.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic acton
+#+end_src
+
+#+RESULTS:
+[[file:./images/c5926c5f26f0c2111c746a99ef06d3fe.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic bamako
+#+end_src
+
+#+RESULTS:
+[[file:./images/be589105440157c1fbea3fee10ebcb45.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic batlow
+#+end_src
+
+#+RESULTS:
+[[file:./images/6663ee2b0b09163ac9ee9bd95a3935be.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic berlin
+#+end_src
+
+#+RESULTS:
+[[file:./images/3c296de60be53ce70f11e0cdf12270f4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic bilbao
+#+end_src
+
+#+RESULTS:
+[[file:./images/497178e66247b23ec5e0291ac1739199.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic broc
+#+end_src
+
+#+RESULTS:
+[[file:./images/c4820c24e462eaf5025edeb5965238b4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic brocO
+#+end_src
+
+#+RESULTS:
+[[file:./images/b0d34bd735d72c7a966cd957afd99564.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic buda
+#+end_src
+
+#+RESULTS:
+[[file:./images/15c9fb2ee515ee5baed1d4f14438ada6.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic cork
+#+end_src
+
+#+RESULTS:
+[[file:./images/bfa469d4846c77bc430fa68bda95de1e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic corkO
+#+end_src
+
+#+RESULTS:
+[[file:./images/8de3ca4d73d94b1ea040ae288427bde3.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic davos
+#+end_src
+
+#+RESULTS:
+[[file:./images/10aa9e48619c0dc8e542fe6c6a109756.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic devon
+#+end_src
+
+#+RESULTS:
+[[file:./images/124bd5df16a931719f07b7b98c00ada4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic grayC
+#+end_src
+
+#+RESULTS:
+[[file:./images/46ceb5c60a5cb29136283b9c6face8ac.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic hawaii
+#+end_src
+
+#+RESULTS:
+[[file:./images/b2afb4062aeaac8a0161dd4ad2adb542.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic imola
+#+end_src
+
+#+RESULTS:
+[[file:./images/8dc4ea450925ad3e71792ac586430280.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic lajolla
+#+end_src
+
+#+RESULTS:
+[[file:./images/6a9b2f0cd6076945a2c2603d54106bb8.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic lapaz
+#+end_src
+
+#+RESULTS:
+[[file:./images/1babeb97e10df8027de3671f0ccee42b.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic lisbon
+#+end_src
+
+#+RESULTS:
+[[file:./images/7230cd01c972b583847ca83ba4db4ea4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic nuuk
+#+end_src
+
+#+RESULTS:
+[[file:./images/260960b62f686c3e454b95c8dd0806dd.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic oleron
+#+end_src
+
+#+RESULTS:
+[[file:./images/73e406c8e0ece33f11db4c3333483af1.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic oslo
+#+end_src
+
+#+RESULTS:
+[[file:./images/eb01c49bfa444bcb964a3d6799e6f57e.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic roma
+#+end_src
+
+#+RESULTS:
+[[file:./images/d246aa897bef42994ba5ecf85bd8e06c.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic romaO
+#+end_src
+
+#+RESULTS:
+[[file:./images/87e9a2af920c54cdbb3b07a0529f9290.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tofino
+#+end_src
+
+#+RESULTS:
+[[file:./images/2c881995c75fdf1abd65e5624947d0b5.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tokyo
+#+end_src
+
+#+RESULTS:
+[[file:./images/3a93ee1b11036478c01ff65140c6bb3f.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic turku
+#+end_src
+
+#+RESULTS:
+[[file:./images/3405ca10ece0981ee9345f349effc16a.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic vik
+#+end_src
+
+#+RESULTS:
+[[file:./images/396eb262590afb432bebab7b556836ec.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic vikO
+#+end_src
+
+#+RESULTS:
+[[file:./images/492caabd37ed0205d3f8e4eef5b2e8ba.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic seaborn_bright
+#+end_src
+
+#+RESULTS:
+[[file:./images/729f8cd6a02f482af712ce7474ef8466.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic seaborn_bright6
+#+end_src
+
+#+RESULTS:
+[[file:./images/923db7b9de8eca751a875b62a0a20d2a.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic seaborn_deep
+#+end_src
+
+#+RESULTS:
+[[file:./images/98f9bb0675b18c9d69dc781a11bad4a8.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic seaborn_deep6
+#+end_src
+
+#+RESULTS:
+[[file:./images/dc5085edacb4ddd0cb25dc6e497919a4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic seaborn_dark
+#+end_src
+
+#+RESULTS:
+[[file:./images/7b20ef04ed80b8bb370587733d004a0d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic seaborn_dark6
+#+end_src
+
+#+RESULTS:
+[[file:./images/9947f77256f4b77e397a852068d78464.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic seaborn_colorblind
+#+end_src
+
+#+RESULTS:
+[[file:./images/0c94550e5a3763436cc7b42a3dce7ffd.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic seaborn_colorblind6
+#+end_src
+
+#+RESULTS:
+[[file:./images/f17b90f108f7023cbd5808930261de15.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic seaborn_muted
+#+end_src
+
+#+RESULTS:
+[[file:./images/b4fc1605c40f35f48597ae7e5eab4930.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic seaborn_muted6
+#+end_src
+
+#+RESULTS:
+[[file:./images/fef19f22a7615d6a535bbb3e1670d0df.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic seaborn_pastel
+#+end_src
+
+#+RESULTS:
+[[file:./images/ea1a9e9e2892ab58d7356c75a1aba346.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic seaborn_pastel6
+#+end_src
+
+#+RESULTS:
+[[file:./images/5de1a0034a75e4098cea438349ea8f49.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic seaborn_rocket_gradient
+#+end_src
+
+#+RESULTS:
+[[file:./images/d3c077ab58c58154321cbb189bb71080.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic seaborn_icefire_gradient
+#+end_src
+
+#+RESULTS:
+[[file:./images/d8c433f4a0e0388cd1be3248b9b82764.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_10
+#+end_src
+
+#+RESULTS:
+[[file:./images/5e8103b05960867447a4a9c399aeceeb.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_20
+#+end_src
+
+#+RESULTS:
+[[file:./images/164a33591a4808547322fa563dddd9dd.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_colorblind
+#+end_src
+
+#+RESULTS:
+[[file:./images/9dfd2b28b9875fd4a25b9f302cb1ed86.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_seattle_grays
+#+end_src
+
+#+RESULTS:
+[[file:./images/8f13a9ab43e31c838c0da55757c91dbf.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_traffic
+#+end_src
+
+#+RESULTS:
+[[file:./images/10c5d01665cdd1e4550169e2deaa761a.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_miller_stone
+#+end_src
+
+#+RESULTS:
+[[file:./images/d081769f9e2efb9c2a3c7ff70d78d2dd.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_superfishel_stone
+#+end_src
+
+#+RESULTS:
+[[file:./images/953c680209acd866e4c8d84ad1ab3ff8.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_nuriel_stone
+#+end_src
+
+#+RESULTS:
+[[file:./images/45ca1d25f5154147e144256ea8a050d9.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_jewel_bright
+#+end_src
+
+#+RESULTS:
+[[file:./images/b6a110a87936676d063809293c5857f0.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_summer
+#+end_src
+
+#+RESULTS:
+[[file:./images/e16146d4e38b8330f10244c8f998408f.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_winter
+#+end_src
+
+#+RESULTS:
+[[file:./images/887d1cb51b77c67c2867396378c0142a.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_green_orange_teal
+#+end_src
+
+#+RESULTS:
+[[file:./images/bd4ebdd2bd809251a7dadc0f8d56cf22.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_red_blue_brown
+#+end_src
+
+#+RESULTS:
+[[file:./images/d5db0820346de6738e19213b5d4814ed.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_purple_pink_gray
+#+end_src
+
+#+RESULTS:
+[[file:./images/5c4063e546ff739bd19a0a86e0f18c4d.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_hue_circle
+#+end_src
+
+#+RESULTS:
+[[file:./images/e63996f237725ee14e43192596a7a0ba.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_orange_blue
+#+end_src
+
+#+RESULTS:
+[[file:./images/3c0ef5caf7a9993043e94ef1b0d7e558.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_red_green
+#+end_src
+
+#+RESULTS:
+[[file:./images/d6d6632c786067c4cba27849f693622a.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_green_blue
+#+end_src
+
+#+RESULTS:
+[[file:./images/a1e96a586edb68307fd1a4caa66109b2.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_red_blue
+#+end_src
+
+#+RESULTS:
+[[file:./images/ea838da5b47631d88c5734b209930ac8.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_red_black
+#+end_src
+
+#+RESULTS:
+[[file:./images/0e81e578bd32009ee5224c62a3ddaa88.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_gold_purple
+#+end_src
+
+#+RESULTS:
+[[file:./images/443a90e2a48a182db3e9994ea1282b53.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_red_green_gold
+#+end_src
+
+#+RESULTS:
+[[file:./images/5f5c3a64ab96052e53faa797b798c922.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_sunset_sunrise
+#+end_src
+
+#+RESULTS:
+[[file:./images/027ea8ea7feba55626bc625faa2e52af.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_orange_blue_white
+#+end_src
+
+#+RESULTS:
+[[file:./images/025b3fa1095d60b36aa23dcc2edea555.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_red_green_white
+#+end_src
+
+#+RESULTS:
+[[file:./images/3f6aacc0cc7caa7c021bb6e1a36af484.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_green_blue_white
+#+end_src
+
+#+RESULTS:
+[[file:./images/082ea357990a5a0622801639a7d74e41.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_red_blue_white
+#+end_src
+
+#+RESULTS:
+[[file:./images/28777c3fbdbf1fcacf176b9b2223a786.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_red_lack_white
+#+end_src
+
+#+RESULTS:
+[[file:./images/c6854bdd20407cbb61456c6bbdc19561.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_orang_blue_light
+#+end_src
+
+#+RESULTS:
+[[file:./images/672f67aa1cc8a12b8f9bbfb9aa27bab4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_temperature
+#+end_src
+
+#+RESULTS:
+[[file:./images/93e79f7ee900a45b9046933d19ca2ad4.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_blue_green
+#+end_src
+
+#+RESULTS:
+[[file:./images/f54e6d03c6747ad518931fb102553769.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_blue_light
+#+end_src
+
+#+RESULTS:
+[[file:./images/3461eb07790ae9df07bb655a223e68ed.png]]
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic tableau_orange_light
+#+end_src
+
+#+RESULTS:
+[[file:./images/9d4d2f76e158de9356bc853f05a2ae92.png]]

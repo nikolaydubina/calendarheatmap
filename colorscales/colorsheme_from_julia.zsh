@@ -13,48 +13,66 @@ local input="$1"
 test -e "$input" || return 1
 local output="./${input:t:r}.go"
 
-test -e "$output" && mv "$output" "${output}.bak"
+alias maybenot='(( ${csport_mode:-0} == 0 )) || return 0'
 
 function eco() {
+    maybenot
     print -r -- "$*" >> $output
 }
 function eco2() {
+    maybenot
+    print -r -- "$*"
+}
+function eco3() {
+    (( ${csport_mode:-0} == 1 )) || return 0
     print -r -- "$*"
 }
 function ecerr() {
     print -r -- "$*" >&2
 }
 
-eco 'package colorscales'
+function colorscheme-port() {
+    (( ${csport_mode:-0} == 0 )) && test -e "$output" && mv "$output" "${output}.bak"
 
-i=0
-for line in "${(@f)$(cat $input)}" ; do
-    i=$(( i + 1 ))
-    # https://discourse.julialang.org/t/how-to-remove-comments-from-a-julia-file/55783
-    if [[ "$line" =~ '^\s*#' ]] ; then
-        # line="$match[1]"
-        continue
-    fi
-    if [[ "$line" =~ '^\s*loadcolorscheme\(:(\S+)\s*,' ]] ; then
-       eco "var ${match[1]} = ColorScaleX{"
-       eco2 "    case \"${match[1]}\":"$'\n'"        return ${match[1]}"
-    elif [[ "$line" =~ '^\s*(?:Colors\.)?RGB(?:\{Float64\})?\(([^]]*)\)(\]?)' ]] ; then
-        eco "RGB(${match[1]}),"
-        if [[ "$match[2]" == ']' ]] ; then
-            eco '}'
-        fi
-    elif [[ "$line" =~ '^\s*colorant"([^"]*)"\s*,?\s*(?:colorant"([^"]*)"\s*,?\s*)?(?:#.*)?$' ]] ; then
-        eco "Hex(\"${match[1]}\"),"
-        if [[ "$match[2]" =~ '\S' ]] ; then
-            eco "Hex(\"${match[2]}\"),"
-        fi
-    elif [[ "$line" =~ '^\s*\]' ]] ; then
-        eco "}"
-    elif [[ "$line" =~ '^\s*$' ]] ; then
-        eco
-    else
-        ecerr "UNKNOWN LINE at '${input}:${i}':"$'\n'"$line"$'\n'
-    fi
-done
+    eco 'package colorscales'
 
-gofmt -w $output
+    local i=0 name
+    for line in "${(@f)$(cat $input)}" ; do
+        i=$(( i + 1 ))
+        # https://discourse.julialang.org/t/how-to-remove-comments-from-a-julia-file/55783
+        if [[ "$line" =~ '^\s*#' ]] ; then
+            # line="$match[1]"
+            continue
+        fi
+        if [[ "$line" =~ '^\s*loadcolorscheme\(:(\S+)\s*,' ]] ; then
+            name="${match[1]}"
+            eco "var ${match[1]} = ColorScaleX{"
+            eco2 "    case \"${match[1]}\":"$'\n'"        return ${match[1]}"
+            eco3 "#+begin_src bsh.dash :exports both :results verbatim file
+plot-basic $name
+#+end_src
+
+"
+        elif [[ "$line" =~ '^\s*(?:Colors\.)?RGB(?:\{Float64\})?\(([^]]*)\)(\]?)' ]] ; then
+            eco "RGB(${match[1]}),"
+            if [[ "$match[2]" == ']' ]] ; then
+                eco '}'
+            fi
+        elif [[ "$line" =~ '^\s*colorant"([^"]*)"\s*,?\s*(?:colorant"([^"]*)"\s*,?\s*)?(?:#.*)?$' ]] ; then
+            eco "Hex(\"${match[1]}\"),"
+            if [[ "$match[2]" =~ '\S' ]] ; then
+                eco "Hex(\"${match[2]}\"),"
+            fi
+        elif [[ "$line" =~ '^\s*\]' ]] ; then
+            eco "}"
+        elif [[ "$line" =~ '^\s*$' ]] ; then
+            eco
+        else
+            ecerr "UNKNOWN LINE at '${input}:${i}':"$'\n'"$line"$'\n'
+        fi
+    done
+
+    gofmt -w $output
+}
+
+colorscheme-port

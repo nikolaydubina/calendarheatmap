@@ -1,0 +1,108 @@
+#+TITLE: Tests2
+#+PROPERTY: header-args:bsh.dash :var orgFile=( buffer-file-name)
+
+#+begin_src bsh.dash :results verbatim :exports both :wrap example
+c='{
+    "2020-05-04": 1,
+    "2020-05-05": 2,
+    "2020-05-06": 3,
+    "2020-05-07": 4,
+    "2020-05-08": 5,
+    "2020-05-09": 6,
+    "2020-05-10": 7,
+    "2020-05-11": 8,
+    "2020-05-12": 9,
+    "2020-05-13": 10,
+    "2020-05-14": 11,
+    "2020-05-15": 12,
+    "2020-05-16": 13,
+    "2020-05-17": 13,
+    "2020-05-18": 5,
+    "2020-05-19": 8,
+    "2020-05-20": 5,
+    "2020-05-21": 5,
+    "2020-05-22": 3,
+    "2020-05-23": 5,
+    "2020-05-24": 6,
+    "2020-05-25": 3,
+    "2020-05-26": 5,
+    "2020-05-27": 8,
+    "2020-05-28": 2,
+    "2020-05-29": 2,
+    "2020-05-30": 8,
+    "2020-05-31": 5,
+    "2020-06-01": 1,
+    "2020-06-02": 3,
+    "2020-06-03": 1,
+    "2020-06-04": 3,
+    "2020-06-05": 1,
+    "2020-06-06": 3,
+    "2020-06-07": 5,
+    "2020-06-09": 1,
+    "2020-06-10": 2,
+    "2020-06-12": 9,
+    "2020-06-13": 7,
+    "2020-06-14": 4,
+    "2020-06-15": -1,
+    "2020-06-17": -5,
+    "2020-06-20": -2,
+    "2020-06-21": -6,
+    "2020-06-23": -2,
+    "2020-06-24": -2,
+    "2020-06-25": -13,
+    "2020-06-26": -6,
+    "2020-06-27": -10,
+    "2020-06-28": 0,
+    "2020-06-29": 1,
+    "2020-06-30": 2
+}' && echo Data loaded
+
+function plot() {
+    local cmd=("$@")
+    o="${orgFile:h}/${imgdir:-images}/$(md5m "$cmd[*]").png"
+    mkdir -p "${o:h}"
+    print -r -- $c | reval "$cmd[@]" > $o || { echo Exited $? ; return 1 }
+    print -nr -- "./$(realpath $o --relative-to ${orgFile:h})"
+}
+
+function plot-basic() {
+    a="${1:?}"
+    b="${2:-$a}"
+    plot calendarheatmap -maxcount 0 -colorscale $a -colorscalealt $b
+}
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Data loaded
+#+end_example
+
+
+#+begin_src bsh.dash :exports both :results verbatim file
+imgdir=images_saved plot-basic BuGn_9 Blues_9
+#+end_src
+
+#+RESULTS:
+[[file:./images_saved/e03e8e64036fe15e8bc01d591b8e738f.png]]
+
+#+begin_src bsh.dash :exports both :results verbatim file
+imgdir=images_saved plot-basic Reds_9 Blues_9
+#+end_src
+
+#+RESULTS:
+[[file:./images_saved/264e486164a52905f22ba3a88eaa7819.png]]
+
+
+#+BEGIN_EXAMPLE :exports none
+ec $c | calendarheatmap -maxcount 0 -colorscale YlOrRd_9 -colorscalealt YlGnBu_9 > chart.png ; icat chart.png
+
+ec $c | calendarheatmap -maxcount 0 -colorscale Reds_9 -colorscalealt Blues_9 > chart.png ; icat chart.png
+
+ec $c | calendarheatmap -maxcount 0 -colorscale Greens_9 -colorscalealt Blues_9 > chart.png ; icat chart.png
+
+ec $c | calendarheatmap -maxcount 0 -colorscale GnBu_9 -colorscalealt Blues_9 > chart.png ; icat chart.png
+
+ec $c | calendarheatmap -maxcount 0 -colorscale BuGn_9 -colorscalealt Blues_9 > chart.png ; icat chart.png # @good
+
+ec $c | calendarheatmap -maxcount 0 -colorscale Purples_9 -colorscalealt Greys_9 > chart.png ; icat chart.png
+#+END_EXAMPLE

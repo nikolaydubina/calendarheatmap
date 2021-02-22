@@ -43,6 +43,9 @@ func NewDayIterator(counts map[string]int, offset image.Point, boxSize int, marg
 	if maxCount == 0 {
 		maxCount = 1
 		for _, q := range counts {
+			if q < 0 {
+				q *= -1
+			}
 			if q > maxCount {
 				maxCount = q
 			}
@@ -94,7 +97,8 @@ func (d *DayIterator) Time() time.Time {
 
 // Value returns relative value in range 0 ~ 1
 func (d *DayIterator) Value() float64 {
-	return math.Min(1, float64(d.counts[d.time.Format("2006-01-02")]) / float64(d.maxCount))
+	// returns between -1 and 1
+	return math.Max(-1, math.Min(1, float64(d.counts[d.time.Format("2006-01-02")]) / float64(d.maxCount)))
 }
 
 // Count returns count value

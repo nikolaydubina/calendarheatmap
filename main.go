@@ -15,6 +15,7 @@ import (
 func main() {
 	var (
 		colorScale   string
+		colorScaleAlt   string
 		labels       bool
 		locale       string
 		monthSep     bool
@@ -25,6 +26,7 @@ func main() {
 	flag.BoolVar(&labels, "labels", true, "labels for weekday and months")
 	flag.BoolVar(&monthSep, "monthsep", true, "render month separator")
 	flag.StringVar(&colorScale, "colorscale", "PuBu9", "refer to colorscales for examples")
+	flag.StringVar(&colorScaleAlt, "colorscalealt", "YlGn9", "alternative colorscale used for negative counts")
 	flag.StringVar(&locale, "locale", "en_US", "locale of labels (en_US, ko_KR)")
 	flag.StringVar(&outputFormat, "output", "png", "output format (png, jpeg, gif, svg)")
 	flag.IntVar(&maxCount, "maxcount", 0, "maximum count possible for each day (use 0 to calculate it based on input data)")
@@ -44,6 +46,7 @@ func main() {
 		Counts:             counts,
 		MaxCount:           maxCount,
 		ColorScale:         colorscales.LoadColorScale(colorScale),
+		ColorScaleAlt:         colorscales.LoadColorScale(colorScaleAlt),
 		DrawMonthSeparator: monthSep,
 		DrawLabels:         labels,
 		Margin:             30,

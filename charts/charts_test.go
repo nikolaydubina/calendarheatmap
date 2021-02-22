@@ -65,7 +65,7 @@ func save(t *testing.T, conf charts.HeatmapConfig, filename string) {
 }
 
 func TestBasicData(t *testing.T) {
-	os.Setenv("CALENDAR_HEATMAP_ASSETS_PATH", "assets")
+	//os.Setenv("CALENDAR_HEATMAP_ASSETS_PATH", "assets")
 
 	t.Run("basic", func(t *testing.T) {
 		conf := charts.HeatmapConfig{

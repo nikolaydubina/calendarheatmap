@@ -12,6 +12,7 @@ func TestBasicDayIter(t *testing.T) {
 			image.Point{X: 0, Y: 0},
 			5,
 			3,
+			0,
 		)
 		if iter == nil {
 			t.Errorf("should not be nil")
@@ -38,6 +39,7 @@ func TestBasicDayIter(t *testing.T) {
 			image.Point{X: 0, Y: 0},
 			5,
 			3,
+			0,
 		)
 		if iter == nil {
 			t.Errorf("should not be nil")
@@ -64,6 +66,7 @@ func TestBasicDayIter(t *testing.T) {
 			image.Point{X: 0, Y: 0},
 			5,
 			3,
+			0,
 		)
 		for ; !iter.Done(); iter.Next() {
 			var exp float64
@@ -85,6 +88,7 @@ func TestBasicDayIter(t *testing.T) {
 			image.Point{X: 0, Y: 0},
 			5,
 			3,
+			0,
 		)
 		for ; !iter.Done(); iter.Next() {
 			if iter.Value() != 0 {
@@ -99,6 +103,7 @@ func TestBasicDayIter(t *testing.T) {
 			image.Point{X: 0, Y: 0},
 			5,
 			3,
+			0,
 		)
 		for ; !iter.Done(); iter.Next() {
 			if iter.Value() != 0 {

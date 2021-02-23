@@ -2,12 +2,15 @@ package charts
 
 import (
 	"fmt"
+	"github.com/llgcode/draw2d/draw2dimg"
 	"image"
 	"image/color"
 	"image/draw"
 	"image/gif"
 	"image/jpeg"
 	"image/png"
+	//"github.com/llgcode/draw2d"
+	"github.com/llgcode/draw2d/draw2dkit"
 	"io"
 	"time"
 
@@ -32,7 +35,10 @@ const (
 // HeatmapConfig contains config of calendar heatmap image
 type HeatmapConfig struct {
 	Counts             map[string]int
+	MaxCount           int
 	ColorScale         colorscales.ColorScale
+	ColorScaleAlt      colorscales.ColorScale
+	HighlightToday     *color.RGBA
 	DrawMonthSeparator bool
 	DrawLabels         bool
 	BoxSize            int
@@ -56,10 +62,11 @@ func WriteHeatmap(conf HeatmapConfig, w io.Writer) error {
 	offset := image.Point{X: conf.TextWidthLeft, Y: conf.TextHeightTop}
 
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
-	draw.Draw(img, img.Bounds(), &image.Uniform{color.White}, image.ZP, draw.Src)
+	draw.Draw(img, img.Bounds(), &image.Uniform{C: color.White}, image.ZP, draw.Src)
 
+	visitorDayBox := DayBoxVisitor{Img: img, ColorScale: conf.ColorScale, ColorScaleAlt: conf.ColorScaleAlt, HighlightToday: conf.HighlightToday, BoxSize: conf.BoxSize}
 	visitors := []DayVisitor{
-		&DayBoxVisitor{img, conf.ColorScale, conf.BoxSize},
+		&visitorDayBox,
 	}
 
 	if conf.DrawMonthSeparator {
@@ -87,7 +94,7 @@ func WriteHeatmap(conf HeatmapConfig, w io.Writer) error {
 		visitors = append(visitors, &MonthLabelsVisitor{Img: img, YOffset: 50, Color: conf.TextColor, LabelsProvider: labelsProvider})
 	}
 
-	for iter := NewDayIterator(conf.Counts, offset, conf.BoxSize, conf.Margin); !iter.Done(); iter.Next() {
+	for iter := NewDayIterator(conf.Counts, offset, conf.BoxSize, conf.Margin, conf.MaxCount); !iter.Done(); iter.Next() {
 		for _, v := range visitors {
 			v.Visit(iter)
 		}
@@ -134,19 +141,37 @@ type DayVisitor interface {
 	Visit(iter *DayIterator)
 }
 
-// DayBoxVisitor draws signle heatbox
+// DayBoxVisitor draws single heatbox
 type DayBoxVisitor struct {
-	Img        *image.RGBA
-	ColorScale colorscales.ColorScale
-	BoxSize    int
+	Img           *image.RGBA
+	ColorScale    colorscales.ColorScale
+	ColorScaleAlt colorscales.ColorScale
+	HighlightToday *color.RGBA
+	BoxSize       int
 }
 
+var today = time.Now().Format("01-02")
 // Visit called on every iteration
 func (d *DayBoxVisitor) Visit(iter *DayIterator) {
 	p := iter.Point()
 	r := image.Rect(p.X, p.Y, p.X+d.BoxSize, p.Y+d.BoxSize)
-	color := d.ColorScale.GetColor(iter.Value())
-	draw.Draw(d.Img, r, &image.Uniform{color}, image.ZP, draw.Src)
+	v := iter.Value()
+	var color color.RGBA
+	if v >= 0 {
+		color = d.ColorScale.GetColor(v)
+	} else {
+		v *= -1
+		color = d.ColorScaleAlt.GetColor(v)
+	}
+	if d.HighlightToday	!= nil && iter.Time().Format("01-02") == today {
+		//c := colorscales.Hex("#f700ff")
+		gc := draw2dimg.NewGraphicContext(d.Img)
+		draw2dkit.Rectangle(gc, float64(p.X), float64(p.Y), float64(p.X+d.BoxSize), float64(p.Y+d.BoxSize))
+		gc.SetStrokeColor(*d.HighlightToday)
+		gc.SetLineWidth(30.0)
+		gc.FillStroke()
+	}
+	draw.Draw(d.Img, r, &image.Uniform{C: color}, image.ZP, draw.Src)
 }
 
 // MonthSeparatorVisitor draws month separator
@@ -175,7 +200,7 @@ func (d *MonthSeparatorVisitor) Visit(iter *DayIterator) {
 		draw.Draw(
 			d.Img,
 			image.Rect(xL, p.Y, xL+d.Width, d.MaxY),
-			&image.Uniform{d.Color},
+			&image.Uniform{C: d.Color},
 			image.ZP,
 			draw.Src,
 		)
@@ -184,7 +209,7 @@ func (d *MonthSeparatorVisitor) Visit(iter *DayIterator) {
 			draw.Draw(
 				d.Img,
 				image.Rect(xR, d.MinY, xR+d.Width, p.Y-marginSep),
-				&image.Uniform{d.Color},
+				&image.Uniform{C: d.Color},
 				image.ZP,
 				draw.Src,
 			)
@@ -192,7 +217,7 @@ func (d *MonthSeparatorVisitor) Visit(iter *DayIterator) {
 			draw.Draw(
 				d.Img,
 				image.Rect(xL, p.Y-marginSep, xR+d.Width, p.Y-marginSep-d.Width),
-				&image.Uniform{d.Color},
+				&image.Uniform{C: d.Color},
 				image.ZP,
 				draw.Src,
 			)
@@ -200,7 +225,7 @@ func (d *MonthSeparatorVisitor) Visit(iter *DayIterator) {
 			draw.Draw(
 				d.Img,
 				image.Rect(xL, p.Y-marginSep-d.Width, xL+d.Width, p.Y),
-				&image.Uniform{d.Color},
+				&image.Uniform{C: d.Color},
 				image.ZP,
 				draw.Src,
 			)

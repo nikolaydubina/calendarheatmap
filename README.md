@@ -16,28 +16,32 @@ $ echo '{
 }' | ./calendarheatmap > chart.png
 ```
 
-Basic
+- Basic
 
 ![basic](charts/testdata/basic.png)
 
-Colorscales
+- Negative values presented via an alternative color scheme
+
+![basic_alt](charts/testdata/basic_alt_YlGn9.png)
+
+- Colorscales
 ![col1](charts/testdata/colorscale_1.png)
 ![col2](charts/testdata/colorscale_2.png)
 
-UTF-8
+- UTF-8
 ![col1](charts/testdata/korean.png)
 
-SVG
+- SVG
 
 ![svg](charts/testdata/korean.svg)
 
-Without month separator
+- Without month separator
 ![nosep](charts/testdata/noseparator.png)
 
-Without labels
+- Without labels
 ![nolab](charts/testdata/nolabels.png)
 
-Without labels, without separator
+- Without labels, without separator
 ![nosep_nolab](charts/testdata/noseparator_nolabels.png)
 
 

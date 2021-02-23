@@ -40,7 +40,7 @@ func writeSVG(conf HeatmapConfig, w io.Writer) error {
 
 	days := [53][7]Day{}
 
-	for iter := NewDayIterator(conf.Counts, image.Point{}, 0, 0); !iter.Done(); iter.Next() {
+	for iter := NewDayIterator(conf.Counts, image.Point{}, 0, 0, conf.MaxCount); !iter.Done(); iter.Next() {
 		days[iter.Col][iter.Row] = Day{
 			Count: iter.Count(),
 			Date:  iter.Time().Format("2006-01-02"),

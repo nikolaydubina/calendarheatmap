@@ -13,6 +13,12 @@ func TestBasicDataSVG(t *testing.T) {
 		conf := charts.HeatmapConfig{
 			Counts:             counts,
 			ColorScale:         colorscales.PuBu9,
+			HighlightToday: &color.RGBA{
+				R: 255,
+				G: 0,
+				B: 0,
+				A: 255,
+			},
 			DrawMonthSeparator: true,
 			DrawLabels:         true,
 			TextColor:          color.RGBA{100, 100, 100, 255},

@@ -254,9 +254,9 @@
 		<rect class="day" width="10" height="10" x="-11" y="0" fill="rgb(255,247,251)" data-count="0" data-date="2020-06-22"></rect>
 		<rect class="day" width="10" height="10" x="-11" y="13" fill="rgb(236,231,242)" data-count="2" data-date="2020-06-23"></rect>
 		<rect class="day" width="10" height="10" x="-11" y="26" fill="rgb(236,231,242)" data-count="2" data-date="2020-06-24"></rect>
-		<rect class="day" width="10" height="10" x="-11" y="39" fill="rgb(208,209,230)" data-count="3" data-date="2020-06-25"></rect>
-		<rect class="day" width="10" height="10" x="-11" y="52" fill="rgb(208,209,230)" data-count="3" data-date="2020-06-26"></rect>
-		<rect class="day" width="10" height="10" x="-11" y="65" fill="rgb(236,231,242)" data-count="2" data-date="2020-06-27"></rect>
+		<rect class="day" width="10" height="10" x="-11" y="39" fill="rgb(5,112,176)" data-count="10" data-date="2020-06-25"></rect>
+		<rect class="day" width="10" height="10" x="-11" y="52" fill="rgb(116,169,207)" data-count="6" data-date="2020-06-26"></rect>
+		<rect class="day" width="10" height="10" x="-11" y="65" fill="rgb(5,112,176)" data-count="10" data-date="2020-06-27"></rect>
 		<rect class="day" width="10" height="10" x="-11" y="78" fill="rgb(236,231,242)" data-count="1" data-date="2020-06-28"></rect>
 		
 	</g>	

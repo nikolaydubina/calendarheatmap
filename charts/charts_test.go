@@ -128,6 +128,12 @@ func TestBasicData(t *testing.T) {
 			MaxCount:           0,
 			ColorScaleAlt:      colorscales.YlGn9,
 			ColorScale:         colorscales.PuBu9,
+			//HighlightToday: &color.RGBA{
+			//	R: 255,
+			//	G: 0,
+			//	B: 0,
+			//	A: 255,
+			//},
 			DrawMonthSeparator: true,
 			DrawLabels:         true,
 			Margin:             30,

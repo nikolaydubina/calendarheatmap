@@ -2,7 +2,7 @@
 #+PROPERTY: header-args:bsh.dash :var orgFile=( buffer-file-name)
 
 #+begin_src bsh.dash :results verbatim :exports both :wrap example
-c='{
+data='{
     "2020-05-04": 1,
     "2020-05-05": 2,
     "2020-05-06": 3,
@@ -59,16 +59,18 @@ c='{
 
 function plot() {
     local cmd=("$@")
-    o="${orgFile:h}/${imgdir:-images}/$(md5m "$cmd[*]").png"
+    test -e "$orgFile" || { echo orgFile does not exist ; return 1 }
+    local o="${orgFile:h}/${imgdir:-images}/$(md5m "$cmd[*]").png"
     mkdir -p "${o:h}"
-    print -r -- $c | reval "$cmd[@]" > $o || { echo Exited $? ; return 1 }
+    print -r -- $data | revaldbg "$cmd[@]" > $o || { echo Exited $? ; return 1 }
     print -nr -- "./$(realpath $o --relative-to ${orgFile:h})"
 }
 
 function plot-basic() {
-    a="${1:?}"
-    b="${2:-$a}"
-    plot calendarheatmap -maxcount 0 -colorscale $a -colorscalealt $b
+    local a="${1:?}"
+    local b="${2:-$a}"
+    local ht="$3"
+    plot calendarheatmap -maxcount 0 -colorscale $a -colorscalealt $b -highlight-today "$ht"
 }
 #+end_src
 
@@ -79,19 +81,26 @@ Data loaded
 
 
 #+begin_src bsh.dash :exports both :results verbatim file
-imgdir=images_saved plot-basic BuGn_9 Blues_9
+imgdir=images_saved plot-basic BuGn_9 Blues_9 '#00ff9d'
 #+end_src
 
 #+RESULTS:
-[[file:./images_saved/e03e8e64036fe15e8bc01d591b8e738f.png]]
+[[file:./images_saved/0e732bf8b0192a9159b3c16573e9c014.png]]
 
 #+begin_src bsh.dash :exports both :results verbatim file
-imgdir=images_saved plot-basic Reds_9 Blues_9
+imgdir=images_saved plot-basic Reds_9 Blues_9 '#f700ff'
 #+end_src
 
 #+RESULTS:
-[[file:./images_saved/264e486164a52905f22ba3a88eaa7819.png]]
+[[file:./images_saved/34530ca2042282a4ec1fcff65bc7c01b.png]]
 
+
+#+begin_src bsh.dash :exports both :results verbatim file
+plot calendarheatmap -maxcount 0 -colorscale Purples_9 -colorscalealt Greys_9 -highlight-today '#f6ff00'
+#+end_src
+
+#+RESULTS:
+[[file:./images/d921d541155bb07dc2c14378fe198518.png]]
 
 #+BEGIN_EXAMPLE :exports none
 ec $c | calendarheatmap -maxcount 0 -colorscale YlOrRd_9 -colorscalealt YlGnBu_9 > chart.png ; icat chart.png

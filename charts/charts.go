@@ -2,12 +2,15 @@ package charts
 
 import (
 	"fmt"
+	"github.com/llgcode/draw2d/draw2dimg"
 	"image"
 	"image/color"
 	"image/draw"
 	"image/gif"
 	"image/jpeg"
 	"image/png"
+	//"github.com/llgcode/draw2d"
+	"github.com/llgcode/draw2d/draw2dkit"
 	"io"
 	"time"
 
@@ -35,6 +38,7 @@ type HeatmapConfig struct {
 	MaxCount           int
 	ColorScale         colorscales.ColorScale
 	ColorScaleAlt      colorscales.ColorScale
+	HighlightToday     *color.RGBA
 	DrawMonthSeparator bool
 	DrawLabels         bool
 	BoxSize            int
@@ -60,8 +64,9 @@ func WriteHeatmap(conf HeatmapConfig, w io.Writer) error {
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
 	draw.Draw(img, img.Bounds(), &image.Uniform{C: color.White}, image.ZP, draw.Src)
 
+	visitorDayBox := DayBoxVisitor{Img: img, ColorScale: conf.ColorScale, ColorScaleAlt: conf.ColorScaleAlt, HighlightToday: conf.HighlightToday, BoxSize: conf.BoxSize}
 	visitors := []DayVisitor{
-		&DayBoxVisitor{Img: img, ColorScale: conf.ColorScale, ColorScaleAlt: conf.ColorScaleAlt, BoxSize: conf.BoxSize},
+		&visitorDayBox,
 	}
 
 	if conf.DrawMonthSeparator {
@@ -141,9 +146,11 @@ type DayBoxVisitor struct {
 	Img           *image.RGBA
 	ColorScale    colorscales.ColorScale
 	ColorScaleAlt colorscales.ColorScale
+	HighlightToday *color.RGBA
 	BoxSize       int
 }
 
+var today = time.Now().Format("01-02")
 // Visit called on every iteration
 func (d *DayBoxVisitor) Visit(iter *DayIterator) {
 	p := iter.Point()
@@ -155,6 +162,14 @@ func (d *DayBoxVisitor) Visit(iter *DayIterator) {
 	} else {
 		v *= -1
 		color = d.ColorScaleAlt.GetColor(v)
+	}
+	if d.HighlightToday	!= nil && iter.Time().Format("01-02") == today {
+		//c := colorscales.Hex("#f700ff")
+		gc := draw2dimg.NewGraphicContext(d.Img)
+		draw2dkit.Rectangle(gc, float64(p.X), float64(p.Y), float64(p.X+d.BoxSize), float64(p.Y+d.BoxSize))
+		gc.SetStrokeColor(*d.HighlightToday)
+		gc.SetLineWidth(30.0)
+		gc.FillStroke()
 	}
 	draw.Draw(d.Img, r, &image.Uniform{C: color}, image.ZP, draw.Src)
 }

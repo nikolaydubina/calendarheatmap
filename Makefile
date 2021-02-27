@@ -4,7 +4,7 @@ build:
 test:
 	go test ./...
 
-docs: build
+docs:
 	cat testdata/basic.json | ./calendarheatmap > docs/basic.png
 	cat testdata/basic.json | ./calendarheatmap -colorscale=purple-blue-9.csv > docs/colorscale-1.png
 	cat testdata/basic.json | ./calendarheatmap -colorscale=green-blue-9.csv > docs/colorscale-2.png

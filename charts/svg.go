@@ -22,10 +22,16 @@ type WeekdayLabel struct {
 	Show  bool
 }
 
+// MonthLabel is SVG template month label parameters
+type MonthLabel struct {
+	Label   string
+	XOffset int
+}
+
 // Params is total SVG template parameters
 type Params struct {
 	Days           [53][7]Day
-	LabelsMonths   [12]string
+	LabelsMonths   [12]MonthLabel
 	LabelsWeekdays [7]WeekdayLabel
 	LabelsColor    string
 }
@@ -41,8 +47,24 @@ func writeSVG(conf HeatmapConfig, w io.Writer) {
 		"sub": func(a int, b int) int { return a - b },
 	}).Parse(fullyear))
 
-	days := [53][7]Day{}
+	locale := conf.Locale
+	if locale == "" {
+		locale = "en_US"
+	}
+	labelsProvider := NewLabelsProvider(locale)
 
+	labelsWeekdays := [7]WeekdayLabel{}
+	for i, w := range weekdayOrder {
+		labelsWeekdays[i] = WeekdayLabel{labelsProvider.GetWeekday(w), conf.ShowWeekdays[w]}
+	}
+
+	labelsMonths := [12]MonthLabel{}
+	for i, v := range labelsProvider.months {
+		labelsMonths[i-1].Label = v
+	}
+
+	month := 0
+	days := [53][7]Day{}
 	for iter := NewDayIterator(conf.Counts, image.Point{}, 0, 0); !iter.Done(); iter.Next() {
 		days[iter.Col][iter.Row] = Day{
 			Count: iter.Count(),
@@ -50,22 +72,12 @@ func writeSVG(conf HeatmapConfig, w io.Writer) {
 			Color: writeSVGColor(conf.ColorScale.GetColor(iter.Value())),
 			Show:  true,
 		}
-	}
 
-	locale := conf.Locale
-	if locale == "" {
-		locale = "en_US"
-	}
-	labelsProvider := NewLabelsProvider(locale)
-
-	labelsMonths := [12]string{}
-	for i, v := range labelsProvider.months {
-		labelsMonths[i-1] = v
-	}
-
-	labelsWeekdays := [7]WeekdayLabel{}
-	for i, v := range labelsProvider.weekdays {
-		labelsWeekdays[i] = WeekdayLabel{v, true}
+		// Note, day is from 1~31
+		if iter.Row == 0 && iter.Time().Day() <= 7 {
+			labelsMonths[month].XOffset = iter.Col
+			month++
+		}
 	}
 
 	fullYearTemplate.Execute(w, Params{

@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"time"
 
 	"github.com/nikolaydubina/calendarheatmap/charts"
 )
@@ -71,6 +72,11 @@ func main() {
 		Locale:             locale,
 		Format:             outputFormat,
 		FontFace:           fontFace,
+		ShowWeekdays: map[time.Weekday]bool{
+			time.Monday:    true,
+			time.Wednesday: true,
+			time.Friday:    true,
+		},
 	}
 	charts.WriteHeatmap(conf, os.Stdout)
 }

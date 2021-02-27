@@ -49,6 +49,7 @@ type HeatmapConfig struct {
 	Locale             string
 	Format             string
 	FontFace           font.Face
+	ShowWeekdays       map[time.Weekday]bool
 }
 
 // WriteHeatmap writes image with heatmap and additional elements
@@ -104,11 +105,7 @@ func WriteHeatmap(conf HeatmapConfig, w io.Writer) error {
 			conf.FontFace,
 			img,
 			offset,
-			map[time.Weekday]bool{
-				time.Monday:    true,
-				time.Wednesday: true,
-				time.Friday:    true,
-			},
+			conf.ShowWeekdays,
 			conf.BoxSize,
 			conf.Margin,
 			conf.TextColor,

@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/nikolaydubina/calendarheatmap/charts"
-	"github.com/nikolaydubina/calendarheatmap/colorscales"
 )
 
 var counts map[string]int = map[string]int{
@@ -67,10 +66,22 @@ func save(t *testing.T, conf charts.HeatmapConfig, filename string) {
 func TestBasicData(t *testing.T) {
 	os.Setenv("CALENDAR_HEATMAP_ASSETS_PATH", "assets")
 
+	var colorscale = charts.BasicColorScale{
+		color.RGBA{247, 252, 240, 255},
+		color.RGBA{224, 243, 219, 255},
+		color.RGBA{204, 235, 197, 255},
+		color.RGBA{168, 221, 181, 255},
+		color.RGBA{123, 204, 196, 255},
+		color.RGBA{78, 179, 211, 255},
+		color.RGBA{43, 140, 190, 255},
+		color.RGBA{8, 104, 172, 255},
+		color.RGBA{8, 64, 129, 255},
+	}
+
 	t.Run("basic", func(t *testing.T) {
 		conf := charts.HeatmapConfig{
 			Counts:             counts,
-			ColorScale:         colorscales.PuBu9,
+			ColorScale:         colorscale,
 			DrawMonthSeparator: true,
 			DrawLabels:         true,
 			Margin:             30,
@@ -84,44 +95,10 @@ func TestBasicData(t *testing.T) {
 		save(t, conf, "testdata/basic.png")
 	})
 
-	t.Run("colorscale_1", func(t *testing.T) {
-		conf := charts.HeatmapConfig{
-			Counts:             counts,
-			ColorScale:         colorscales.GnBu9,
-			DrawMonthSeparator: true,
-			DrawLabels:         true,
-			Margin:             30,
-			BoxSize:            150,
-			TextWidthLeft:      350,
-			TextHeightTop:      200,
-			TextColor:          color.RGBA{100, 100, 100, 255},
-			BorderColor:        color.RGBA{200, 200, 200, 255},
-			Format:             "png",
-		}
-		save(t, conf, "testdata/colorscale_1.png")
-	})
-
-	t.Run("colorscale_2", func(t *testing.T) {
-		conf := charts.HeatmapConfig{
-			Counts:             counts,
-			ColorScale:         colorscales.YlGn9,
-			DrawMonthSeparator: true,
-			DrawLabels:         true,
-			Margin:             30,
-			BoxSize:            150,
-			TextWidthLeft:      350,
-			TextHeightTop:      200,
-			TextColor:          color.RGBA{100, 100, 100, 255},
-			BorderColor:        color.RGBA{200, 200, 200, 255},
-			Format:             "png",
-		}
-		save(t, conf, "testdata/colorscale_2.png")
-	})
-
 	t.Run("korean", func(t *testing.T) {
 		conf := charts.HeatmapConfig{
 			Counts:             counts,
-			ColorScale:         colorscales.PuBu9,
+			ColorScale:         colorscale,
 			DrawMonthSeparator: true,
 			DrawLabels:         true,
 			Margin:             30,
@@ -139,7 +116,7 @@ func TestBasicData(t *testing.T) {
 	t.Run("no separator", func(t *testing.T) {
 		conf := charts.HeatmapConfig{
 			Counts:             counts,
-			ColorScale:         colorscales.PuBu9,
+			ColorScale:         colorscale,
 			DrawMonthSeparator: false,
 			DrawLabels:         true,
 			Margin:             30,
@@ -156,7 +133,7 @@ func TestBasicData(t *testing.T) {
 	t.Run("no labels", func(t *testing.T) {
 		conf := charts.HeatmapConfig{
 			Counts:             counts,
-			ColorScale:         colorscales.PuBu9,
+			ColorScale:         colorscale,
 			DrawMonthSeparator: true,
 			DrawLabels:         false,
 			Margin:             30,
@@ -173,7 +150,7 @@ func TestBasicData(t *testing.T) {
 	t.Run("no separator, no labels", func(t *testing.T) {
 		conf := charts.HeatmapConfig{
 			Counts:             counts,
-			ColorScale:         colorscales.PuBu9,
+			ColorScale:         colorscale,
 			DrawMonthSeparator: false,
 			DrawLabels:         false,
 			Margin:             30,
@@ -190,7 +167,7 @@ func TestBasicData(t *testing.T) {
 	t.Run("empty data", func(t *testing.T) {
 		conf := charts.HeatmapConfig{
 			Counts:             counts,
-			ColorScale:         colorscales.PuBu9,
+			ColorScale:         colorscale,
 			DrawMonthSeparator: true,
 			DrawLabels:         false,
 			Margin:             30,
@@ -207,7 +184,7 @@ func TestBasicData(t *testing.T) {
 	t.Run("nil data", func(t *testing.T) {
 		conf := charts.HeatmapConfig{
 			Counts:             counts,
-			ColorScale:         colorscales.PuBu9,
+			ColorScale:         colorscale,
 			DrawMonthSeparator: true,
 			DrawLabels:         false,
 			Margin:             30,

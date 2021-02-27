@@ -18,27 +18,27 @@ $ echo '{
 
 Basic
 
-![basic](charts/testdata/basic.png)
+![basic](docs/basic.png)
 
 Colorscales
-![col1](charts/testdata/colorscale_1.png)
-![col2](charts/testdata/colorscale_2.png)
+![col1](docs/colorscale-1.png)
+![col2](docs/colorscale-2.png)
+![col2](docs/colorscale-3.png)
 
 UTF-8
-![col1](charts/testdata/korean.png)
+![col1](docs/korean.png)
 
 SVG
-
-![svg](charts/testdata/korean.svg)
+![svg](docs/korean.svg)
 
 Without month separator
-![nosep](charts/testdata/noseparator.png)
+![nosep](docs/noseparator.png)
 
 Without labels
-![nolab](charts/testdata/nolabels.png)
+![nolab](docs/nolabels.png)
 
 Without labels, without separator
-![nosep_nolab](charts/testdata/noseparator_nolabels.png)
+![nosep_nolab](docs/noseparator_nolabels.png)
 
 
 ## GitHub stars over time

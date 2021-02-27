@@ -21,7 +21,7 @@ type DayIterator struct {
 // NewDayIterator initializes iterator for a year
 func NewDayIterator(counts map[string]int, offset image.Point, boxSize int, margin int) *DayIterator {
 	year := 1972
-	for dateStr, _ := range counts {
+	for dateStr := range counts {
 		date, err := time.Parse("2006-01-02", dateStr)
 		if err != nil {
 			panic(err)

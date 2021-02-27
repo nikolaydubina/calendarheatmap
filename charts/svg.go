@@ -8,6 +8,7 @@ import (
 	"text/template"
 )
 
+// Day contains info to render single cell of a day
 type Day struct {
 	Count int
 	Date  string
@@ -15,11 +16,13 @@ type Day struct {
 	Show  bool
 }
 
+// WeekdayLabel contains details for single weekday label like Monday or Tuesday
 type WeekdayLabel struct {
 	Label string
 	Show  bool
 }
 
+// Params specify parameters to render SVG
 type Params struct {
 	Days           [53][7]Day
 	LabelsMonths   [12]string

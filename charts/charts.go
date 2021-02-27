@@ -54,7 +54,7 @@ type HeatmapConfig struct {
 // WriteHeatmap writes image with heatmap and additional elements
 func WriteHeatmap(conf HeatmapConfig, w io.Writer) error {
 	if conf.Format == "svg" {
-		return writeSVG(conf, w)
+		writeSVG(conf, w)
 	}
 
 	width := conf.TextWidthLeft + numWeekCols*(conf.BoxSize+conf.Margin)

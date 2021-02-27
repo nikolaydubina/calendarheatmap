@@ -8,7 +8,7 @@ import (
 	"text/template"
 )
 
-// Day contains info to render single cell of a day
+// Day is SVG template day parameters
 type Day struct {
 	Count int
 	Date  string
@@ -16,13 +16,13 @@ type Day struct {
 	Show  bool
 }
 
-// WeekdayLabel contains details for single weekday label like Monday or Tuesday
+// WeekdayLabel is SVG template weekday label parameters
 type WeekdayLabel struct {
 	Label string
 	Show  bool
 }
 
-// Params specify parameters to render SVG
+// Params is total SVG template parameters
 type Params struct {
 	Days           [53][7]Day
 	LabelsMonths   [12]string
@@ -30,11 +30,11 @@ type Params struct {
 	LabelsColor    string
 }
 
-func writeColor(c color.RGBA) string {
+func writeSVGColor(c color.RGBA) string {
 	return fmt.Sprintf("rgb(%d,%d,%d)", c.R, c.G, c.B)
 }
 
-func writeSVG(conf HeatmapConfig, w io.Writer) error {
+func writeSVG(conf HeatmapConfig, w io.Writer) {
 	fullYearTemplate := template.Must(template.New("fullyear").Funcs(template.FuncMap{
 		"mul": func(a int, b int) int { return a * b },
 		"add": func(a int, b int) int { return a + b },
@@ -47,7 +47,7 @@ func writeSVG(conf HeatmapConfig, w io.Writer) error {
 		days[iter.Col][iter.Row] = Day{
 			Count: iter.Count(),
 			Date:  iter.Time().Format("2006-01-02"),
-			Color: writeColor(conf.ColorScale.GetColor(iter.Value())),
+			Color: writeSVGColor(conf.ColorScale.GetColor(iter.Value())),
 			Show:  true,
 		}
 	}
@@ -68,14 +68,10 @@ func writeSVG(conf HeatmapConfig, w io.Writer) error {
 		labelsWeekdays[i] = WeekdayLabel{v, true}
 	}
 
-	params := Params{
+	fullYearTemplate.Execute(w, Params{
 		Days:           days,
 		LabelsMonths:   labelsMonths,
 		LabelsWeekdays: labelsWeekdays,
-		LabelsColor:    writeColor(conf.TextColor),
-	}
-
-	fullYearTemplate.Execute(w, params)
-
-	return nil
+		LabelsColor:    writeSVGColor(conf.TextColor),
+	})
 }

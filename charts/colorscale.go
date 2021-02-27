@@ -23,6 +23,20 @@ func (c BasicColorScale) GetColor(val float64) color.RGBA {
 	return c[idx]
 }
 
+func uint8FromStr(s string) (uint8, error) {
+	v, err := strconv.Atoi(s)
+	if err != nil {
+		return 0, errors.New("can not convert to int")
+	}
+	if v < 0 {
+		return 0, errors.New("less than 0")
+	}
+	if v > math.MaxUint8 {
+		return 0, errors.New("higher than max")
+	}
+	return uint8(v), nil
+}
+
 // NewBasicColorscaleFromCSVFile loads basic colorscale from CSV file
 func NewBasicColorscaleFromCSVFile(path string) (BasicColorScale, error) {
 	colorscaleReader, err := os.Open(path)
@@ -51,21 +65,21 @@ func NewBasicColorscaleFromCSVFile(path string) (BasicColorScale, error) {
 		return nil, errors.New("missing B column")
 	}
 
-	colorscale := make(BasicColorScale, 0)
-	for _, vals := range rows[1:] {
-		r, err := strconv.Atoi(vals[colmap["R"]])
+	colorscale := make(BasicColorScale, len(rows)-1)
+	for i, vals := range rows[1:] {
+		r, err := uint8FromStr(vals[colmap["R"]])
 		if err != nil {
-			return nil, errors.New("bad value for color")
+			return nil, fmt.Errorf("bad value for color: %w", err)
 		}
-		g, err := strconv.Atoi(vals[colmap["G"]])
+		g, err := uint8FromStr(vals[colmap["G"]])
 		if err != nil {
-			return nil, errors.New("bad value for color")
+			return nil, fmt.Errorf("bad value for color: %w", err)
 		}
-		b, err := strconv.Atoi(vals[colmap["B"]])
+		b, err := uint8FromStr(vals[colmap["B"]])
 		if err != nil {
-			return nil, errors.New("bad value for color")
+			return nil, fmt.Errorf("bad value for color: %w", err)
 		}
-		colorscale = append(colorscale, color.RGBA{R: uint8(r), G: uint8(g), B: uint8(b), A: 255})
+		colorscale[i] = color.RGBA{r, g, b, 255}
 	}
 	return colorscale, nil
 }

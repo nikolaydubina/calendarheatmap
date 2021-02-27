@@ -52,9 +52,9 @@ func writeSVG(conf HeatmapConfig, w io.Writer) {
 		}
 	}
 
-	locale := "en_US"
-	if conf.Locale != "" {
-		locale = conf.Locale
+	locale := conf.Locale
+	if locale == "" {
+		locale = "en_US"
 	}
 	labelsProvider := NewLabelsProvider(locale)
 

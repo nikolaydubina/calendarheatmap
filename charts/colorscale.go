@@ -15,6 +15,9 @@ type BasicColorScale []color.RGBA
 
 // GetColor returns color based on float value from 0 to 1
 func (c BasicColorScale) GetColor(val float64) color.RGBA {
+	if len(c) == 0 {
+		return color.RGBA{}
+	}
 	maxIdx := len(c) - 1
 	idx := int(math.Round(float64(maxIdx) * val))
 	return c[idx]

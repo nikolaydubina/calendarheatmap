@@ -11,8 +11,13 @@ import (
 	"io"
 	"time"
 
-	"github.com/nikolaydubina/calendarheatmap/colorscales"
+	"golang.org/x/image/font"
 )
+
+// ColorScale is interface for extracting color based on value from 0 to 1
+type ColorScale interface {
+	GetColor(val float64) color.RGBA
+}
 
 var weekdayOrder = [7]time.Weekday{
 	time.Monday,
@@ -32,7 +37,7 @@ const (
 // HeatmapConfig contains config of calendar heatmap image
 type HeatmapConfig struct {
 	Counts             map[string]int
-	ColorScale         colorscales.ColorScale
+	ColorScale         ColorScale
 	DrawMonthSeparator bool
 	DrawLabels         bool
 	BoxSize            int
@@ -43,12 +48,15 @@ type HeatmapConfig struct {
 	BorderColor        color.RGBA
 	Locale             string
 	Format             string
+	FontFace           font.Face
+	ShowWeekdays       map[time.Weekday]bool
 }
 
 // WriteHeatmap writes image with heatmap and additional elements
 func WriteHeatmap(conf HeatmapConfig, w io.Writer) error {
 	if conf.Format == "svg" {
-		return writeSVG(conf, w)
+		writeSVG(conf, w)
+		return nil
 	}
 
 	width := conf.TextWidthLeft + numWeekCols*(conf.BoxSize+conf.Margin)
@@ -77,14 +85,10 @@ func WriteHeatmap(conf HeatmapConfig, w io.Writer) error {
 		)
 	}
 
-	locale := "en_US"
-	if conf.Locale != "" {
-		locale = conf.Locale
-	}
-	labelsProvider := NewLabelsProvider(locale)
+	labelsProvider := NewLabelsProvider(conf.Locale)
 
 	if conf.DrawLabels {
-		visitors = append(visitors, &MonthLabelsVisitor{Img: img, YOffset: 50, Color: conf.TextColor, LabelsProvider: labelsProvider})
+		visitors = append(visitors, &MonthLabelsVisitor{FontFace: conf.FontFace, Img: img, YOffset: 50, Color: conf.TextColor, LabelsProvider: labelsProvider})
 	}
 
 	for iter := NewDayIterator(conf.Counts, offset, conf.BoxSize, conf.Margin); !iter.Done(); iter.Next() {
@@ -95,13 +99,10 @@ func WriteHeatmap(conf HeatmapConfig, w io.Writer) error {
 
 	if conf.DrawLabels {
 		drawWeekdayLabels(
+			conf.FontFace,
 			img,
 			offset,
-			map[time.Weekday]bool{
-				time.Monday:    true,
-				time.Wednesday: true,
-				time.Friday:    true,
-			},
+			conf.ShowWeekdays,
 			conf.BoxSize,
 			conf.Margin,
 			conf.TextColor,
@@ -137,7 +138,7 @@ type DayVisitor interface {
 // DayBoxVisitor draws signle heatbox
 type DayBoxVisitor struct {
 	Img        *image.RGBA
-	ColorScale colorscales.ColorScale
+	ColorScale ColorScale
 	BoxSize    int
 }
 
@@ -214,6 +215,7 @@ type MonthLabelsVisitor struct {
 	YOffset        int
 	Color          color.RGBA
 	LabelsProvider LabelsProvider
+	FontFace       font.Face
 }
 
 // Visit on every iteration
@@ -223,6 +225,7 @@ func (d *MonthLabelsVisitor) Visit(iter *DayIterator) {
 	if iter.Row == 0 && day.Day() <= 7 {
 		p := iter.Point()
 		drawText(
+			d.FontFace,
 			d.Img,
 			image.Point{X: p.X, Y: p.Y - d.YOffset},
 			d.LabelsProvider.GetMonth(day.Month()),
@@ -234,13 +237,13 @@ func (d *MonthLabelsVisitor) Visit(iter *DayIterator) {
 // drawWeekdayLabel draws column of same width labels for weekdays
 // All weekday labels assumed to have same width, which really depends on font.
 // offset argument is top right corner of where to insert column of weekday labels.
-func drawWeekdayLabels(img *image.RGBA, offset image.Point, weekdays map[time.Weekday]bool, boxSize int, margin int, color color.RGBA, lp LabelsProvider) {
+func drawWeekdayLabels(fontFace font.Face, img *image.RGBA, offset image.Point, weekdays map[time.Weekday]bool, boxSize int, margin int, color color.RGBA, lp LabelsProvider) {
 	width := 250
 	height := 100
 	y := offset.Y + height
 	for _, w := range weekdayOrder {
 		if weekdays[w] {
-			drawText(img, image.Point{X: offset.X - width, Y: y}, lp.GetWeekday(w), color)
+			drawText(fontFace, img, image.Point{X: offset.X - width, Y: y}, lp.GetWeekday(w), color)
 		}
 		y += boxSize + margin
 	}

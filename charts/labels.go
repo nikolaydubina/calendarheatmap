@@ -65,7 +65,11 @@ type LabelsProvider struct {
 
 // NewLabelsProvider initializes labels provider for locale
 func NewLabelsProvider(locale string) LabelsProvider {
-	return localeConfig[locale]
+	lp, ok := localeConfig[locale]
+	if !ok {
+		return localeConfig["en_US"]
+	}
+	return lp
 }
 
 // GetMonth returns month label

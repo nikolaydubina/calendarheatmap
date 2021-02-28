@@ -56,6 +56,7 @@ type HeatmapConfig struct {
 func WriteHeatmap(conf HeatmapConfig, w io.Writer) error {
 	if conf.Format == "svg" {
 		writeSVG(conf, w)
+		return nil
 	}
 
 	width := conf.TextWidthLeft + numWeekCols*(conf.BoxSize+conf.Margin)

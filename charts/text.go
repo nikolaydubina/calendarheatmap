@@ -34,6 +34,9 @@ func LoadFontFaceFromFile(fontPath string) (font.Face, error) {
 
 // drawText inserts text into provided image at bottom left coordinate
 func drawText(fontFace font.Face, img *image.RGBA, offset image.Point, text string, color color.RGBA) {
+	if fontFace == nil {
+		return
+	}
 	d := &font.Drawer{
 		Dst:  img,
 		Src:  image.NewUniform(color),

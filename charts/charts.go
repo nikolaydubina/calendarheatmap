@@ -85,11 +85,7 @@ func WriteHeatmap(conf HeatmapConfig, w io.Writer) error {
 		)
 	}
 
-	locale := "en_US"
-	if conf.Locale != "" {
-		locale = conf.Locale
-	}
-	labelsProvider := NewLabelsProvider(locale)
+	labelsProvider := NewLabelsProvider(conf.Locale)
 
 	if conf.DrawLabels {
 		visitors = append(visitors, &MonthLabelsVisitor{FontFace: conf.FontFace, Img: img, YOffset: 50, Color: conf.TextColor, LabelsProvider: labelsProvider})

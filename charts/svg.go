@@ -44,14 +44,9 @@ func writeSVG(conf HeatmapConfig, w io.Writer) {
 	fullYearTemplate := template.Must(template.New("fullyear").Funcs(template.FuncMap{
 		"mul": func(a int, b int) int { return a * b },
 		"add": func(a int, b int) int { return a + b },
-		"sub": func(a int, b int) int { return a - b },
 	}).Parse(fullyear))
 
-	locale := conf.Locale
-	if locale == "" {
-		locale = "en_US"
-	}
-	labelsProvider := NewLabelsProvider(locale)
+	labelsProvider := NewLabelsProvider(conf.Locale)
 
 	labelsWeekdays := [7]WeekdayLabel{}
 	for i, w := range weekdayOrder {

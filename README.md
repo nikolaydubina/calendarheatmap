@@ -6,14 +6,14 @@
 Self-contained, plain Go implementation of calendar heatmap inspired by GitHub contribution activity.
 
 ```
-$ go build
+$ go install github.com/nikolaydubina/calendarheatmap@latest 
 $ echo '{
     "2020-05-16": 8,
     "2020-05-17": 13,
     "2020-05-18": 5,
     "2020-05-19": 8,
     "2020-05-20": 5
-}' | ./calendarheatmap > chart.png
+}' | calendarheatmap > chart.png
 ```
 
 Basic
@@ -21,6 +21,7 @@ Basic
 ![basic](docs/basic.png)
 
 Colorscales
+
 ![col1](docs/colorscale-1.png)
 ![col2](docs/colorscale-2.png)
 ![col2](docs/colorscale-3.png)
@@ -30,10 +31,7 @@ UTF-8
 
 SVG
 
-
 ![svg](docs/korean.svg)
-
-
 
 Without month separator
 ![nosep](docs/noseparator.png)
@@ -43,7 +41,6 @@ Without labels
 
 Without labels, without separator
 ![nosep_nolab](docs/noseparator_nolabels.png)
-
 
 ## GitHub stars over time
 

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"image/color"
+	"io"
 	"math"
 	"os"
 	"strconv"
@@ -37,13 +38,9 @@ func uint8FromStr(s string) (uint8, error) {
 	return uint8(v), nil
 }
 
-// NewBasicColorscaleFromCSVFile loads basic colorscale from CSV file
-func NewBasicColorscaleFromCSVFile(path string) (BasicColorScale, error) {
-	colorscaleReader, err := os.Open(path)
-	if err != nil {
-		return nil, fmt.Errorf("can not open file: %w", err)
-	}
-	rows, err := csv.NewReader(colorscaleReader).ReadAll()
+// NewBasicColorscaleFromCSV creates colorscale from reader
+func NewBasicColorscaleFromCSV(reader io.Reader) (BasicColorScale, error) {
+	rows, err := csv.NewReader(reader).ReadAll()
 	if err != nil {
 		return nil, fmt.Errorf("can not read CSV: %w", err)
 	}
@@ -82,4 +79,13 @@ func NewBasicColorscaleFromCSVFile(path string) (BasicColorScale, error) {
 		colorscale[i] = color.RGBA{r, g, b, 255}
 	}
 	return colorscale, nil
+}
+
+// NewBasicColorscaleFromCSVFile loads basic colorscale from CSV file
+func NewBasicColorscaleFromCSVFile(path string) (BasicColorScale, error) {
+	colorscaleReader, err := os.Open(path)
+	if err != nil {
+		return nil, fmt.Errorf("can not open file: %w", err)
+	}
+	return NewBasicColorscaleFromCSV(colorscaleReader)
 }

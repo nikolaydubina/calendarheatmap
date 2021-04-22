@@ -11,12 +11,8 @@ import (
 	"golang.org/x/image/math/fixed"
 )
 
-// LoadFontFaceFromFile loads font face from file
-func LoadFontFaceFromFile(fontPath string) (font.Face, error) {
-	fontBytes, err := ioutil.ReadFile(fontPath)
-	if err != nil {
-		return nil, fmt.Errorf("can not open font file with error: %w", err)
-	}
+// LoadFontFace loads font face from bytes
+func LoadFontFace(fontBytes []byte) (font.Face, error) {
 	f, err := opentype.Parse(fontBytes)
 	if err != nil {
 		return nil, fmt.Errorf("can not parse font file: %w", err)
@@ -30,6 +26,15 @@ func LoadFontFaceFromFile(fontPath string) (font.Face, error) {
 		return nil, fmt.Errorf("can not create font face: %w", err)
 	}
 	return face, nil
+}
+
+// LoadFontFaceFromFile loads font face from file
+func LoadFontFaceFromFile(fontPath string) (font.Face, error) {
+	fontBytes, err := ioutil.ReadFile(fontPath)
+	if err != nil {
+		return nil, fmt.Errorf("can not open font file with error: %w", err)
+	}
+	return LoadFontFace(fontBytes)
 }
 
 // drawText inserts text into provided image at bottom left coordinate

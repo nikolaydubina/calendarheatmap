@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"flag"
 	"image/color"
@@ -10,8 +11,16 @@ import (
 	"path"
 	"time"
 
+	_ "embed"
+
 	"github.com/nikolaydubina/calendarheatmap/charts"
 )
+
+//go:embed assets/fonts/Sunflower-Medium.ttf
+var defaultFontFaceBytes []byte
+
+//go:embed assets/colorscales/green-blue-9.csv
+var defaultColorScaleBytes []byte
 
 func main() {
 	var (
@@ -20,7 +29,6 @@ func main() {
 		locale       string
 		monthSep     bool
 		outputFormat string
-		assetsPath   string
 	)
 
 	flag.BoolVar(&labels, "labels", true, "labels for weekday and months")
@@ -28,14 +36,29 @@ func main() {
 	flag.StringVar(&colorScale, "colorscale", "green-blue-9.csv", "filename of colorscale")
 	flag.StringVar(&locale, "locale", "en_US", "locale of labels (en_US, ko_KR)")
 	flag.StringVar(&outputFormat, "output", "png", "output format (png, jpeg, gif, svg)")
-	flag.StringVar(&assetsPath, "assetspath", "", "absolute path, or relative path for executable, of calendarheatmap repo assets, if not set will try CALENDARHEATMAP_ASSETS env variable, if not will try 'assets'")
 	flag.Parse()
 
-	if assetsPath == "" {
-		assetsPath = os.Getenv("CALENDAR_HEATMAP_ASSETS_PATH")
-		if assetsPath == "" {
-			assetsPath = "assets"
+	var colorscale charts.BasicColorScale
+	if assetsPath := os.Getenv("CALENDAR_HEATMAP_ASSETS_PATH"); assetsPath != "" {
+		var err error
+		colorscale, err = charts.NewBasicColorscaleFromCSVFile(path.Join(assetsPath, "colorscales", colorScale))
+		if err != nil {
+			log.Fatal(err)
 		}
+	} else {
+		var err error
+		if colorScale != "green-blue-9.csv" {
+			log.Printf("defaulting to colorscale %s since CALENDAR_HEATMAP_ASSETS_PATH is not set", "green-blue-9.csv")
+		}
+		colorscale, err = charts.NewBasicColorscaleFromCSV(bytes.NewBuffer(defaultColorScaleBytes))
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	fontFace, err := charts.LoadFontFace(defaultFontFaceBytes)
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	data, err := ioutil.ReadAll(os.Stdin)
@@ -45,16 +68,6 @@ func main() {
 
 	var counts map[string]int
 	if err := json.Unmarshal(data, &counts); err != nil {
-		log.Fatal(err)
-	}
-
-	colorscale, err := charts.NewBasicColorscaleFromCSVFile(path.Join(assetsPath, "colorscales", colorScale))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fontFace, err := charts.LoadFontFaceFromFile(path.Join(assetsPath, "fonts", "Sunflower-Medium.ttf"))
-	if err != nil {
 		log.Fatal(err)
 	}
 

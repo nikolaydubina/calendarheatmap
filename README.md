@@ -1,6 +1,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/nikolaydubina/calendarheatmap)](https://goreportcard.com/report/github.com/nikolaydubina/calendarheatmap)
 [![Go Reference](https://pkg.go.dev/badge/github.com/nikolaydubina/calendarheatmap/charts.svg)](https://pkg.go.dev/github.com/nikolaydubina/calendarheatmap/charts)
 [![codecov](https://codecov.io/gh/nikolaydubina/calendarheatmap/branch/master/graph/badge.svg)](https://codecov.io/gh/nikolaydubina/calendarheatmap)
+[![Tests](https://github.com/nikolaydubina/calendarheatmap/workflows/Tests/badge.svg)](https://github.com/nikolaydubina/calendarheatmap/actions)
 [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/avelino/awesome-go#science-and-data-analysis)
 
 Self-contained, plain Go implementation of calendar heatmap inspired by GitHub contribution activity.

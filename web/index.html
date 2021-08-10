@@ -20,9 +20,22 @@
     <script src="wasm_exec.js"></script>
     <script>
         const go = new Go();
-        WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
-            go.run(result.instance);
-        });
+
+        if (WebAssembly && WebAssembly.instantiateStreaming) {
+            WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
+                go.run(result.instance);
+            });
+        } else {
+            // Safari doesn't have instantiateStreaming
+            fetch("main.wasm")
+                .arrayBuffer()
+                .then((buffer) => {
+                    return WebAssembly.instantiate(buffer, go.importObject);
+                })
+                .then((result) => {
+                    go.run(result.instance);
+                });
+        }
     </script>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->

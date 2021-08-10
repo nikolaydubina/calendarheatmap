@@ -28,13 +28,9 @@
         } else {
             // Safari doesn't have instantiateStreaming
             fetch("main.wasm")
-                .arrayBuffer()
-                .then((buffer) => {
-                    return WebAssembly.instantiate(buffer, go.importObject);
-                })
-                .then((result) => {
-                    go.run(result.instance);
-                });
+                .then(response => response.arrayBuffer())
+                .then(buffer => WebAssembly.instantiate(buffer, go.importObject))
+                .then(result => go.run(result.instance));
         }
     </script>
 

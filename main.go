@@ -2,18 +2,19 @@ package main
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
-	"flag"
+	"fmt"
 	"image/color"
-	"io/ioutil"
 	"log"
-	"os"
-	"path"
+	"syscall/js"
 	"time"
 
 	_ "embed"
 
 	"github.com/nikolaydubina/calendarheatmap/charts"
+	"golang.org/x/image/font"
+	"golang.org/x/image/font/opentype"
 )
 
 //go:embed assets/fonts/Sunflower-Medium.ttf
@@ -22,74 +23,160 @@ var defaultFontFaceBytes []byte
 //go:embed assets/colorscales/green-blue-9.csv
 var defaultColorScaleBytes []byte
 
-func main() {
-	var (
-		colorScale   string
-		labels       bool
-		locale       string
-		monthSep     bool
-		outputFormat string
-	)
+type Renderer struct {
+	config charts.HeatmapConfig
+	img    []byte
+}
 
-	flag.BoolVar(&labels, "labels", true, "labels for weekday and months")
-	flag.BoolVar(&monthSep, "monthsep", true, "render month separator")
-	flag.StringVar(&colorScale, "colorscale", "green-blue-9.csv", "filename of colorscale")
-	flag.StringVar(&locale, "locale", "en_US", "locale of labels (en_US, ko_KR)")
-	flag.StringVar(&outputFormat, "output", "png", "output format (png, jpeg, gif, svg)")
-	flag.Parse()
-
-	var colorscale charts.BasicColorScale
-	if assetsPath := os.Getenv("CALENDAR_HEATMAP_ASSETS_PATH"); assetsPath != "" {
-		var err error
-		colorscale, err = charts.NewBasicColorscaleFromCSVFile(path.Join(assetsPath, "colorscales", colorScale))
-		if err != nil {
-			log.Fatal(err)
+func (r *Renderer) PrettifyJSON(this js.Value, inputs []js.Value) interface{} {
+	document := js.Global().Get("document")
+	instr := document.Call("getElementById", "inputData").Get("value")
+	data := map[string]interface{}{}
+	if err := json.Unmarshal([]byte(instr.String()), &data); err == nil {
+		if out, err := json.MarshalIndent(data, "", "    "); err == nil {
+			document.Call("getElementById", "inputData").Set("value", string(out))
 		}
+	}
+	return nil
+}
+
+func (r *Renderer) OnDataChange(this js.Value, inputs []js.Value) interface{} {
+	document := js.Global().Get("document")
+	instr := document.Call("getElementById", "inputData").Get("value")
+
+	data := map[string]int{}
+	if err := json.Unmarshal([]byte(instr.String()), &data); err == nil {
+		r.config.Counts = data
+		r.Render()
+	}
+
+	return nil
+}
+
+func (r *Renderer) GetFormatUpdater(format string) func(this js.Value, inputs []js.Value) interface{} {
+	return func(this js.Value, inputs []js.Value) interface{} {
+		r.config.Format = format
+
+		if format == "svg" {
+			js.Global().Get("document").Call("getElementById", "switchLabels").Set("disabled", "true")
+			js.Global().Get("document").Call("getElementById", "switchMonthSeparator").Set("disabled", "true")
+		} else {
+			js.Global().Get("document").Call("getElementById", "switchLabels").Call("removeAttribute", "disabled")
+			js.Global().Get("document").Call("getElementById", "switchMonthSeparator").Call("removeAttribute", "disabled")
+		}
+
+		r.Render()
+		return nil
+	}
+}
+
+func (r *Renderer) GetWeekdaySwitchUpdater(weekday time.Weekday) func(this js.Value, inputs []js.Value) interface{} {
+	return func(this js.Value, inputs []js.Value) interface{} {
+		r.config.ShowWeekdays[weekday] = !r.config.ShowWeekdays[weekday]
+		r.Render()
+		return nil
+	}
+}
+
+func (r *Renderer) ToggleLabels(this js.Value, inputs []js.Value) interface{} {
+	r.config.DrawLabels = !r.config.DrawLabels
+	r.Render()
+	return nil
+}
+
+func (r *Renderer) ToggleMonthSeparator(this js.Value, inputs []js.Value) interface{} {
+	r.config.DrawMonthSeparator = !r.config.DrawMonthSeparator
+	r.Render()
+	return nil
+}
+
+func (r *Renderer) Render() {
+	var output bytes.Buffer
+	if err := charts.WriteHeatmap(r.config, &output); err != nil {
+		log.Println(err)
+		return
+	}
+
+	if r.config.Format == "svg" {
+		img := output.String()
+		js.Global().Get("document").Call("getElementById", "output-container").Set("innerHTML", img)
 	} else {
-		var err error
-		if colorScale != "green-blue-9.csv" {
-			log.Printf("defaulting to colorscale %s since CALENDAR_HEATMAP_ASSETS_PATH is not set", "green-blue-9.csv")
-		}
-		colorscale, err = charts.NewBasicColorscaleFromCSV(bytes.NewBuffer(defaultColorScaleBytes))
-		if err != nil {
-			log.Fatal(err)
-		}
+		img := js.Global().Get("document").Call("createElement", "img")
+		src := fmt.Sprintf("data:image/%s;base64,%s", r.config.Format, base64.StdEncoding.EncodeToString(output.Bytes()))
+		img.Set("src", src)
+		img.Set("style", "width: 100%;")
+
+		container := js.Global().Get("document").Call("getElementById", "output-container")
+		container.Set("innerHTML", "")
+		container.Call("appendChild", img)
 	}
 
-	fontFace, err := charts.LoadFontFace(defaultFontFaceBytes)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// download file update button
+	src := fmt.Sprintf("data:image/%s;base64,%s", r.config.Format, base64.StdEncoding.EncodeToString(output.Bytes()))
+	link := js.Global().Get("document").Call("getElementById", "downloadLink")
+	link.Set("href", src)
+	link.Set("download", fmt.Sprintf("calendar-heatmap.%s", r.config.Format))
+}
 
-	data, err := ioutil.ReadAll(os.Stdin)
-	if err != nil {
-		log.Fatal(err)
-	}
+func main() {
+	c := make(chan bool)
 
-	var counts map[string]int
-	if err := json.Unmarshal(data, &counts); err != nil {
-		log.Fatal(err)
-	}
-
-	conf := charts.HeatmapConfig{
-		Counts:             counts,
-		ColorScale:         colorscale,
-		DrawMonthSeparator: monthSep,
-		DrawLabels:         labels,
-		Margin:             30,
-		BoxSize:            150,
-		TextWidthLeft:      350,
-		TextHeightTop:      200,
-		TextColor:          color.RGBA{100, 100, 100, 255},
-		BorderColor:        color.RGBA{200, 200, 200, 255},
-		Locale:             locale,
-		Format:             outputFormat,
-		FontFace:           fontFace,
-		ShowWeekdays: map[time.Weekday]bool{
-			time.Monday:    true,
-			time.Wednesday: true,
-			time.Friday:    true,
+	colorscale, _ := charts.NewBasicColorscaleFromCSV(bytes.NewBuffer(defaultColorScaleBytes))
+	fontFace, _ := charts.LoadFontFace(defaultFontFaceBytes, opentype.FaceOptions{
+		Size:    13,
+		DPI:     80,
+		Hinting: font.HintingNone,
+	})
+	renderer := Renderer{
+		config: charts.HeatmapConfig{
+			Counts:              nil,
+			ColorScale:          colorscale,
+			DrawMonthSeparator:  true,
+			DrawLabels:          true,
+			Margin:              5,
+			BoxSize:             24,
+			MonthSeparatorWidth: 1,
+			MonthLabelYOffset:   5,
+			TextWidthLeft:       40,
+			TextHeightTop:       15,
+			TextColor:           color.RGBA{100, 100, 100, 255},
+			BorderColor:         color.RGBA{200, 200, 200, 255},
+			Locale:              "en_US",
+			Format:              "png",
+			FontFace:            fontFace,
+			ShowWeekdays: map[time.Weekday]bool{
+				time.Monday:    true,
+				time.Wednesday: true,
+				time.Friday:    true,
+			},
 		},
 	}
-	charts.WriteHeatmap(conf, os.Stdout)
+
+	document := js.Global().Get("document")
+
+	document.Call("getElementById", "inputConfig").Call("reset")
+
+	document.Call("getElementById", "inputData").Set("onkeyup", js.FuncOf(renderer.OnDataChange))
+	document.Call("getElementById", "btnPrettifyJSON").Set("onclick", js.FuncOf(renderer.PrettifyJSON))
+
+	document.Call("getElementById", "formatSVG").Set("onclick", js.FuncOf(renderer.GetFormatUpdater("svg")))
+	document.Call("getElementById", "formatPNG").Set("onclick", js.FuncOf(renderer.GetFormatUpdater("png")))
+	document.Call("getElementById", "formatJPEG").Set("onclick", js.FuncOf(renderer.GetFormatUpdater("jpeg")))
+
+	document.Call("getElementById", "switchMon").Set("onchange", js.FuncOf(renderer.GetWeekdaySwitchUpdater(time.Monday)))
+	document.Call("getElementById", "switchTue").Set("onchange", js.FuncOf(renderer.GetWeekdaySwitchUpdater(time.Tuesday)))
+	document.Call("getElementById", "switchWed").Set("onchange", js.FuncOf(renderer.GetWeekdaySwitchUpdater(time.Wednesday)))
+	document.Call("getElementById", "switchThu").Set("onchange", js.FuncOf(renderer.GetWeekdaySwitchUpdater(time.Thursday)))
+	document.Call("getElementById", "switchFri").Set("onchange", js.FuncOf(renderer.GetWeekdaySwitchUpdater(time.Friday)))
+	document.Call("getElementById", "switchSat").Set("onchange", js.FuncOf(renderer.GetWeekdaySwitchUpdater(time.Saturday)))
+	document.Call("getElementById", "switchSun").Set("onchange", js.FuncOf(renderer.GetWeekdaySwitchUpdater(time.Sunday)))
+
+	document.Call("getElementById", "switchLabels").Set("onchange", js.FuncOf(renderer.ToggleLabels))
+	document.Call("getElementById", "switchMonthSeparator").Set("onchange", js.FuncOf(renderer.ToggleMonthSeparator))
+
+	renderer.OnDataChange(js.Value{}, nil)
+	renderer.PrettifyJSON(js.Value{}, nil)
+	renderer.Render()
+
+	<-c
 }

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bungee+Shade">
+
+    <style>
+        #banner {
+            font-family: 'Bungee Shade', serif;
+            font-size: 64px;
+        }
+    </style>
+
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="wasm_exec.js"></script>
+    <script>
+        const go = new Go();
+        WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
+            go.run(result.instance);
+        });
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-D6NR6EJGD7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-D6NR6EJGD7');
+    </script>
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <div class="container">
+        <div class="mx-auto" style="width: 700px;">
+            <div class="d-grid gap-4">
+                <div class="mb-3">
+                    <div style="padding-top: 25px;">
+                        <p id="banner" class="text-center">
+                            CALENDAR HEATMAP
+                        </p>
+                        <div class="d-flex justify-content-center">
+                            <a class="github-button" href="https://github.com/nikolaydubina/calendarheatmap" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star nikolaydubina/calendarheatmap on GitHub">Star</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div id="output-container" style="height: 100px;"></div>
+                </div>
+
+                <form id="inputConfig">
+                    <div class="d-grid gap-1">
+                        <div class="mb-3">
+                            <input type="radio" class="btn-check" name="formatOption" id="formatSVG" autocomplete="off">
+                            <label class="btn btn-outline-secondary" for="formatSVG">SVG</label>
+
+                            <input type="radio" class="btn-check" name="formatOption" id="formatPNG" autocomplete="off" checked>
+                            <label class="btn btn-outline-secondary" for="formatPNG">PNG</label>
+
+                            <input type="radio" class="btn-check" name="formatOption" id="formatJPEG" autocomplete="off">
+                            <label class="btn btn-outline-secondary" for="formatJPEG">JPEG</label>
+                        </div>
+
+                        <div class="mb-3">
+                            <textarea class="form-control" id="inputData" rows="10" style="resize: vertical; width: 100%; height: auto;">
+                                {
+                                    "2020-05-16": 8,
+                                    "2020-05-17": 13,
+                                    "2020-05-18": 5,
+                                    "2020-05-19": 8,
+                                    "2020-05-20": 5,
+                                    "2020-05-21": 10,
+                                    "2020-05-23": 1
+                                }
+                            </textarea>
+                        </div>
+
+                        <button type="button" class="btn btn-light" id="btnPrettifyJSON">Prettify JSON</button>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="switchMonthSeparator" checked>
+                            <label class="form-check-label" for="switchMonthSeparator">Months separator</label>
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="switchLabels" checked>
+                            <label class="form-check-label" for="switchLabels">Labels</label>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="switchMon" checked>
+                                <label class="form-check-label" for="switchMon">Mon</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="switchTue">
+                                <label class="form-check-label" for="switchTue">Tue</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="switchWed" checked>
+                                <label class="form-check-label" for="switchWed">Wed</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="switchThu">
+                                <label class="form-check-label" for="switchThu">Thu</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="switchFri" checked>
+                                <label class="form-check-label" for="switchFri">Fri</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="switchSat">
+                                <label class="form-check-label" for="switchSat">Sat</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="switchSun">
+                                <label class="form-check-label" for="switchSun">Sun</label>
+                            </div>
+                        </div>
+
+                        <a id="downloadLink" download="" href="" class="btn btn-primary" role="button">
+                            <i class="bi bi-download"></i> Download
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>
+

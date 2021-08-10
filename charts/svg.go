@@ -1,12 +1,16 @@
 package charts
 
 import (
+	_ "embed"
 	"fmt"
 	"image"
 	"image/color"
 	"io"
 	"text/template"
 )
+
+//go:embed template.svg
+var svgTemplate string
 
 // Day is SVG template day parameters
 type Day struct {
@@ -44,7 +48,7 @@ func writeSVG(conf HeatmapConfig, w io.Writer) {
 	fullYearTemplate := template.Must(template.New("fullyear").Funcs(template.FuncMap{
 		"mul": func(a int, b int) int { return a * b },
 		"add": func(a int, b int) int { return a + b },
-	}).Parse(fullyear))
+	}).Parse(svgTemplate))
 
 	labelsProvider := NewLabelsProvider(conf.Locale)
 

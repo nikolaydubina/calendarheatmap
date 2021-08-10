@@ -1,5 +1,5 @@
-<svg width="752" height="112" xmlns="http://www.w3.org/2000/svg" xmlns:xlink= "http://www.w3.org/1999/xlink">
-  <g transform="translate(10, 20)">
+<svg viewBox="0 0 762 112" xmlns="http://www.w3.org/2000/svg" xmlns:xlink= "http://www.w3.org/1999/xlink">
+  <g transform="translate(20, 20)">
 	<g transform="translate(0, 0)">
 		
 		
@@ -546,12 +546,12 @@
 	<text x="686" y="-7" font-size="8px" fill="rgb(100,100,100)">Dec</text>
 	
 	 
-	<text text-anchor="start" font-size="8px" dx="-10" dy="8" fill="rgb(100,100,100)" >Mon</text>
-	<text text-anchor="start" font-size="8px" dx="-10" dy="21" fill="rgb(100,100,100)" style="display: none;">Tue</text>
-	<text text-anchor="start" font-size="8px" dx="-10" dy="34" fill="rgb(100,100,100)" >Wed</text>
-	<text text-anchor="start" font-size="8px" dx="-10" dy="47" fill="rgb(100,100,100)" style="display: none;">Thu</text>
-	<text text-anchor="start" font-size="8px" dx="-10" dy="60" fill="rgb(100,100,100)" >Fri</text>
-	<text text-anchor="start" font-size="8px" dx="-10" dy="73" fill="rgb(100,100,100)" style="display: none;">Sat</text>
-	<text text-anchor="start" font-size="8px" dx="-10" dy="86" fill="rgb(100,100,100)" style="display: none;">Sun</text>
+	<text text-anchor="start" font-size="8px" dx="-20" dy="8" fill="rgb(100,100,100)" >Mon</text>
+	<text text-anchor="start" font-size="8px" dx="-20" dy="21" fill="rgb(100,100,100)" style="display: none;">Tue</text>
+	<text text-anchor="start" font-size="8px" dx="-20" dy="34" fill="rgb(100,100,100)" >Wed</text>
+	<text text-anchor="start" font-size="8px" dx="-20" dy="47" fill="rgb(100,100,100)" style="display: none;">Thu</text>
+	<text text-anchor="start" font-size="8px" dx="-20" dy="60" fill="rgb(100,100,100)" >Fri</text>
+	<text text-anchor="start" font-size="8px" dx="-20" dy="73" fill="rgb(100,100,100)" style="display: none;">Sat</text>
+	<text text-anchor="start" font-size="8px" dx="-20" dy="86" fill="rgb(100,100,100)" style="display: none;">Sun</text>
 	
 </g></svg>

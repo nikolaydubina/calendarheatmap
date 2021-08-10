@@ -14,6 +14,8 @@ import (
 	_ "embed"
 
 	"github.com/nikolaydubina/calendarheatmap/charts"
+	"golang.org/x/image/font"
+	"golang.org/x/image/font/opentype"
 )
 
 //go:embed assets/fonts/Sunflower-Medium.ttf
@@ -56,7 +58,11 @@ func main() {
 		}
 	}
 
-	fontFace, err := charts.LoadFontFace(defaultFontFaceBytes)
+	fontFace, err := charts.LoadFontFace(defaultFontFaceBytes, opentype.FaceOptions{
+		Size:    26,
+		DPI:     280,
+		Hinting: font.HintingNone,
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -72,19 +78,21 @@ func main() {
 	}
 
 	conf := charts.HeatmapConfig{
-		Counts:             counts,
-		ColorScale:         colorscale,
-		DrawMonthSeparator: monthSep,
-		DrawLabels:         labels,
-		Margin:             30,
-		BoxSize:            150,
-		TextWidthLeft:      350,
-		TextHeightTop:      200,
-		TextColor:          color.RGBA{100, 100, 100, 255},
-		BorderColor:        color.RGBA{200, 200, 200, 255},
-		Locale:             locale,
-		Format:             outputFormat,
-		FontFace:           fontFace,
+		Counts:              counts,
+		ColorScale:          colorscale,
+		DrawMonthSeparator:  monthSep,
+		DrawLabels:          labels,
+		Margin:              30,
+		BoxSize:             150,
+		MonthSeparatorWidth: 5,
+		MonthLabelYOffset:   50,
+		TextWidthLeft:       300,
+		TextHeightTop:       200,
+		TextColor:           color.RGBA{100, 100, 100, 255},
+		BorderColor:         color.RGBA{200, 200, 200, 255},
+		Locale:              locale,
+		Format:              outputFormat,
+		FontFace:            fontFace,
 		ShowWeekdays: map[time.Weekday]bool{
 			time.Monday:    true,
 			time.Wednesday: true,

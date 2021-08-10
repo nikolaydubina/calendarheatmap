@@ -12,16 +12,12 @@ import (
 )
 
 // LoadFontFace loads font face from bytes
-func LoadFontFace(fontBytes []byte) (font.Face, error) {
+func LoadFontFace(fontBytes []byte, options opentype.FaceOptions) (font.Face, error) {
 	f, err := opentype.Parse(fontBytes)
 	if err != nil {
 		return nil, fmt.Errorf("can not parse font file: %w", err)
 	}
-	face, err := opentype.NewFace(f, &opentype.FaceOptions{
-		Size:    26,
-		DPI:     280,
-		Hinting: font.HintingNone,
-	})
+	face, err := opentype.NewFace(f, &options)
 	if err != nil {
 		return nil, fmt.Errorf("can not create font face: %w", err)
 	}
@@ -29,12 +25,12 @@ func LoadFontFace(fontBytes []byte) (font.Face, error) {
 }
 
 // LoadFontFaceFromFile loads font face from file
-func LoadFontFaceFromFile(fontPath string) (font.Face, error) {
+func LoadFontFaceFromFile(fontPath string, options opentype.FaceOptions) (font.Face, error) {
 	fontBytes, err := ioutil.ReadFile(fontPath)
 	if err != nil {
 		return nil, fmt.Errorf("can not open font file with error: %w", err)
 	}
-	return LoadFontFace(fontBytes)
+	return LoadFontFace(fontBytes, options)
 }
 
 // drawText inserts text into provided image at bottom left coordinate

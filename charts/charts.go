@@ -36,20 +36,22 @@ const (
 
 // HeatmapConfig contains config of calendar heatmap image
 type HeatmapConfig struct {
-	Counts             map[string]int
-	ColorScale         ColorScale
-	DrawMonthSeparator bool
-	DrawLabels         bool
-	BoxSize            int
-	Margin             int
-	TextWidthLeft      int
-	TextHeightTop      int
-	TextColor          color.RGBA
-	BorderColor        color.RGBA
-	Locale             string
-	Format             string
-	FontFace           font.Face
-	ShowWeekdays       map[time.Weekday]bool
+	Counts              map[string]int
+	ColorScale          ColorScale
+	DrawMonthSeparator  bool
+	DrawLabels          bool
+	BoxSize             int
+	Margin              int
+	MonthSeparatorWidth int
+	MonthLabelYOffset   int
+	TextWidthLeft       int
+	TextHeightTop       int
+	TextColor           color.RGBA
+	BorderColor         color.RGBA
+	Locale              string
+	Format              string
+	FontFace            font.Face
+	ShowWeekdays        map[time.Weekday]bool
 }
 
 // WriteHeatmap writes image with heatmap and additional elements
@@ -79,7 +81,7 @@ func WriteHeatmap(conf HeatmapConfig, w io.Writer) error {
 				MaxY:    height - conf.Margin,
 				Margin:  conf.Margin,
 				BoxSize: conf.BoxSize,
-				Width:   5,
+				Width:   conf.MonthSeparatorWidth,
 				Color:   conf.BorderColor,
 			},
 		)
@@ -88,26 +90,30 @@ func WriteHeatmap(conf HeatmapConfig, w io.Writer) error {
 	labelsProvider := NewLabelsProvider(conf.Locale)
 
 	if conf.DrawLabels {
-		visitors = append(visitors, &MonthLabelsVisitor{FontFace: conf.FontFace, Img: img, YOffset: 50, Color: conf.TextColor, LabelsProvider: labelsProvider})
-	}
+		visitors = append(visitors, &MonthLabelsVisitor{
+			FontFace:       conf.FontFace,
+			Img:            img,
+			YOffset:        conf.MonthLabelYOffset,
+			Color:          conf.TextColor,
+			LabelsProvider: labelsProvider,
+		})
 
-	for iter := NewDayIterator(conf.Counts, offset, conf.BoxSize, conf.Margin); !iter.Done(); iter.Next() {
-		for _, v := range visitors {
-			v.Visit(iter)
-		}
-	}
-
-	if conf.DrawLabels {
 		drawWeekdayLabels(
 			conf.FontFace,
 			img,
-			offset,
+			image.Point{X: 0, Y: conf.TextHeightTop},
 			conf.ShowWeekdays,
 			conf.BoxSize,
 			conf.Margin,
 			conf.TextColor,
 			labelsProvider,
 		)
+	}
+
+	for iter := NewDayIterator(conf.Counts, offset, conf.BoxSize, conf.Margin); !iter.Done(); iter.Next() {
+		for _, v := range visitors {
+			v.Visit(iter)
+		}
 	}
 
 	switch conf.Format {
@@ -238,12 +244,10 @@ func (d *MonthLabelsVisitor) Visit(iter *DayIterator) {
 // All weekday labels assumed to have same width, which really depends on font.
 // offset argument is top right corner of where to insert column of weekday labels.
 func drawWeekdayLabels(fontFace font.Face, img *image.RGBA, offset image.Point, weekdays map[time.Weekday]bool, boxSize int, margin int, color color.RGBA, lp LabelsProvider) {
-	width := 250
-	height := 100
-	y := offset.Y + height
+	y := offset.Y + boxSize - margin
 	for _, w := range weekdayOrder {
 		if weekdays[w] {
-			drawText(fontFace, img, image.Point{X: offset.X - width, Y: y}, lp.GetWeekday(w), color)
+			drawText(fontFace, img, image.Point{X: offset.X, Y: y}, lp.GetWeekday(w), color)
 		}
 		y += boxSize + margin
 	}

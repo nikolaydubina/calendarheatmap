@@ -56,15 +56,6 @@ func (r *Renderer) OnDataChange(this js.Value, inputs []js.Value) interface{} {
 func (r *Renderer) GetFormatUpdater(format string) func(this js.Value, inputs []js.Value) interface{} {
 	return func(this js.Value, inputs []js.Value) interface{} {
 		r.config.Format = format
-
-		if format == "svg" {
-			js.Global().Get("document").Call("getElementById", "switchLabels").Set("disabled", "true")
-			js.Global().Get("document").Call("getElementById", "switchMonthSeparator").Set("disabled", "true")
-		} else {
-			js.Global().Get("document").Call("getElementById", "switchLabels").Call("removeAttribute", "disabled")
-			js.Global().Get("document").Call("getElementById", "switchMonthSeparator").Call("removeAttribute", "disabled")
-		}
-
 		r.Render()
 		return nil
 	}
@@ -142,7 +133,7 @@ func main() {
 			TextColor:           color.RGBA{100, 100, 100, 255},
 			BorderColor:         color.RGBA{200, 200, 200, 255},
 			Locale:              "en_US",
-			Format:              "png",
+			Format:              "svg",
 			FontFace:            fontFace,
 			ShowWeekdays: map[time.Weekday]bool{
 				time.Monday:    true,

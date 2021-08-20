@@ -20,7 +20,7 @@ build-web:
 	cp -r assets web/assets
 	cd web; GOARCH=wasm GOOS=js go build -o main.wasm main.go
 
-run-web:
+run-web: build-web
 	cd web; python3 -m http.server 8000
 
 clean:

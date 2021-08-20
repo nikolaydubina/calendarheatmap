@@ -6,7 +6,9 @@ import (
 	"image"
 	"image/color"
 	"io"
+	"strings"
 	"text/template"
+	"time"
 )
 
 //go:embed template.svg
@@ -34,10 +36,15 @@ type MonthLabel struct {
 
 // Params is total SVG template parameters
 type Params struct {
-	Days           [53][7]Day
-	LabelsMonths   [12]MonthLabel
-	LabelsWeekdays [7]WeekdayLabel
-	LabelsColor    string
+	BoxAreaHeight   int
+	BoxAreaWidth    int
+	BoxSize         int
+	Margin          int
+	Days            [53][7]Day
+	LabelsMonths    []MonthLabel
+	LabelsWeekdays  []WeekdayLabel
+	LabelsColor     string
+	MonthSeparators []string
 }
 
 func writeSVGColor(c color.RGBA) string {
@@ -52,19 +59,29 @@ func writeSVG(conf HeatmapConfig, w io.Writer) {
 
 	labelsProvider := NewLabelsProvider(conf.Locale)
 
-	labelsWeekdays := [7]WeekdayLabel{}
-	for i, w := range weekdayOrder {
-		labelsWeekdays[i] = WeekdayLabel{labelsProvider.GetWeekday(w), conf.ShowWeekdays[w]}
+	var labelsWeekdays []WeekdayLabel
+	var labelsMonths []MonthLabel
+
+	if conf.DrawLabels {
+		labelsWeekdays = make([]WeekdayLabel, 7)
+		for i, w := range weekdayOrder {
+			labelsWeekdays[i] = WeekdayLabel{labelsProvider.GetWeekday(w), conf.ShowWeekdays[w]}
+		}
+
+		labelsMonths = make([]MonthLabel, 12)
+		for i, v := range labelsProvider.months {
+			labelsMonths[i-1].Label = v
+		}
 	}
 
-	labelsMonths := [12]MonthLabel{}
-	for i, v := range labelsProvider.months {
-		labelsMonths[i-1].Label = v
-	}
+	monthSeparators := []string{}
 
 	month := 0
 	days := [53][7]Day{}
-	for iter := NewDayIterator(conf.Counts, image.Point{}, 0, 0); !iter.Done(); iter.Next() {
+	boxw := 18
+	margin := 4
+
+	for iter := NewDayIterator(conf.Counts, image.Point{}, boxw, margin); !iter.Done(); iter.Next() {
 		days[iter.Col][iter.Row] = Day{
 			Count: iter.Count(),
 			Date:  iter.Time().Format("2006-01-02"),
@@ -72,17 +89,53 @@ func writeSVG(conf HeatmapConfig, w io.Writer) {
 			Show:  true,
 		}
 
+		// Update month label offset
 		// Note, day is from 1~31
-		if iter.Row == 0 && iter.Time().Day() <= 7 {
-			labelsMonths[month].XOffset = iter.Col
-			month++
+		if len(labelsMonths) > 0 {
+			if iter.Row == 0 && iter.Time().Day() <= 7 {
+				labelsMonths[month].XOffset = iter.Col
+				month++
+			}
+		}
+
+		if conf.DrawMonthSeparator {
+			day := iter.Time()
+			if day.Day() == 1 && day.Month() != time.January {
+				p := iter.Point()
+
+				points := []string{
+					// left vertical line
+					fmt.Sprintf("%d,%d", p.X-2, 7*(boxw+margin)-margin),
+					fmt.Sprintf("%d,%d", p.X-2, p.Y),
+				}
+
+				if day.Weekday() != weekdayOrder[0] {
+					points = append(points,
+						// horizontal line
+						fmt.Sprintf("%d,%d", p.X-2, p.Y-2),
+						fmt.Sprintf("%d,%d", p.X+boxw+2, p.Y-2),
+
+						// right vertical line
+						fmt.Sprintf("%d,%d", p.X+boxw+2, p.Y-2),
+						fmt.Sprintf("%d,%d", p.X+boxw+2, 0),
+					)
+				}
+
+				line := fmt.Sprintf(`<polyline style="fill:none;stroke:%s;stroke-width:1" points="%s"></polyline>`, writeSVGColor(conf.BorderColor), strings.Join(points, " "))
+				monthSeparators = append(monthSeparators, line)
+			}
 		}
 	}
 
 	fullYearTemplate.Execute(w, Params{
-		Days:           days,
-		LabelsMonths:   labelsMonths,
-		LabelsWeekdays: labelsWeekdays,
-		LabelsColor:    writeSVGColor(conf.TextColor),
+		BoxSize:         boxw,
+		Margin:          margin,
+		BoxAreaWidth:    54 * (boxw + margin),
+		BoxAreaHeight:   8 * (boxw + margin),
+		Days:            days,
+		LabelsMonths:    labelsMonths,
+		LabelsWeekdays:  labelsWeekdays,
+		LabelsColor:     writeSVGColor(conf.TextColor),
+		MonthSeparators: monthSeparators,
 	})
 }

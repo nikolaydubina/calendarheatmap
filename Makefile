@@ -15,12 +15,17 @@ docs: build
 	cat charts/testdata/basic.json | ./calendarheatmap -monthsep=false > docs/noseparator.png
 	cat charts/testdata/basic.json | ./calendarheatmap -labels=false -monthsep=false > docs/noseparator_nolabels.png
 
-build-web:
-	cp "$$(go env GOROOT)/misc/wasm/wasm_exec.js" web/
+build-web: clean
 	cp -r assets web/assets
-	cd web; GOARCH=wasm GOOS=js go build -o main.wasm main.go
+	cp "$$(go env GOROOT)/misc/wasm/wasm_exec.js" web/
+	cd web; GOARCH=wasm GOOS=js go build -ldflags="-s -w" -trimpath -o main.wasm main.go
 
-run-web: build-web
+build-web-tiny: clean
+	cp -r assets web/assets
+	cp "$$(tinygo env TINYGOROOT)/targets/wasm_exec.js" web/
+	cd web; tinygo build -o main.wasm -target wasm ./main.go
+
+run-web: 
 	cd web; python3 -m http.server 8000
 
 clean:

@@ -31,12 +31,19 @@ type Renderer struct {
 func (r *Renderer) PrettifyJSON(this js.Value, inputs []js.Value) interface{} {
 	document := js.Global().Get("document")
 	instr := document.Call("getElementById", "inputData").Get("value")
-	data := map[string]interface{}{}
-	if err := json.Unmarshal([]byte(instr.String()), &data); err == nil {
-		if out, err := json.MarshalIndent(data, "", "    "); err == nil {
-			document.Call("getElementById", "inputData").Set("value", string(out))
-		}
+	log.Printf("p start")
+	data := map[string]int{}
+	if err := json.Unmarshal([]byte(instr.String()), &data); err != nil {
+		log.Printf("got err on unmarshal: %s", err)
+		return nil
 	}
+	out, err := json.MarshalIndent(data, "", "    ")
+	if err != nil {
+		log.Printf("got err on marshal: %s", err)
+		return nil
+	}
+	document.Call("getElementById", "inputData").Set("value", string(out))
+	log.Printf("success")
 	return nil
 }
 
@@ -45,10 +52,14 @@ func (r *Renderer) OnDataChange(this js.Value, inputs []js.Value) interface{} {
 	instr := document.Call("getElementById", "inputData").Get("value")
 
 	data := map[string]int{}
-	if err := json.Unmarshal([]byte(instr.String()), &data); err == nil {
-		r.config.Counts = data
-		r.Render()
+	if err := json.Unmarshal([]byte(instr.String()), &data); err != nil {
+		log.Printf("got err on unmarshal: %s", err)
+		return nil
 	}
+
+	r.config.Counts = data
+	log.Printf("success before render")
+	r.Render()
 
 	return nil
 }

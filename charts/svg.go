@@ -1,20 +1,15 @@
 package charts
 
 import (
-	_ "embed"
 	"fmt"
 	"image"
 	"image/color"
 	"io"
 	"strings"
-	"text/template"
 	"time"
 )
 
-//go:embed template.svg
-var svgTemplate string
-
-// Day is SVG template day parameters
+// Day is SVG day parameters
 type Day struct {
 	Count int
 	Date  string
@@ -22,25 +17,25 @@ type Day struct {
 	Show  bool
 }
 
-// WeekdayLabel is SVG template weekday label parameters
+// WeekdayLabel is SVG weekday label parameters
 type WeekdayLabel struct {
 	Label string
 	Show  bool
 }
 
-// MonthLabel is SVG template month label parameters
+// MonthLabel is SVG month label parameters
 type MonthLabel struct {
 	Label   string
 	XOffset int
 }
 
-// Params is total SVG template parameters
+// Params is total SVG parameters
 type Params struct {
 	BoxAreaHeight   int
 	BoxAreaWidth    int
 	BoxSize         int
 	Margin          int
-	Days            [53][7]Day
+	Days            [][]Day
 	LabelsMonths    []MonthLabel
 	LabelsWeekdays  []WeekdayLabel
 	LabelsColor     string
@@ -52,11 +47,6 @@ func writeSVGColor(c color.RGBA) string {
 }
 
 func writeSVG(conf HeatmapConfig, w io.Writer) {
-	fullYearTemplate := template.Must(template.New("fullyear").Funcs(template.FuncMap{
-		"mul": func(a int, b int) int { return a * b },
-		"add": func(a int, b int) int { return a + b },
-	}).Parse(svgTemplate))
-
 	labelsProvider := NewLabelsProvider(conf.Locale)
 
 	var labelsWeekdays []WeekdayLabel
@@ -77,7 +67,12 @@ func writeSVG(conf HeatmapConfig, w io.Writer) {
 	monthSeparators := []string{}
 
 	month := 0
-	days := [53][7]Day{}
+        // wasm tingy crashes due to 2K arguments in function. it inlines them for arrays and flattens structs
+        // 2K ~ 53 * 7 * 4
+        days := make([][]Day, 53)
+        for i := 0; i < 53; i++ {
+            days[i] = make([]Day, 7)
+        }
 	boxw := 18
 	margin := 4
 
@@ -127,7 +122,7 @@ func writeSVG(conf HeatmapConfig, w io.Writer) {
 		}
 	}
 
-	fullYearTemplate.Execute(w, Params{
+        result := render(Params{
 		BoxSize:         boxw,
 		Margin:          margin,
 		BoxAreaWidth:    54 * (boxw + margin),
@@ -138,4 +133,68 @@ func writeSVG(conf HeatmapConfig, w io.Writer) {
 		LabelsColor:     writeSVGColor(conf.TextColor),
 		MonthSeparators: monthSeparators,
 	})
+        w.Write([]byte(result))
+}
+
+// before this was template, but tingo does not support text/template
+func render(params Params) string {
+    out := ""
+    out += fmt.Sprintf(
+        `<svg viewBox="0 0 %d %d" xmlns="http://www.w3.org/2000/svg" xmlns:xlink= "http://www.w3.org/1999/xlink">`,
+        params.BoxAreaWidth,
+        params.BoxAreaHeight,
+
+    )
+    out += `<g transform="translate(25, 23)">`
+
+    for w, wo := range params.Days {
+        out += fmt.Sprintf(`<g transform="translate(%d, 0)">`, w * (params.BoxSize + params.Margin))
+
+        for d, do := range wo {
+            if do.Show {
+                out += fmt.Sprintf(
+                    `<rect class="day" width="%d" height="%d" x="0" y="%d" fill="%s" data-count="%d" data-date="%s"></rect>`,
+                    params.BoxSize,
+                    params.BoxSize,
+                    d * (params.BoxSize + params.Margin),
+                    do.Color,
+                    do.Count,
+                    do.Date,
+                )
+            }
+        }
+
+        out += `</g>`
+    }
+
+    for _, label := range params.LabelsMonths {
+        out += fmt.Sprintf(
+            `<text x="%d" y="-7" font-size="10" fill="%s">%s</text>`,
+            label.XOffset * (params.BoxSize + params.Margin),
+            params.LabelsColor,
+            label.Label,
+        )
+    }
+
+    for i, o := range params.LabelsWeekdays {
+        style := ""
+        if !o.Show {
+            style = `style="display: none;"`
+        }
+        out += fmt.Sprintf(
+            `<text text-anchor="start" font-size="10" dx="-25" dy="%d" fill="%s" %s>%s</text>`,
+            15 + i * (params.BoxSize + params.Margin),
+            params.LabelsColor,
+            style,
+            o.Label,
+        )
+    }
+
+    for _, l := range params.MonthSeparators {
+        out += l + "\n"
+    }
+
+    out += `</g></svg>`
+
+    return out
 }

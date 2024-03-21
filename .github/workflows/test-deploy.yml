@@ -29,16 +29,20 @@ jobs:
       run: go build
 
     - name: Test
-      run: go test -v -coverprofile=coverage.txt -covermode=atomic ./charts 
+      run: go test -v -coverprofile=coverage.out -covermode=atomic ./charts 
       
-    - name: Codecov
-      uses: codecov/codecov-action@v1.0.10
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: coverage.out
+        verbose: true
 
     - name: Build web
       run: make build-web
 
     - name: Deploy
-      uses: JamesIves/github-pages-deploy-action@4.1.6
+      uses: JamesIves/github-pages-deploy-action@4.5.0
       with:
         branch: gh-pages
         folder: web

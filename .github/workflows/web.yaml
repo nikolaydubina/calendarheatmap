@@ -37,7 +37,7 @@ jobs:
           GTAG: ${{ vars.GTAG }}
         run: |
           go get -v -t -d ./...
-          envsubst < web/index.html | sponge web/index.html
+          envsubst < web/index.html | tee web/index.html
           make build-web
 
       - name: Upload artifact
